@@ -1,0 +1,110 @@
+<div class="profile-container">
+
+  <div class="page-header">
+    <h2 class="page-title">Fiókom beállításai</h2>
+    <p class="page-subtitle">Kezeld a személyes adataidat és a biztonsági beállításokat.</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <iconify-icon icon="line-md:loading-loop" width="40"></iconify-icon>
+    <p>Adatok betöltése...</p>
+  </div>
+
+  <div *ngIf="message" [class]="'alert-box ' + message.type">
+    <iconify-icon [icon]="message.type === 'success' ? 'tabler:check' : 'tabler:alert-circle'"></iconify-icon>
+    {{ message.text }}
+  </div>
+
+  <div class="profile-grid" *ngIf="!loading && user">
+    
+    <div class="profile-sidebar">
+      <div class="card profile-card">
+        <div class="profile-cover"></div>
+        
+        <div class="profile-avatar-wrapper">
+          <img [src]="user.avatarUrl || 'https://ui-avatars.com/api/?background=312e81&color=fff&name=' + user.username" 
+               alt="Profilkép" class="profile-avatar">
+          <button class="btn-upload" title="Kép módosítása (Hamarosan)">
+            <iconify-icon icon="tabler:camera"></iconify-icon>
+          </button>
+        </div>
+
+        <div class="profile-info-center">
+          <h3 class="user-name">{{ user.username }}</h3>
+          <p class="user-role">{{ user.role }}</p>
+          
+          <div class="badges">
+            <span *ngIf="user.isTrustedHost" class="badge badge-verified">
+              <iconify-icon icon="tabler:shield-check-filled"></iconify-icon> Hitelesített Host
+            </span>
+            <span class="badge badge-basic">Tag</span>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="mini-stats">
+          <div class="stat-item">
+            <span class="stat-value">0</span>
+            <span class="stat-label">Utazás</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">-</span>
+            <span class="stat-label">Értékelés</span>
+          </div>
+        </div>
+        
+        <div class="joined-date">
+          Csatlakozott: {{ user.createdAt | date:'yyyy. MMMM' }}
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-content">
+      
+      <div class="card content-card">
+        <div class="card-header-row">
+          <h3>Személyes adatok</h3>
+          <span class="text-sm text-gray-400">ID: {{ user.id }}</span>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="input-label">Felhasználónév</label>
+            <input type="text" [(ngModel)]="user.username" class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label class="input-label">E-mail cím</label>
+            <input type="email" [value]="user.email" class="form-input disabled-input" disabled>
+            <span class="helper-text">Az e-mail cím nem módosítható.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="input-label">Telefonszám</label>
+            <input type="tel" [(ngModel)]="user.phoneNumber" placeholder="+36 30 123 4567" class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label class="input-label">Lakhely</label>
+            <input type="text" [(ngModel)]="user.location" placeholder="Pl. Budapest, Magyarország" class="form-input">
+          </div>
+
+          <div class="form-group full-width">
+             <label class="input-label">Bemutatkozás (Bio)</label>
+             <textarea [(ngModel)]="user.bio" class="form-input textarea" rows="4" 
+                       placeholder="Írj pár szót magadról, amit látni fognak a szállásadók vagy a vendégek..."></textarea>
+          </div>
+        </div>
+        
+        <div class="card-footer-actions">
+           <button (click)="saveProfile()" class="btn btn-primary" [disabled]="saving">
+             <span *ngIf="saving"><iconify-icon icon="line-md:loading-loop"></iconify-icon> Mentés...</span>
+             <span *ngIf="!saving">Változtatások mentése</span>
+           </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

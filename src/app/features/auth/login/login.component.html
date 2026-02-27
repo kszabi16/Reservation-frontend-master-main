@@ -1,0 +1,81 @@
+<div class="auth-container">
+  <div class="auth-wrapper">
+  <div class="auth-card">
+
+    <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Bejelentkezés</h2>
+
+    @if (error) {
+      <div class="bg-red-50 text-red-600 border border-red-200 p-3 rounded-lg text-center mb-4">
+        {{ error }}
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5">
+
+      <!-- E-mail -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">E-mail cím</label>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="pelda@domain.com"
+          class="w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+          [ngClass]="{
+            'border-gray-300': !f.email.touched || f.email.valid,
+            'border-red-400': f.email.touched && f.email.invalid
+          }"
+          />
+        @if (f.email.touched && f.email.errors?.['required']) {
+          <p class="text-sm text-red-500 mt-1">
+            Az e-mail cím megadása kötelező.
+          </p>
+        }
+        @if (f.email.touched && f.email.errors?.['email']) {
+          <p class="text-sm text-red-500 mt-1">
+            Érvényes e-mail címet adj meg.
+          </p>
+        }
+      </div>
+
+      <!-- Jelszó -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Jelszó</label>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          class="w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+          [ngClass]="{
+            'border-gray-300': !f.password.touched || f.password.valid,
+            'border-red-400': f.password.touched && f.password.invalid
+          }"
+          />
+        @if (f.password.touched && f.password.errors?.['required']) {
+          <p class="text-sm text-red-500 mt-1">
+            A jelszó megadása kötelező.
+          </p>
+        }
+        @if (f.password.touched && f.password.errors?.['minlength']) {
+          <p class="text-sm text-red-500 mt-1">
+            A jelszónak legalább 6 karakter hosszúnak kell lennie.
+          </p>
+        }
+      </div>
+
+      <!-- Gomb -->
+      <button
+        type="submit"
+        [disabled]="form.invalid || loading"
+        class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed
+               text-white font-medium py-2.5 rounded-xl shadow-md transition-all duration-300">
+        {{ loading ? 'Bejelentkezés...' : 'Bejelentkezés' }}
+      </button>
+    </form>
+
+    <p class="text-center text-sm text-gray-500 mt-5">
+      Még nincs fiókod?
+      <a routerLink="/auth/register" class="text-indigo-600 font-medium hover:underline">Regisztrálj itt</a>
+    </p>
+  </div>
+</div>
+</div>

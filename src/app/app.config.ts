@@ -1,0 +1,14 @@
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { routes } from './app.routes';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(withInterceptors([JwtInterceptor])),
+    importProvidersFrom(ReactiveFormsModule)
+  ]
+};

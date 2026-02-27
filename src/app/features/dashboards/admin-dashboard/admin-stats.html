@@ -1,0 +1,97 @@
+<div class="p-6 max-w-7xl mx-auto">
+  
+  <div class="flex items-center gap-4 mb-8">
+    <div class="bg-indigo-600 text-white p-3 rounded-2xl shadow-lg shadow-indigo-200">
+      <iconify-icon icon="tabler:chart-bar" width="32"></iconify-icon>
+    </div>
+    <div>
+      <h2 class="text-3xl font-bold text-gray-800">Rendszer Statisztikák</h2>
+      <p class="text-gray-500">Átfogó kép a platform aktuális állapotáról és forgalmáról.</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="flex flex-col items-center justify-center py-20 text-indigo-600">
+      <iconify-icon icon="line-md:loading-loop" width="50"></iconify-icon>
+      <p class="mt-4 font-medium">Adatok összegzése...</p>
+    </div>
+  } @else {
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      
+      <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex justify-between items-start mb-4">
+          <div class="p-2 bg-blue-50 text-blue-600 rounded-lg">
+            <iconify-icon icon="tabler:building-estate" width="24"></iconify-icon>
+          </div>
+          @if (stats.pendingProperties > 0) {
+            <span class="bg-yellow-100 text-yellow-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase">
+              {{ stats.pendingProperties }} új kérelem
+            </span>
+          }
+        </div>
+        <h3 class="text-gray-500 text-sm font-medium">Összes ingatlan</h3>
+        <p class="text-3xl font-black text-gray-800 mt-1">{{ stats.totalProperties }}</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex justify-between items-start mb-4">
+          <div class="p-2 bg-purple-50 text-purple-600 rounded-lg">
+            <iconify-icon icon="tabler:calendar-check" width="24"></iconify-icon>
+          </div>
+          <span class="text-xs text-gray-400 font-medium">Sikeres: {{ stats.confirmedBookings }}</span>
+        </div>
+        <h3 class="text-gray-500 text-sm font-medium">Foglalások száma</h3>
+        <p class="text-3xl font-black text-gray-800 mt-1">{{ stats.totalBookings }}</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow lg:col-span-2 bg-gradient-to-br from-indigo-600 to-indigo-800 text-white border-none">
+        <div class="flex justify-between items-start mb-4">
+          <div class="p-2 bg-white/20 text-white rounded-lg">
+            <iconify-icon icon="tabler:coin" width="24"></iconify-icon>
+          </div>
+          <iconify-icon icon="tabler:trending-up" class="text-green-300" width="24"></iconify-icon>
+        </div>
+        <h3 class="text-indigo-100 text-sm font-medium">Becsült teljes forgalom</h3>
+        <p class="text-4xl font-black mt-1">{{ stats.totalRevenue | currency:'HUF':'symbol':'1.0-0' }}</p>
+        <p class="text-indigo-200 text-xs mt-2 italic">* A visszaigazolt foglalások alapján számolva</p>
+      </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      
+      <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+        <h3 class="text-xl font-bold text-gray-800 mb-6">Ingatlanok megoszlása</h3>
+        <div class="space-y-6">
+          <div>
+            <div class="flex justify-between text-sm mb-2">
+              <span class="text-gray-600">Jóváhagyott</span>
+              <span class="font-bold text-gray-800">{{ stats.totalProperties - stats.pendingProperties }}</span>
+            </div>
+            <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+              <div class="bg-green-500 h-full" [style.width.%]="((stats.totalProperties - stats.pendingProperties) / stats.totalProperties) * 100"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-2">
+              <span class="text-gray-600">Jóváhagyásra vár</span>
+              <span class="font-bold text-gray-800">{{ stats.pendingProperties }}</span>
+            </div>
+            <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+              <div class="bg-yellow-400 h-full" [style.width.%]="(stats.pendingProperties / stats.totalProperties) * 100"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <a routerLink="/host-requests" class="bg-white p-6 rounded-2xl border border-gray-100 hover:border-indigo-300 transition-all group flex flex-col items-center justify-center text-center">
+          <iconify-icon icon="tabler:user-plus" class="text-indigo-600 mb-3 group-hover:scale-110 transition-transform" width="32"></iconify-icon>
+          <span class="font-bold text-gray-800">Host kérelmek</span>
+        </a>
+      </div>
+
+    </div>
+  }
+</div>

@@ -1,0 +1,43 @@
+<div class="admin-container">
+  <div class="admin-card">
+
+    <h1 class="admin-title">Foglalásaim</h1>
+
+    <div class="admin-grid">
+      <div *ngFor="let b of bookings" class="admin-button-card">
+
+        <h3>Foglalás #{{ b.id }}</h3>
+
+        <p>Ingatlan ID: {{ b.propertyId }}</p>
+
+        <p>Dátum: {{ b.startDate | date }} – {{ b.endDate | date }}</p>
+
+        <p>
+          Státusz:
+          <strong
+            [ngStyle]="{
+              color:
+                b.status === BookingStatus.Confirmed
+                  ? 'lightgreen'
+                  : b.status === BookingStatus.Pending
+                  ? 'orange'
+                  : 'red'
+            }"
+          >
+            {{ b.status }}
+          </strong>
+        </p>
+
+        <button
+          class="btn-details"
+          *ngIf="b.status !== BookingStatus.Cancelled"
+          (click)="cancel(b.id)"
+        >
+          Foglalás lemondása
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,242 @@
+/* --- ALAP VÁLTOZÓK (Ha nem globálisak) --- */
+:host {
+    --primary-color: #312e81; /* Indigo-900 */
+    --accent-color: #7c3aed;  /* Violet */
+    --success-color: #10b981; /* Emerald */
+    --danger-color: #ef4444;  /* Red */
+    --warning-bg: #fef3c7;    /* Amber background */
+    --warning-text: #d97706;  /* Amber text */
+    --text-dark: #1e293b;
+    --text-gray: #64748b;
+    --border-color: #e2e8f0;
+    --card-bg: #ffffff;
+}
+
+.admin-container {
+    padding: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+    color: var(--text-dark);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* --- FEJLÉC --- */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.page-subtitle {
+    color: var(--text-gray);
+    font-size: 1rem;
+}
+
+/* --- ÁLLAPOTOK (Loading, Error, Empty) --- */
+.state-container {
+    padding: 3rem;
+    text-align: center;
+    background: rgba(255,255,255,0.6);
+    border-radius: 24px;
+    color: var(--text-gray);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.state-container.error {
+    color: var(--danger-color);
+    background: #fef2f2;
+}
+
+/* --- TÁBLÁZAT KÁRTYA --- */
+.table-card {
+    background: var(--card-bg);
+    border-radius: 24px; /* Nagy lekerekítés */
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
+    overflow: hidden; /* Fontos a belső tartalom lekerekítéséhez */
+}
+
+.table-responsive {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.request-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px; /* Hogy mobilon görgethető legyen */
+}
+
+/* --- TÁBLÁZAT FEJLÉC --- */
+.request-table thead th {
+    background-color: #f8fafc;
+    color: var(--primary-color);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.request-table thead th.text-center {
+    text-align: center;
+}
+
+/* --- TÁBLÁZAT SOROK --- */
+.request-table tbody tr {
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.request-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.request-table tbody tr:hover {
+    background-color: #f8fafc; /* Halvány hover effekt */
+}
+
+.request-table td {
+    padding: 1.25rem 1.5rem;
+    vertical-align: middle;
+    font-size: 0.95rem;
+}
+
+.row-index {
+    font-weight: 600;
+    color: #94a3b8;
+}
+
+/* --- META ADATOK (User & Property) --- */
+.user-meta, .property-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    background-color: #e0e7ff;
+    color: var(--primary-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.meta-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.meta-title {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.meta-sub {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+}
+
+/* Dátum stílus */
+.date-meta {
+    display: flex;
+    flex-direction: column;
+}
+.date-main {
+    font-weight: 500;
+}
+.date-sub {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+/* --- STÁTUSZ JELZŐK (Badges) --- */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-badge.pending {
+    background-color: var(--warning-bg);
+    color: var(--warning-text);
+}
+
+.status-badge.approved {
+    background-color: #d1fae5;
+    color: #059669;
+}
+
+.approval-date {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    margin-top: 4px;
+    margin-left: 4px;
+}
+
+/* --- MŰVELET GOMBOK --- */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.btn-approve {
+    background-color: var(--success-color);
+    color: white;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+.btn-approve:hover {
+    background-color: #059669;
+    transform: translateY(-1px);
+}
+
+.btn-reject {
+    background-color: #fee2e2;
+    color: var(--danger-color);
+}
+
+.btn-reject:hover {
+    background-color: #fecaca;
+    color: #b91c1c;
+}

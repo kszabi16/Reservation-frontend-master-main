@@ -1,0 +1,114 @@
+<div class="admin-container">
+
+  <div class="page-header">
+    <h2 class="page-title">
+      <iconify-icon icon="tabler:home-shield"></iconify-icon>
+      Host kérelmek kezelése
+    </h2>
+    <p class="page-subtitle">Itt hagyhatod jóvá a felhasználók ingatlan hirdetési kérelmeit.</p>
+  </div>
+
+  @if (loading) {
+    <div class="state-container loading">
+      <iconify-icon icon="line-md:loading-loop" width="40"></iconify-icon>
+      <span>Adatok betöltése...</span>
+    </div>
+  }
+
+  @if (error) {
+    <div class="state-container error">
+      <iconify-icon icon="tabler:alert-triangle" width="32"></iconify-icon>
+      <span>{{ error }}</span>
+    </div>
+  }
+
+  @if (!loading && !error && requests.length === 0) {
+    <div class="state-container empty">
+      <iconify-icon icon="tabler:folder-check" width="48"></iconify-icon>
+      <span>Jelenleg nincs függőben lévő kérelem.</span>
+    </div>
+  }
+
+  @if (!loading && requests.length > 0) {
+    <div class="table-card">
+      <div class="table-responsive">
+        <table class="request-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Felhasználó</th>
+              <th>Ingatlan</th>
+              <th>Kérelem dátuma</th>
+              <th>Állapot</th>
+              <th class="text-center">Műveletek</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (r of requests; track r; let i = $index) {
+              <tr>
+                <td class="row-index">{{ i + 1 }}.</td>
+                
+                <td>
+                  <div class="user-meta">
+                    <div class="avatar-placeholder">
+                      {{ r.userName.charAt(0) }}
+                    </div>
+                    <div class="meta-info">
+                      <span class="meta-title">{{ r.userName }}</span>
+                      <span class="meta-sub">ID: {{ r.userId }}</span>
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="property-meta">
+                    <span class="meta-title">{{ r.propertyTitle }}</span>
+                    <span class="meta-sub">Prop ID: #{{ r.propertyId }}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="date-meta">
+                    <span class="date-main">{{ r.requestedAt | date:'yyyy.MM.dd' }}</span>
+                    <span class="date-sub">{{ r.requestedAt | date:'HH:mm' }}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <span class="status-badge" 
+                        [class.approved]="r.isApproved" 
+                        [class.pending]="!r.isApproved">
+                    @if(r.isApproved) {
+                      <iconify-icon icon="tabler:check"></iconify-icon> Jóváhagyva
+                    } @else {
+                      <iconify-icon icon="tabler:clock"></iconify-icon> Függőben
+                    }
+                  </span>
+                  @if(r.approvedAt) {
+                    <div class="approval-date">
+                      Jóváhagyva: {{ r.approvedAt | date:'MM.dd' }}
+                    </div>
+                  }
+                </td>
+
+                <td>
+                  <div class="action-buttons">
+                    @if (!r.isApproved) {
+                      <button (click)="approveRequest(r.id)" class="btn-action btn-approve" title="Jóváhagyás">
+                        <iconify-icon icon="tabler:check" width="18"></iconify-icon>
+                        <span>Elfogadás</span>
+                      </button>
+                    }
+                    <button (click)="rejectRequest(r.id)" class="btn-action btn-reject" title="Elutasítás">
+                      <iconify-icon icon="tabler:x" width="18"></iconify-icon>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>

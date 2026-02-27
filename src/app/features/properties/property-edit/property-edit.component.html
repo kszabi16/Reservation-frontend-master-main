@@ -1,0 +1,50 @@
+<div class="property-container">
+  <div class="page-header">
+    <h2 class="page-title">
+      <iconify-icon icon="tabler:edit"></iconify-icon> Ingatlan szerkesztése
+    </h2>
+  </div>
+
+  <div class="card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-grid">
+      
+      <div class="form-group">
+        <label class="form-label">Ingatlan címe</label>
+        <input formControlName="Title" placeholder="Pl. Balatoni nyaraló" class="form-input" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Leírás</label>
+        <textarea formControlName="Description" placeholder="Írjon részletes leírást..." class="form-input"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Helyszín</label>
+        <input formControlName="Location" placeholder="Város, utca" class="form-input" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Ár / Éj (HUF)</label>
+          <input type="number" formControlName="PricePerNight" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Férőhely (fő)</label>
+          <input type="number" formControlName="Capacity" class="form-input" />
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="form.invalid || loading" class="btn btn-primary">
+        <iconify-icon icon="tabler:device-floppy"></iconify-icon>
+        {{ loading ? 'Mentés folyamatban...' : 'Módosítások mentése' }}
+      </button>
+
+    </form>
+  </div>
+
+  @if (error) {
+    <div class="state-message error">
+      <iconify-icon icon="tabler:alert-triangle"></iconify-icon> {{ error }}
+    </div>
+  }
+</div>

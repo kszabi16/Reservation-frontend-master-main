@@ -1,0 +1,160 @@
+<div class="layout flex min-h-screen bg-gray-50">
+
+  <aside class="sidebar w-64 bg-white shadow-lg flex flex-col">
+
+    <div class="sidebar-header p-6 border-b border-gray-100">
+      <span class="logo-text text-2xl font-black text-indigo-700 tracking-tight flex items-center gap-2">
+        <iconify-icon icon="tabler:bed"></iconify-icon> Reservation
+      </span>
+    </div>
+
+    <ul class="sidebar-menu flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+
+      @if (!isLoggedIn) {
+        <li>
+          <a routerLink="/public-dashboard" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" [routerLinkActiveOptions]="{exact: true}" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:home" width="22"></iconify-icon>
+            Kezdőlap
+          </a>
+        </li>
+        <li>
+          <a routerLink="/profile" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:user" width="22"></iconify-icon>
+            Profilom
+          </a>
+        </li>
+        <li>
+          <a (click)="goToLogin()" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:plus" width="22"></iconify-icon>
+            Ingatlan feladása
+          </a>
+        </li>
+        <li>
+          <a routerLink="/calendar" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:calendar" width="22"></iconify-icon>
+            Naptár
+          </a>
+        </li>
+        <li>
+          <a routerLink="/auth/login" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer mt-4 border border-indigo-100">
+            <iconify-icon icon="tabler:login" width="22"></iconify-icon>
+            Bejelentkezés
+          </a>
+        </li>
+        <li>
+            <a routerLink="/auth/register" 
+              routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" 
+              class="flex items-center gap-3 w-full p-3 rounded-xl !text-white bg-indigo-600 hover:bg-indigo-700 transition-colors cursor-pointer shadow-sm">
+              <iconify-icon icon="tabler:user-plus" width="22"></iconify-icon>
+              Regisztráció
+            </a>
+        </li>
+      }
+
+      @if (hasRole('User')) {
+        <li>
+          <a routerLink="/user-dashboard" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:dashboard" width="22"></iconify-icon>
+            Kezdőlap
+          </a>
+        </li>
+        <li>
+          <a routerLink="/profile" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:user" width="22"></iconify-icon>
+            Profilom
+          </a>
+        </li>
+        <li>
+          <a routerLink="/property/create" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:plus" width="22"></iconify-icon>
+            Ingatlan feladása
+          </a>
+        </li>
+        <li>
+          <a routerLink="/calendar" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:calendar" width="22"></iconify-icon>
+            Naptár
+          </a>
+        </li>
+        <li class="pt-6 mt-6 border-t border-gray-100">
+          <a (click)="logout()" class="flex items-center gap-3 w-full p-3 rounded-xl text-red-500 hover:bg-red-50 transition-colors cursor-pointer font-medium">
+            <iconify-icon icon="tabler:logout" width="22"></iconify-icon>
+            Kijelentkezés
+          </a>
+        </li>
+      }
+
+      @if (hasRole('Host')) {
+        <li>
+          <a routerLink="/host-dashboard" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:dashboard" width="22"></iconify-icon>
+            Kezdőlap
+          </a>
+        </li>
+        <li>
+          <a routerLink="/profile" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:user" width="22"></iconify-icon>
+            Profilom
+          </a>
+        </li>
+        <li>
+          <a routerLink="/property/create" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:plus" width="22"></iconify-icon>
+            Új ingatlan
+          </a>
+        </li>
+        <li>
+          <a routerLink="/properties" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:building" width="22"></iconify-icon>
+            Ingatlanjaim
+          </a>
+        </li>
+        <li>
+          <a routerLink="/calendar" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:calendar" width="22"></iconify-icon>
+            Naptár
+          </a>
+        </li>
+        <li class="pt-6 mt-6 border-t border-gray-100">
+          <a (click)="logout()" class="flex items-center gap-3 w-full p-3 rounded-xl text-red-500 hover:bg-red-50 transition-colors cursor-pointer font-medium">
+            <iconify-icon icon="tabler:logout" width="22"></iconify-icon>
+            Kijelentkezés
+          </a>
+        </li>
+      }
+
+      @if (hasRole('Admin')) {
+        <li>
+          <a routerLink="/admin-dashboard" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:settings" width="22"></iconify-icon>
+            Kezdőlap
+          </a>
+        </li>
+        <li>
+          <a routerLink="/profile" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:user" width="22"></iconify-icon>
+            Profil
+          </a>
+        </li>
+        <li>
+          <a routerLink="/calendar" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:calendar" width="22"></iconify-icon>
+            Naptár
+          </a>
+        </li>
+        <li class="pt-6 mt-6 border-t border-gray-100">
+          <a (click)="logout()" class="flex items-center gap-3 w-full p-3 rounded-xl text-red-500 hover:bg-red-50 transition-colors cursor-pointer font-medium">
+            <iconify-icon icon="tabler:logout" width="22"></iconify-icon>
+            Kijelentkezés
+          </a>
+        </li>
+      }
+
+    </ul>
+  </aside>
+
+  <main class="main-content flex-1 overflow-y-auto">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

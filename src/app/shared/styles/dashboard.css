@@ -1,0 +1,307 @@
+
+.bg-base-100 {
+  background: linear-gradient(135deg, #eef2ff 0%, #e8e4ff 15%, #f5f3ff 40%, #ffffff 100%) !important;
+}
+
+
+main {
+  animation: fadeDash 0.6s ease;
+}
+
+@keyframes fadeDash {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+
+.search-panel {
+  background: rgba(255, 255, 255, 0.4) !important;
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow:
+    0 8px 30px rgba(124, 58, 237, 0.18),
+    0 0 40px rgba(167,139,250,0.12);
+  transition: all .3s ease;
+}
+
+.search-panel:hover {
+  box-shadow:
+    0 12px 40px rgba(124, 58, 237, 0.25),
+    0 0 60px rgba(167,139,250,0.2);
+  transform: scale(1.01);
+}
+
+
+.search-panel input {
+  background: rgba(255,255,255,0.6);
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.1);
+  transition: .25s;
+}
+
+.search-panel input:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 10px rgba(124,58,237,0.4);
+  transform: scale(1.03);
+}
+
+
+.btn-filter {
+  border-radius: 12px !important;
+  transition: all .25s ease !important;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+}
+
+.btn-filter:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 8px 22px rgba(124, 58, 237, 0.45);
+}
+
+
+.property-card {
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(16px);
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.25);
+  transition: all 0.35s ease;
+  box-shadow:
+      0 10px 35px rgba(0,0,0,0.05),
+      0 0 24px rgba(124,58,237,0.1);
+}
+
+.property-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow:
+      0 16px 40px rgba(0,0,0,0.1),
+      0 0 45px rgba(124,58,237,0.25),
+      0 0 90px rgba(59,130,246,0.18);
+}
+
+
+.property-card figure img {
+  transition: transform .4s ease, filter .4s ease;
+}
+
+.property-card:hover figure img {
+  transform: scale(1.08);
+  filter: brightness(1.1);
+}
+
+
+.property-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #7c3aed, #6366f1);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+
+.property-details {
+  color: #6b7280;
+  font-size: .95rem;
+}
+
+
+.btn-details {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: white;
+  border-radius: 12px;
+  padding: 10px 0;
+  font-weight: 600;
+  transition: all .25s ease;
+  box-shadow: 0 4px 15px rgba(124,58,237,0.4);
+}
+
+.btn-details:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 28px rgba(124,58,237,0.6);
+}
+
+
+.heart-btn {
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(6px);
+  transition: .25s ease;
+}
+
+.heart-btn:hover {
+  background: white;
+  box-shadow: 0 4px 12px rgba(255,0,0,0.3);
+}
+
+.user-container {
+  position: relative;
+  padding: 80px 25px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+
+.user-container::before,
+.user-container::after {
+  content: "";
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.38;
+  z-index: 0;
+}
+
+.user-container::before {
+  background: #7c3aedcc;
+  top: -200px;
+  left: -200px;
+}
+
+.user-container::after {
+  background: #3b82f6cc;
+  bottom: -200px;
+  right: -200px;
+}
+
+.admin-container {
+  position: relative;
+  padding: 80px 25px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Background glow orbs */
+.admin-container::before,
+.admin-container::after {
+  content: "";
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.38;
+  z-index: 0;
+}
+
+.admin-container::before {
+  background: #7c3aedcc;
+  top: -200px;
+  left: -200px;
+}
+
+.admin-container::after {
+  background: #3b82f6cc;
+  bottom: -200px;
+  right: -200px;
+}
+
+/* ===== ADMIN GLASS CARD ===== */
+.admin-card {
+  position: relative;
+  width: 1100px;
+  padding: 65px 55px;
+  border-radius: 28px;
+  backdrop-filter: blur(25px);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow:
+      0 0 40px rgba(124, 58, 237, 0.45),
+      0 0 110px rgba(59, 130, 246, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  z-index: 2;
+  animation: adminPop .7s ease forwards;
+}
+
+
+@keyframes adminPop {
+  0% { transform: translateY(30px) scale(.93); opacity: 0; }
+  80% { transform: translateY(-6px) scale(1.02); }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+
+.admin-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #a78bfa, #60a5fa);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 15px rgba(99, 102, 241, .4);
+}
+
+.admin-subtitle {
+  text-align: center;
+  margin-bottom: 45px;
+  font-size: 1.1rem;
+  color: #d1d5db;
+}
+
+/* ===== GRID OF ADMIN MODULES ===== */
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+  margin-top: 25px;
+}
+
+/* ===== ADMIN MODULE CARD ===== */
+.admin-button-card {
+  padding: 28px;
+  border-radius: 20px;
+  text-decoration: none;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  backdrop-filter: blur(20px);
+  box-shadow:
+      0 0 20px rgba(124, 58, 237, 0.3),
+      inset 0 0 20px rgba(255,255,255,0.05);
+  cursor: pointer;
+}
+
+.admin-button-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow:
+      0 0 35px rgba(124,58,237,0.5),
+      inset 0 0 25px rgba(255,255,255,0.1);
+}
+
+/* title inside card */
+.admin-button-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #c4b5fd, #93c5fd);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.admin-button-card p {
+  color: #d1d5db;
+  font-size: 0.95rem;
+}
+
+/* subtle glowing blob inside cards */
+.admin-button-card::after {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(#7c3aed66, transparent 70%);
+  top: -40px;
+  right: -40px;
+  filter: blur(40px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+

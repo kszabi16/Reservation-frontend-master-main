@@ -1,0 +1,68 @@
+<div class="p-6">
+  <h2 class="text-2xl font-semibold text-indigo-700 mb-6">🏠 Ingatlanok</h2>
+
+  <div class="bg-white p-4 rounded-xl shadow-md flex flex-wrap gap-3 mb-5">
+    <input [(ngModel)]="location" placeholder="Helyszín..." class="border rounded-md px-3 py-2" />
+    <input [(ngModel)]="minPrice" type="number" placeholder="Min ár" class="border rounded-md px-3 py-2 w-28" />
+    <input [(ngModel)]="maxPrice" type="number" placeholder="Max ár" class="border rounded-md px-3 py-2 w-28" />
+    <input [(ngModel)]="minCapacity" type="number" placeholder="Min férőhely" class="border rounded-md px-3 py-2 w-32" />
+    <button (click)="applyFilters()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Szűrés</button>
+    <button (click)="resetFilters()" class="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400">Törlés</button>
+  </div>
+
+  @if (loading) {
+    <div class="text-center text-gray-500">Betöltés...</div>
+  }
+  @if (error) {
+    <div class="text-center text-red-500">{{ error }}</div>
+  }
+
+  <div class="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    @for (p of filtered; track p) {
+      <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition relative">
+        
+        @if (authService.isLoggedIn()) {
+          <button 
+            (click)="toggleFavorite(p.id)"
+            class="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors focus:outline-none"
+            title="Kedvencekhez adás">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              class="h-6 w-6 transition-colors duration-300" 
+              [ngClass]="favoritePropertyIds.has(p.id) ? 'text-red-500 fill-current' : 'text-gray-400'"
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </button>
+        }
+
+        <h3 class="text-xl font-semibold text-indigo-700 mb-2 pr-8">{{ p.title }}</h3>
+        <p class="text-gray-600 mb-2">{{ p.location }}</p>
+        <p class="text-gray-700 text-sm mb-2 line-clamp-3">{{ p.description }}</p>
+        
+                <div class="flex justify-between items-center mt-3 mb-2">
+          <span class="font-bold text-indigo-700 text-lg">{{ p.pricePerNight | currency:'HUF':'symbol':'1.0-0' }} / éj</span>
+          
+          @if (p.averageRating) {
+            <div class="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-md border border-yellow-100">
+              <iconify-icon icon="tabler:star-filled" class="text-yellow-400"></iconify-icon>
+              <span class="font-bold text-gray-800 text-sm">{{ p.averageRating | number:'1.1-1' }}</span>
+              <span class="text-xs text-gray-500">({{ p.reviewCount }})</span>
+            </div>
+          } @else {
+            <span class="text-xs text-gray-400 italic">Új szállás</span>
+          }
+        </div>
+
+        <div class="flex justify-between items-center mt-2 border-t border-gray-100 pt-3">
+          <span class="text-gray-500 text-sm flex items-center gap-1">
+            <iconify-icon icon="tabler:users"></iconify-icon> {{ p.capacity }} fő
+          </span>
+          <a [routerLink]="['/property/detail', p.id]" class="text-indigo-600 hover:underline font-medium">Részletek →</a>
+        </div>
+      </div>
+    }
+  </div>
+</div>

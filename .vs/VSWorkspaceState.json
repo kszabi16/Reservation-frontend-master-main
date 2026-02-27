@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.github",
+    "\\public",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\features",
+    "\\src\\app\\features\\mini-sidebar"
+  ],
+  "SelectedNode": "\\src\\app\\features\\mini-sidebar\\mini-sidebar.ts",
+  "PreviewInSolutionExplorer": false
+}

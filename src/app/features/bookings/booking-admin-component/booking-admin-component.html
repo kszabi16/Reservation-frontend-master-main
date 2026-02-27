@@ -1,0 +1,40 @@
+<div class="admin-container">
+  <div class="admin-card">
+
+    <h1 class="admin-title">Foglalások kezelése</h1>
+
+    <select [(ngModel)]="statusFilter" (change)="load()" class="form-input">
+      <option [ngValue]="null">Mind</option>
+      <option [ngValue]="BookingStatus.Pending">Függőben</option>
+      <option [ngValue]="BookingStatus.Confirmed">Megerősített</option>
+      <option [ngValue]="BookingStatus.Cancelled">Lemondott</option>
+    </select>
+
+    <div class="admin-grid">
+      <div *ngFor="let b of bookings" class="admin-button-card">
+
+        <h3>Foglalás #{{ b.id }}</h3>
+
+        <p>Property: {{ b.propertyId }}</p>
+        <p>Guest: {{ b.guestId }}</p>
+        <p>{{ b.startDate | date }} – {{ b.endDate | date }}</p>
+
+        <p>Státusz: <strong>{{ b.status }}</strong></p>
+
+        <button class="btn-details"
+                *ngIf="b.status === BookingStatus.Pending"
+                (click)="confirm(b.id)">
+          Jóváhagyás
+        </button>
+
+        <button class="btn-details"
+                *ngIf="b.status !== BookingStatus.Cancelled"
+                (click)="cancel(b.id)">
+          Lemondás
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+</div>

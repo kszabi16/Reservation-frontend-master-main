@@ -1,0 +1,59 @@
+.mini-sidebar-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #ffffff !important;
+}
+
+.mini-sidebar {
+  width: 260px; /* Megnövelve, hogy azonos legyen a nagy sidebarral */
+  background: #ffffff !important;
+  color: #4b5563;
+  border-right: 1px solid #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 10px rgba(0,0,0,0.02);
+}
+
+.mini-sidebar-logo {
+  padding: 24px;
+  border-bottom: 1px solid #f3f4f6;
+  margin-bottom: 10px;
+  color: #4f46e5;
+}
+
+.mini-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #4b5563;
+  padding: 12px 16px;
+  margin: 0 16px 4px 16px;
+  border-radius: 12px;
+  transition: 0.2s ease;
+  font-weight: 500 !important; /* Ugyanaz a vastagság, mint a layoutnál */
+}
+
+/* Aktív link a login/regisztráció oldalon */
+.active-mini-link {
+  background: #f5f3ff !important;
+  color: #4f46e5 !important;
+  font-weight: 600 !important; /* Ugyanaz az aktív vastagság */
+  border-radius: 12px;
+}
+
+.mini-sidebar-item:hover {
+  background: #f5f3ff;
+  color: #4f46e5;
+}
+
+
+
+.mini-sidebar-content {
+  flex: 1;
+  background-color: #ffffff !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

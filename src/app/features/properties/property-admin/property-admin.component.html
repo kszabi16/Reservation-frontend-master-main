@@ -1,0 +1,69 @@
+<div class="property-container">
+  <div class="page-header">
+    <h2 class="page-title">
+      <iconify-icon icon="tabler:list-details"></iconify-icon> Ingatlanok kezelése
+    </h2>
+    <a routerLink="/property/create" class="btn btn-primary" style="width: auto; display: inline-flex; margin-top: 1rem;">
+        <iconify-icon icon="tabler:plus"></iconify-icon> Új hozzáadása
+    </a>
+  </div>
+
+  @if (loading) {
+    <div class="state-message">Betöltés...</div>
+  }
+  @if (error) {
+    <div class="state-message error">{{ error }}</div>
+  }
+
+  @if (!loading && properties.length > 0) {
+    <div class="card" style="padding: 0;"> <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Cím</th>
+              <th>Helyszín</th>
+              <th>Ár / Éj</th>
+              <th>Férőhely</th>
+              <th style="text-align: center;">Műveletek</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of properties; track p) {
+              <tr>
+                <td><strong>{{ p.id }}</strong></td>
+                <td>{{ p.title }}</td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <iconify-icon icon="tabler:map-pin" style="color: #94a3b8;"></iconify-icon> 
+                        {{ p.location }}
+                    </div>
+                </td>
+                <td style="font-weight: 600; color: var(--primary-color);">{{ p.pricePerNight | currency:'HUF':'symbol':'1.0-0' }}</td>
+                <td>{{ p.capacity }} fő</td>
+                <td style="text-align: center;">
+                  <a [routerLink]="['/property', p.id]" class="action-link" title="Megtekintés">
+                    <iconify-icon icon="tabler:eye"></iconify-icon>
+                  </a>
+                  <a [routerLink]="['/properties/edit', p.id]" class="action-link" title="Szerkesztés">
+                    <iconify-icon icon="tabler:pencil"></iconify-icon>
+                  </a>
+                  <button (click)="deleteProperty(p.id)" class="action-btn-delete" title="Törlés">
+                    <iconify-icon icon="tabler:trash"></iconify-icon>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  @if (!loading && properties.length === 0) {
+    <div class="state-message">
+      <iconify-icon icon="tabler:home-off" width="48"></iconify-icon>
+      <p>Jelenleg nincs elérhető ingatlan.</p>
+    </div>
+  }
+</div>

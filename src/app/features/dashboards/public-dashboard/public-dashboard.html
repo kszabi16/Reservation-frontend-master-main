@@ -1,0 +1,153 @@
+<div class="user-container font-sans text-slate-600 bg-gray-50/50">
+
+  <main class="flex-1 p-4 lg:p-8 min-h-screen relative">
+    <router-outlet></router-outlet>
+
+    <div class="px-2 mb-4 sm:hidden">
+      <button type="button" class="btn btn-text btn-square text-indigo-900"
+        aria-haspopup="dialog" aria-expanded="false" aria-controls="collapsible-sidebar" data-overlay="#collapsible-sidebar">
+        <iconify-icon icon="tabler:menu-2" width="24" height="24"></iconify-icon>
+      </button>
+    </div>
+
+    <div class="bg-white/90 backdrop-blur-xl shadow-lg border border-white/20 rounded-3xl p-6 mb-10 sticky top-4 z-20">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end">
+        
+        <div class="lg:col-span-4 flex flex-col gap-1">
+          <label class="text-xs font-bold text-indigo-900 uppercase tracking-wider ml-1">Helyszín</label>
+          <div class="relative group">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-400 group-focus-within:text-violet-600 transition">
+              <iconify-icon icon="tabler:map-pin" width="20"></iconify-icon>
+            </span>
+            <input type="text" placeholder="Hová utaznál?" [(ngModel)]="searchLocation"
+              class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition shadow-sm placeholder:text-slate-400" />
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 flex gap-2">
+          <div class="flex-1 flex flex-col gap-1">
+             <label class="text-xs font-bold text-indigo-900 uppercase tracking-wider ml-1">Ár (tól)</label>
+             <div class="relative group">
+               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-400 group-focus-within:text-violet-600 transition">
+                 <iconify-icon icon="tabler:currency-florin" width="18"></iconify-icon>
+               </span>
+               <input type="number" placeholder="Min" [(ngModel)]="minPrice"
+                 class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl py-3 pl-9 pr-3 focus:outline-none focus:ring-2 focus:ring-violet-500 transition shadow-sm" />
+             </div>
+          </div>
+          <div class="flex-1 flex flex-col gap-1">
+             <label class="text-xs font-bold text-indigo-900 uppercase tracking-wider ml-1">Ár (ig)</label>
+             <div class="relative group">
+               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-400 group-focus-within:text-violet-600 transition">
+                 <iconify-icon icon="tabler:currency-florin" width="18"></iconify-icon>
+               </span>
+               <input type="number" placeholder="Max" [(ngModel)]="maxPrice"
+                 class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl py-3 pl-9 pr-3 focus:outline-none focus:ring-2 focus:ring-violet-500 transition shadow-sm" />
+             </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-2 flex flex-col gap-1">
+          <label class="text-xs font-bold text-indigo-900 uppercase tracking-wider ml-1">Vendégek</label>
+          <div class="relative group">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-400 group-focus-within:text-violet-600 transition">
+              <iconify-icon icon="tabler:users" width="18"></iconify-icon>
+            </span>
+            <input type="number" placeholder="Fő" [(ngModel)]="minCapacity"
+              class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl py-3 pl-9 pr-3 focus:outline-none focus:ring-2 focus:ring-violet-500 transition shadow-sm" />
+          </div>
+        </div>
+
+        <div class="lg:col-span-2 flex gap-2">
+          <button (click)="applyFilters()"
+            class="flex-1 bg-indigo-900 hover:bg-violet-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex justify-center items-center gap-2">
+            <iconify-icon icon="tabler:search" width="18"></iconify-icon>
+            <span>Keresés</span>
+          </button>
+          
+          <button (click)="resetFilters()" title="Szűrők törlése"
+            class="bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-red-500 font-medium p-3 rounded-xl transition border border-slate-200">
+            <iconify-icon icon="tabler:refresh" width="20"></iconify-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="flex items-center justify-between mb-8 px-2">
+      <h2 class="text-3xl font-bold text-indigo-950 tracking-tight">Elérhető szállások</h2>
+      <span class="text-sm font-medium text-slate-500 bg-white px-3 py-1 rounded-full shadow-sm border border-slate-100">
+        {{ properties.length }} találat
+      </span>
+    </div>
+
+    @if (loading) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 animate-pulse">
+        <div class="h-96 bg-gray-200 rounded-3xl"></div>
+        <div class="h-96 bg-gray-200 rounded-3xl"></div>
+        <div class="h-96 bg-gray-200 rounded-3xl"></div>
+      </div>
+    }
+    @if (error) {
+      <div class="bg-red-50 border border-red-100 text-red-600 p-4 rounded-2xl text-center shadow-sm">
+        <iconify-icon icon="tabler:alert-circle" width="24" class="mb-2"></iconify-icon>
+        <p>{{ error }}</p>
+      </div>
+    }
+
+    @if (!loading && !error) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 pb-10">
+        @for (p of properties; track p) {
+          <div class="group bg-white rounded-[2rem] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-100 overflow-hidden flex flex-col h-full">
+            
+            <figure class="relative h-64 w-full overflow-hidden">
+              <img src="https://cdn.flyonui.com/fy-assets/components/card/image-9.png"
+                alt="{{ p.title }}"
+                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              
+              <div class="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
+                <span class="text-indigo-900 font-bold text-sm">{{ p.pricePerNight | currency:'HUF':'symbol':'1.0-0' }}</span>
+                <span class="text-xs text-slate-500">/ éj</span>
+              </div>
+
+              <button class="absolute top-4 right-4 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition text-slate-400 hover:text-red-500 backdrop-blur-sm">
+                <iconify-icon icon="tabler:heart" width="20" height="20"></iconify-icon>
+              </button>
+            </figure>
+
+            <div class="p-6 flex flex-col flex-1">
+              <div class="flex items-start justify-between mb-2">
+                 <div>
+                    <h5 class="text-xl font-bold text-indigo-950 mb-1 group-hover:text-violet-600 transition-colors line-clamp-1">{{ p.title }}</h5>
+                    <div class="flex items-center text-slate-500 text-sm gap-1">
+                      <iconify-icon icon="tabler:map-pin" class="text-violet-500"></iconify-icon>
+                      {{ p.location }}
+                    </div>
+                 </div>
+              </div>
+
+              <div class="border-t border-slate-100 my-4 pt-4 flex items-center justify-between text-sm text-slate-600">
+                 <div class="flex items-center gap-2 bg-slate-50 px-3 py-1 rounded-lg">
+                   <iconify-icon icon="tabler:users" class="text-indigo-400"></iconify-icon>
+                   <span class="font-medium">{{ p.capacity }} vendég</span>
+                 </div>
+                 <div class="text-violet-600 font-medium text-xs uppercase tracking-wide">Kiváló szállás</div>
+              </div>
+
+              <p class="text-sm text-slate-500 line-clamp-2 mb-6">{{ p.description }}</p>
+
+              <div class="mt-auto">
+                <button [routerLink]="['/property', p.id]"
+                  class="w-full bg-white border-2 border-indigo-100 text-indigo-900 hover:bg-indigo-900 hover:border-indigo-900 hover:text-white font-bold py-3 rounded-xl transition-all duration-300 flex justify-center items-center gap-2 group/btn">
+                  <span>Részletek megtekintése</span>
+                  <iconify-icon icon="tabler:arrow-right" class="group-hover/btn:translate-x-1 transition-transform"></iconify-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </main>
+</div>

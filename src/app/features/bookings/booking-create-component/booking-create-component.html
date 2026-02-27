@@ -1,0 +1,24 @@
+<div class="admin-container">
+  <div class="admin-card" style="max-width: 600px;">
+
+    <h1 class="admin-title">Új foglalás</h1>
+
+    <label>Ingatlan ID</label>
+    <input type="number" [(ngModel)]="model.propertyId" class="form-input">
+
+    <label>Vendég ID</label>
+    <input type="number" [(ngModel)]="model.guestId" class="form-input">
+
+    <label>Kezdő dátum</label>
+    <input type="date" [(ngModel)]="model.startDate" class="form-input">
+
+    <label>Záró dátum</label>
+    <input type="date" [(ngModel)]="model.endDate" class="form-input">
+
+    <button class="btn-details" (click)="create()">Foglalás létrehozása</button>
+
+    <p *ngIf="success" style="color: lightgreen;">Sikeres foglalás!</p>
+    <p *ngIf="error" style="color: salmon;">{{ error }}</p>
+
+  </div>
+</div>
