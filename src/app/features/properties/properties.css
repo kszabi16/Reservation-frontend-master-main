@@ -198,63 +198,112 @@ textarea.form-input {
 }
 .action-btn-delete:hover { text-decoration: underline; }
 
-/* --- RÉSZLETEZŐ OLDAL (Detail View) --- */
+/* --- RÉSZLETEZŐ OLDAL (Premium Detail View) --- */
+
+/* Kép konténer és a kép maga */
 .detail-image {
   width: 100%;
-  height: 350px;
+  height: 450px; /* Nagyobb, látványosabb kép */
   object-fit: cover;
-  border-radius: 16px;
-  margin-bottom: 1.5rem;
+  border-radius: 24px; /* Finomabb, modernebb lekerekítés */
+  margin-bottom: 2.5rem;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15); /* Elegáns lebegő árnyék */
+  transition: transform 0.5s ease;
 }
 
+.detail-image:hover {
+  transform: scale(1.01); /* Nagyon finom zoom effekt hoverre */
+}
+
+/* Fejléc: Cím és Ár */
 .detail-header {
   display: flex;
   justify-content: space-between;
-  align-items: start;
-  margin-bottom: 1rem;
+  align-items: center; /* Jobb vertikális igazítás */
+  margin-bottom: 1.5rem;
+  gap: 20px;
+  flex-wrap: wrap; /* Mobilon egymás alá csússzon */
 }
 
 .detail-title {
-  font-size: 2rem;
+  font-size: 2.4rem; /* Kicsit nagyobb és hangsúlyosabb cím */
   font-weight: 800;
-  color: var(--primary-color);
+  letter-spacing: -0.5px;
+  color: var(--text-dark); /* Sötétszürke elegánsabb, mint a tiszta indigo itt */
   margin: 0;
+  line-height: 1.2;
 }
 
+/* Kiemelt árcédula */
 .price-tag {
-  background: #f1f5f9;
-  padding: 8px 16px;
-  border-radius: 12px;
-  font-weight: 700;
-  color: var(--primary-color);
-  font-size: 1.2rem;
+  background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+  padding: 12px 24px;
+  border-radius: 16px;
+  font-weight: 800;
+  color: white; /* Fehér szöveg a sötét hátteren */
+  font-size: 1.4rem;
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
+/* Meta adatok (Helyszín, férőhely) */
 .detail-meta {
   display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
+  padding: 1.2rem 0;
+  margin-bottom: 2rem;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color); /* Vonalak közé zárva */
+  font-size: 1.05rem;
   color: var(--text-gray);
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .meta-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
+  background: #f8fafc;
+  padding: 8px 16px;
+  border-radius: 12px; /* Kapszula design a meta adatoknak */
+  color: var(--primary-color);
 }
 
+.meta-item i {
+  font-size: 1.2rem;
+  color: var(--accent-color); /* Színes ikonok */
+}
+
+/* Leírás szöveg */
 .detail-description {
-  line-height: 1.7;
-  color: var(--text-dark);
-  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #334155;
+  margin-bottom: 2.5rem;
+  padding-right: 10%; /* Ne menjen ki a képernyő széléig, jobban olvasható */
 }
 
 /* Állapotjelzők (Loading/Error) */
 .state-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
   text-align: center;
-  padding: 3rem;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 24px;
+  border: 1px dashed #cbd5e1;
   color: var(--text-gray);
-  font-weight: 500;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
-.state-message.error { color: var(--danger-color); }
+.state-message.error { 
+  color: var(--danger-color);
+  border-color: #fecaca;
+  background: #fef2f2;
+}

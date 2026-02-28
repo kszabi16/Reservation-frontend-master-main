@@ -29,6 +29,8 @@ export class AdminUserCreateComponent {
     private router: Router
   ) {}
 
+  successMessage = '';
+
   onSubmit(): void {
     if (!this.userData.username || !this.userData.email || !this.userData.password) {
       this.error = 'Kérlek, tölts ki minden kötelező mezőt!';
@@ -37,22 +39,43 @@ export class AdminUserCreateComponent {
 
     this.loading = true;
     this.error = '';
+    this.successMessage = ''; // Alaphelyzetbe állítjuk gombnyomáskor
 
     this.userService.createUser(this.userData).subscribe({
       next: () => {
-        alert('Felhasználó sikeresen létrehozva!');
-        // Visszairányítjuk a listához
-        this.router.navigate(['/admin/users']);
+        this.successMessage = 'Felhasználó sikeresen létrehozva!';
+        this.loading = false;
+        
+        setTimeout(() => {
+          this.router.navigate(['/admin-users']);
+        }, 2000);
       },
       error: (err) => {
         console.error('Hiba a mentés során:', err);
-        this.error = 'Szerver hiba történt a felhasználó létrehozásakor.';
-        this.loading = false;
+        this.loading = false; // A töltés ikon megállítása
+
+        // Megnézzük, hogy a backend küldött-e nekünk konkrét "message"-t
+        if (err.error && err.error.message) {
+          
+          if (err.error.message.includes('Email')) {
+            this.error = 'Ez az e-mail cím már foglalt! Kérlek, válassz másikat.';
+          } 
+          else if (err.error.message.includes('Username')) {
+            this.error = 'Ez a felhasználónév már foglalt! Kérlek, válassz másikat.';
+          } 
+          else {
+            this.error = err.error.message; // Bármilyen más backend hiba
+          }
+
+        } else {
+          // Ha nincs konkrét üzenet, akkor "általános" szerver hiba
+          this.error = 'Szerver hiba történt a felhasználó létrehozásakor.';
+        }
       }
     });
   }
 
   cancel(): void {
-    this.router.navigate(['/admin/users']);
+    this.router.navigate(['/admin-users']);
   }
 }

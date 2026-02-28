@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserDto, UpdateUserProfileDto } from '../models/user-dto'
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private apiUrl = 'https://localhost:4200/api/user'; 
+  private apiUrl = `${environment.apiUrl}/user`;
 
   constructor(private http: HttpClient) {}
 getAllUsers(): Observable<UserDto[]> {
@@ -34,6 +35,9 @@ getAllUsers(): Observable<UserDto[]> {
 
  
   updateProfile(data: UpdateUserProfileDto): Observable<UserDto> {
-    return this.http.put<UserDto>(`${this.apiUrl}/profile`, data);
+    return this.http.put<UserDto>(`${this.apiUrl}/update-profile`, data);
+  }
+  updateUser(id: number, userData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, userData);
   }
 }

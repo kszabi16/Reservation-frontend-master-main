@@ -12,6 +12,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './property-list.component.html',
+  styleUrls: ['../../../shared/styles/dashboard.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA] 
 })
 export class PropertyListComponent implements OnInit {
@@ -58,7 +59,7 @@ export class PropertyListComponent implements OnInit {
   loadUserFavorites(): void {
     const userId = this.authService.getUserIdFromToken();
     if (userId) {
-      this.favoriteService.getFavoritesByUser(userId).subscribe({
+      this.favoriteService.getMyFavorites(userId).subscribe({
         next: (favorites) => {
           // Kiszedjük a kedvenc propertyId-kat és belerakjuk a Set-be
           this.favoritePropertyIds = new Set(favorites.map(f => f.propertyId));

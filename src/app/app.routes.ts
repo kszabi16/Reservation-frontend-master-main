@@ -6,10 +6,7 @@ import { LayoutComponent } from './shared/layout/layout.component';
 import { MiniLayoutComponent } from './features/mini-sidebar/mini-sidebar';
 
 // Property modul komponensek
-import { PropertyCreateComponent } from './features/properties/property-create/property-create.component';
-import { PropertyEditComponent } from './features/properties/property-edit/property-edit.component';
-import { PropertyAdminComponent } from './features/properties/property-admin/property-admin.component';
-import { UserAdminComponent } from './features/dashboards/admin-dashboard/admin-users';
+
 
 export const routes: Routes = [
   // Publikus oldalak
@@ -43,7 +40,7 @@ export const routes: Routes = [
 
       {
         path: 'bookings-create',
-        //canActivate: [authGuard('User','Host')],
+        canActivate: [authGuard()],
         loadComponent: () =>
           import('./features/bookings/booking-create-component/booking-create-component').then(
             (m) => m.BookingCreateComponent
@@ -52,7 +49,7 @@ export const routes: Routes = [
       },
         {
         path: 'bookings-list',
-        //canActivate: [authGuard('User')],
+        canActivate: [authGuard()],
         loadComponent: () =>
           import('./features/bookings/booking-list-component/booking-list-component').then(
             (m) => m.BookingListComponent
@@ -70,7 +67,7 @@ export const routes: Routes = [
       },
         {
         path: 'bookings-host',
-        //canActivate: [authGuard('Admin','Host')],
+        //canActivate: [authGuard()],
         loadComponent: () =>
           import('./features/bookings/booking-host-component/booking-host-component').then(
             (m) => m.BookingHostComponent
@@ -80,18 +77,33 @@ export const routes: Routes = [
       
       {
         path: 'user-dashboard',
-        //canActivate: [authGuard('User')],
+        //canActivate: [authGuard("User,Host,Admin")],
         loadComponent: () =>
           import('./features/dashboards/user-dashboard/user-dashboard').then(
             (m) => m.UserDashboardComponent
           ),
-        // nincs guard → anonymous is mehet
+        
       },{
         path: 'profile',
         loadComponent: () =>
           import('./features/profile/profile.component').then((m) => m.ProfileComponent),
+        canActivate: [authGuard()],
       },
-      
+      {
+        path: 'favorites',
+        loadComponent: () =>
+          import('./features/favorites/user-favorites').then((m) => m.UserFavoritesComponent),
+        canActivate: [authGuard()],
+
+      },
+      {
+        path: 'my-bookings',
+        loadComponent: () =>
+          import('./features/bookings/booking-list-component/booking-list-component').then(
+            (m) => m.BookingListComponent
+          ),
+        canActivate: [authGuard()],
+      },
       {
         path: 'messages', 
         //canActivate: [authGuard('User,Host')],
@@ -102,7 +114,6 @@ export const routes: Routes = [
       },
       {
         path: 'calendar',
-        //canActivate: [authGuard('User,Host')],
         loadComponent: () =>
           import('./features/calendar/calendar.component').then(
             (m) => m.CalendarComponent
@@ -113,7 +124,7 @@ export const routes: Routes = [
           loadComponent: () => import('./features/properties/property-create/property-create.component').then(
             (m) => m.PropertyCreateComponent
           ),
-        //canActivate: [authGuard('User,Host')],
+        canActivate: [authGuard()],
       },
       {
         path: 'property/edit/:id',
@@ -197,20 +208,6 @@ export const routes: Routes = [
             (m) => m.AdminDashboardComponent
           ),
       },
-
-      // profile (logged-in bármelyik user)
-      {
-        path: 'profile',
-        //canActivate: [authGuard()],
-        loadComponent: () =>
-          import('./features/profile/profile.component').then(
-            (m) => m.ProfileComponent
-          ),
-      },
-
-      // properties oldal (host/admin)
- 
-      
       
     ],
   },

@@ -1,33 +1,48 @@
-import { Component } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { BookingService } from '../../../core/services/booking.service';
-import { BookingDto } from '../../../core/models/booking-dto';
-import { BookingStatus } from '../../../core/models/booking-dto';
+import { BookingDto, BookingStatus } from '../../../core/models/booking-dto';
 
 @Component({
-  selector: 'booking-list',
+  selector: 'app-booking-list',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './booking-list-component.html',
-  imports: [CommonModule, DatePipe]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class BookingListComponent {
-
+export class BookingListComponent implements OnInit {
   bookings: BookingDto[] = [];
-  BookingStatus=BookingStatus;
+  BookingStatus = BookingStatus;
+  loading = true;
+  error = '';
 
   constructor(private bookingService: BookingService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.load();
   }
 
-  load() {
-    this.bookingService.getMyBookings().subscribe(res => {
-      this.bookings = res;
+  load(): void {
+    this.loading = true;
+    this.bookingService.getMyBookings().subscribe({
+      next: (res) => {
+        this.bookings = res;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.error = 'Nem sikerült betölteni a foglalásokat.';
+        this.loading = false;
+      }
     });
   }
 
-  cancel(id: number) {
-    this.bookingService.cancelBooking(id).subscribe(() => this.load());
+  cancel(id: number): void {
+    if (confirm('Biztosan lemondod ezt a foglalást?')) {
+      this.bookingService.cancelBooking(id).subscribe({
+        next: () => this.load(),
+        error: () => alert('Hiba történt a lemondás során.')
+      });
+    }
   }
 }

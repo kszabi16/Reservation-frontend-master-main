@@ -1,9 +1,9 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { RouterModule,Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../core/services/user-service';
-import { UserDto } from '../../../core/models/user-dto';
+import { UserDto } from '../../../core/models/user-dto'
 
 @Component({
   selector: 'app-user-admin',
@@ -15,6 +15,20 @@ import { UserDto } from '../../../core/models/user-dto';
 export class UserAdminComponent implements OnInit {
   users: UserDto[] = [];
   loading = true;
+  
+  showConfirmModal = false;
+  pendingRoleChange: { user: UserDto, newRole: string } | null = null;
+
+  showSuccessModal = false;
+  successMessage = '';
+
+  showEditModal = false;
+  editingUser: any = null; 
+  isSaving = false; 
+
+  showDeleteModal = false;
+  userToDelete: any = null;
+  isDeleting = false;
 
   constructor(
     private userService: UserService,
@@ -38,47 +52,127 @@ export class UserAdminComponent implements OnInit {
       }
     });
   }
+  openEditModal(user: UserDto): void {
+    this.editingUser = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      password: '' 
+    };
+    this.showEditModal = true;
+  }
 
-  deleteUser(id: number): void {
-    if(confirm('VIGYÁZAT! Biztosan törölni szeretnéd ezt a felhasználót? Ez a művelet nem vonható vissza!')) {
-      this.userService.deleteUser(id).subscribe({
-        next: () => {
-          // Sikeres törlés után kivesszük a listából
-          this.users = this.users.filter(u => u.id !== id);
-        },
-        error: (err) => console.error('Hiba a törlés során:', err)
-      });
+  closeEditModal(): void {
+    this.showEditModal = false;
+    this.editingUser = null;
+  }
+
+  saveEditedUser(): void {
+    if (!this.editingUser.username || !this.editingUser.email) {
+      alert('A név és az e-mail cím megadása kötelező!');
+      return;
     }
+
+    this.isSaving = true;
+    this.userService.updateUser(this.editingUser.id, this.editingUser).subscribe({
+      next: (updatedUser) => {
+        const index = this.users.findIndex(u => u.id === this.editingUser.id);
+        if (index > -1) {
+          this.users[index] = updatedUser; 
+        }
+        this.successMessage = 'A felhasználó adatai sikeresen frissültek!';
+        this.showSuccessModal = true;
+        setTimeout(() => this.showSuccessModal = false, 3000);
+
+        this.closeEditModal();
+        this.isSaving = false;
+      },
+      error: (err) => {
+        console.error('Hiba szerkesztéskor:', err);
+        alert('Szerverhiba történt! Lehet, hogy az email vagy név már foglalt.');
+        this.isSaving = false;
+      }
+    });
+  }
+  openDeleteModal(user: any): void {
+    this.userToDelete = user;
+    this.showDeleteModal = true;
+  }
+
+  cancelDelete(): void {
+    this.showDeleteModal = false;
+    this.userToDelete = null;
+  }
+
+  confirmDelete(): void {
+    if (!this.userToDelete) return;
+    this.isDeleting = true;
+
+    this.userService.deleteUser(this.userToDelete.id).subscribe({
+      next: () => {
+        this.users = this.users.filter(u => u.id !== this.userToDelete.id);
+        this.successMessage = 'A felhasználó sikeresen törölve lett!';
+        this.showSuccessModal = true;
+        setTimeout(() => this.showSuccessModal = false, 3000);
+
+        this.isDeleting = false;
+        this.showDeleteModal = false;
+        this.userToDelete = null;
+      },
+      error: (err) => {
+        console.error('Hiba a törlés során:', err);
+        alert('Szerverhiba: Nem sikerült törölni a felhasználót.');
+        this.isDeleting = false;
+        this.showDeleteModal = false;
+        this.userToDelete = null;
+      }
+    });
   }
 
   changeRole(user: UserDto, newRole: string): void {
-    if(confirm(`Biztosan módosítod a felhasználó szerepkörét erre: ${newRole}?`)) {
-      
-      // Valós hívás a backend felé (amit az előbb írtunk a UserService-be)
-      this.userService.updateUserRole(user.id, newRole).subscribe({
-        next: () => {
-          // Ha a szerver sikeresen válaszolt, a felületen is frissítjük az értéket.
-          // Az 'as any' azért kell, hogy a TypeScript ne panaszkodjon a pontos Guest/Host/Admin típus miatt.
-          user.role = newRole as any; 
-          alert('Szerepkör sikeresen frissítve!');
-        },
-        error: (err) => {
-          console.error('Hiba a szerepkör frissítésekor:', err);
-          alert('Szerver hiba: Nem sikerült frissíteni a szerepkört.');
-          // Hiba esetén visszatöltjük az eredeti adatokat az adatbázisból, hogy a legördülő menü visszaálljon
-          this.loadUsers(); 
-        }
-      });
+    if (user.role === newRole) return;
 
-    } else {
-      // Ha a felugró ablakban a "Mégsem"-re nyomott, visszaállítjuk a select mezőt
-      this.loadUsers(); 
-    }
+    this.pendingRoleChange = { user, newRole };
+    this.showConfirmModal = true;
   }
 
-  // 3. A megírt addUser metódus
+ 
+  confirmRoleChange(): void {
+    if (!this.pendingRoleChange) return;
+
+    const { user, newRole } = this.pendingRoleChange;
+    this.showConfirmModal = false;
+
+    this.userService.updateUserRole(user.id, newRole ).subscribe({
+      next: () => {
+        user.role = newRole as any; 
+        this.successMessage = `A felhasználó (${user.username}) szerepköre sikeresen módosítva: ${newRole}.`;
+        this.showSuccessModal = true;
+        setTimeout(() => this.showSuccessModal = false, 3000);
+      },
+      error: (err) => {
+        console.error('Hiba a szerepkör frissítésekor:', err);
+        this.loadUsers(); 
+        alert('Szerverhiba történt a szerepkör módosításakor.'); 
+      },
+      complete: () => {
+         this.pendingRoleChange = null;
+      }
+    });
+  }
+
+  cancelRoleChange(): void {
+    this.showConfirmModal = false; 
+    this.pendingRoleChange = null;
+    this.loadUsers(); 
+  }
+
   addUser(): void {
-    
     this.router.navigate(['/admin-user-create']);
+  }
+
+  editUser(userId: number): void {
+    this.router.navigate(['/admin-user-edit', userId]);
   }
 }

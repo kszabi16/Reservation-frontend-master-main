@@ -4,11 +4,11 @@ import { RouterLink } from '@angular/router';
 import { PropertyService } from '../../../core/services/property.service';
 import { PropertyDto } from '../../../core/models/property-dto';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-property-admin',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, RouterModule],
   templateUrl: './property-admin.component.html',
   styleUrl:'../properties.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

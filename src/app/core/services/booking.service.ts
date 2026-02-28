@@ -3,58 +3,57 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BookingStatus } from '../models/booking-dto';
 import { BookingDto } from '../models/booking-dto';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class BookingService {
-  private baseUrl = 'https://localhost:7225/api/booking';
+  private apiUrl = `${environment.apiUrl}/booking`;
 
   constructor(private http: HttpClient) {}
 
   getMyBookings(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/my-bookings`);
+    return this.http.get<any[]>(`${this.apiUrl}/my-bookings`);
   }
   getAllBookings():Observable<any[]>{
-    return this.http.get<any[]>(`${this.baseUrl}/get-all`);//megkell csinálni backenden controllerre
+    return this.http.get<any[]>(`${this.apiUrl}/get-all`);//megkell csinálni backenden controllerre
   }
 
   getHostBookings() {
-  return this.http.get<BookingDto[]>(`${this.baseUrl}/booking/property/{hostOwned}`);
+  return this.http.get<BookingDto[]>(`${this.apiUrl}/booking/property/{hostOwned}`);
 }
   createBooking(dto: any): Observable<any> {
-    return this.http.post(this.baseUrl, dto);
+    return this.http.post(this.apiUrl, dto);
   }
 
   confirmBooking(id: number) {
-    return this.http.put(`${this.baseUrl}/${id}/confirm`, {});
+    return this.http.put(`${this.apiUrl}/${id}/confirm`, {});
   }
 
   cancelBooking(id: number) {
-    return this.http.put(`${this.baseUrl}/${id}/cancel`, {});
+    return this.http.put(`${this.apiUrl}/${id}/cancel`, {});
   }
 
   getByGuest(guestId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/guest/${guestId}`);
+    return this.http.get<any[]>(`${this.apiUrl}/guest/${guestId}`);
   }
 
   getByProperty(propertyId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/property/${propertyId}`);
+    return this.http.get<any[]>(`${this.apiUrl}/property/${propertyId}`);
   }
 
   getByStatus(status: BookingStatus) {
-  return this.http.get<BookingDto[]>(`${this.baseUrl}/status/${status}`);
+  return this.http.get<BookingDto[]>(`${this.apiUrl}/status/${status}`);
 }
 
-
   getByDateRange(start: string, end: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/date-range?startDate=${start}&endDate=${end}`);
+    return this.http.get<any[]>(`${this.apiUrl}/date-range?startDate=${start}&endDate=${end}`);
   }
   
   getPendingBookings(): Observable<BookingDto[]> {
-    return this.http.get<BookingDto[]>(`${this.baseUrl}/status/0`); 
-    // Ha a backend végpontja máshogy van, pl. my-properties-bookings/pending, akkor azt írd ide!
+    return this.http.get<BookingDto[]>(`${this.apiUrl}/pending-requests`); 
   }
 
   updateStatus(id: number, status: string) {
-    return this.http.put(`${this.baseUrl}/${id}/status`, status);
+    return this.http.put(`${this.apiUrl}/${id}/status`, status);
   }
 }

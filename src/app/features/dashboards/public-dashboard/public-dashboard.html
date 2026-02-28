@@ -111,8 +111,9 @@
                 <span class="text-xs text-slate-500">/ éj</span>
               </div>
 
-              <button class="absolute top-4 right-4 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition text-slate-400 hover:text-red-500 backdrop-blur-sm">
-                <iconify-icon icon="tabler:heart" width="20" height="20"></iconify-icon>
+              <button (click)="toggleFavorite()" 
+                      class="absolute top-4 right-4 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition text-slate-400 hover:text-rose-500 backdrop-blur-sm z-10">
+                      <iconify-icon icon="tabler:heart" width="20" height="20"></iconify-icon>
               </button>
             </figure>
 
@@ -150,4 +151,25 @@
       </div>
     }
   </main>
+  
 </div>
+@if (showAuthWarning) {
+  <div class="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300">
+    <div class="bg-gray-900/95 backdrop-blur-md text-white px-6 py-4 rounded-2xl shadow-2xl border border-white/10 flex items-center gap-4">
+      <div class="bg-amber-500 p-2 rounded-full flex items-center justify-center">
+        <iconify-icon icon="tabler:lock" width="20"></iconify-icon>
+      </div>
+      <div>
+        <p class="font-bold text-sm">Bejelentkezés szükséges!</p>
+        <p class="text-xs text-slate-400">Kedvencek mentéséhez kérjük, jelentkezz be.</p>
+      </div>
+      <button routerLink="/auth/login" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap">
+        Belépés
+      </button>
+      <button (click)="showAuthWarning = false" class="text-slate-500 hover:text-white transition">
+        <iconify-icon icon="tabler:x" width="18"></iconify-icon>
+      </button>
+    </div>
+  </div>
+}
+

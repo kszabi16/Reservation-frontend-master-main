@@ -1,4 +1,5 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CommonModule, Location } from '@angular/common'; 
 import { FormsModule } from '@angular/forms'; 
 import { ActivatedRoute } from '@angular/router';
@@ -11,13 +12,16 @@ import { LikeService } from '../../../core/services/like.service';
 import { LikeTargetType } from '../../../core/models/like-dto';
 import { BookingService } from '../../../core/services/booking.service';
 import { CreateBookingDto } from '../../../core/models/booking-dto';
+import { FavoriteService } from '../../../core/services/favorite.service';
+
 
 @Component({
   selector: 'app-property-public-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule], 
+  imports: [CommonModule, FormsModule,RouterLink], 
   templateUrl: './property-public-detail.component.html',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA] 
+  schemas: [CUSTOM_ELEMENTS_SCHEMA], 
+  styleUrls: ['../properties.css'],
 })
 export class PropertyPublicDetailComponent implements OnInit {
   property: PropertyDto | null = null;
@@ -30,6 +34,7 @@ export class PropertyPublicDetailComponent implements OnInit {
   likedCommentIds: Set<number> = new Set<number>();
   newCommentRating: number = 0; 
   stars: number[] = [1, 2, 3, 4, 5];
+  isFavorite = false;
 
   //foglalas
   startDate: string = '';
@@ -235,5 +240,6 @@ export class PropertyPublicDetailComponent implements OnInit {
         this.bookingLoading = false;
       }
     });
+    
   }
 }

@@ -60,12 +60,19 @@ export class RegisterComponent {
         this.router.navigate(['/auth/login']);
         this.loading = false;
       },
-      error: (err) => {
+     error: (err) => {
         console.error(err);
         if (err.status === 0) {
           this.error = 'Nem sikerült csatlakozni a szerverhez.';
         } else if (err.error?.message) {
-          this.error = err.error.message;
+          // Magyarosítjuk az angol backend hibaüzeneteket
+          if (err.error.message.includes('Email')) {
+            this.error = 'Ez az e-mail cím már foglalt! Kérlek, jelentkezz be, vagy használj másikat.';
+          } else if (err.error.message.includes('Username')) {
+            this.error = 'Ez a felhasználónév már foglalt! Kérlek, válassz másikat.';
+          } else {
+            this.error = err.error.message; // Bármilyen egyéb üzenet
+          }
         } else {
           this.error = 'A regisztráció nem sikerült. Ellenőrizd az adatokat.';
         }

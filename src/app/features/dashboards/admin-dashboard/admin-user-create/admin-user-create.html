@@ -19,6 +19,13 @@
       <span class="font-medium">{{ error }}</span>
     </div>
   }
+  @if (successMessage) {
+    <div class="bg-emerald-50 text-emerald-600 p-4 rounded-xl border border-emerald-200 shadow-sm mb-6 flex items-center gap-2 animate-fade-in-up">
+      <iconify-icon icon="tabler:check" width="24" class="bg-emerald-100 rounded-full p-1"></iconify-icon>
+      <span class="font-bold text-emerald-800">{{ successMessage }}</span>
+      <span class="ml-auto text-sm text-emerald-600 opacity-70">Átirányítás...</span>
+    </div>
+  }
 
   <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
     <form (ngSubmit)="onSubmit()" #userForm="ngForm" class="space-y-6">

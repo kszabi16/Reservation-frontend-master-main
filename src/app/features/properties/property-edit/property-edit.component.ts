@@ -5,11 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PropertyService } from '../../../core/services/property.service';
 import { CreatePropertyDto } from '../../../core/models/property-dto';
 import { PropertyDto } from '../../../core/models/property-dto';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-property-edit',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './property-edit.component.html',
   styleUrl: '../properties.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -46,8 +47,16 @@ export class PropertyEditComponent implements OnInit {
   loadProperty(): void {
     this.loading = true;
     this.propertyService.getPropertyById(this.propertyId).subscribe({
-      next: (data: PropertyDto) => {
-        this.form.patchValue(data);
+      next: (data: any) => {
+        // Itt manuálisan összekötjük a nagybetűs űrlapot a kisbetűs JSON adatokkal!
+        this.form.patchValue({
+          Title: data.title || data.Title, 
+          Description: data.description || data.Description,
+          Location: data.location || data.Location,
+          PricePerNight: data.pricePerNight || data.PricePerNight,
+          Capacity: data.capacity || data.Capacity
+        });
+        
         this.loading = false;
       },
       error: () => {
@@ -65,7 +74,8 @@ export class PropertyEditComponent implements OnInit {
 
     this.propertyService.updateProperty(this.propertyId, dto).subscribe({
       next: () => {
-        this.router.navigate(['/properties/list']);
+        // IDE ÍRTUK BE AZ ÚJ IRÁNYT:
+        this.router.navigate(['/property/admin']);
       },
       error: () => {
         this.error = 'Nem sikerült frissíteni az ingatlant.';

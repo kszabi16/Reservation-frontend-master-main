@@ -1,106 +1,93 @@
-<div class="admin-container">
-
-  <div class="page-header">
-    <h2 class="page-title">
-      <iconify-icon icon="tabler:home-shield"></iconify-icon>
-      Host kérelmek kezelése
-    </h2>
-    <p class="page-subtitle">Itt hagyhatod jóvá a felhasználók ingatlan hirdetési kérelmeit.</p>
+<div class="p-6 max-w-7xl mx-auto bg-white min-h-screen">
+  
+  <div class="flex items-center gap-4 mb-8">
+    <div class="bg-indigo-600 text-white p-3 rounded-2xl shadow-lg shadow-indigo-200">
+      <iconify-icon icon="tabler:home-shield" width="32"></iconify-icon>
+    </div>
+    <div>
+      <h2 class="text-3xl font-bold text-gray-800">Host kérelmek kezelése</h2>
+      <p class="text-gray-500 mt-1">Itt hagyhatod jóvá a felhasználók ingatlan hirdetési kérelmeit.</p>
+    </div>
   </div>
 
   @if (loading) {
-    <div class="state-container loading">
-      <iconify-icon icon="line-md:loading-loop" width="40"></iconify-icon>
-      <span>Adatok betöltése...</span>
+    <div class="flex justify-center items-center py-20 text-indigo-600">
+      <iconify-icon icon="line-md:loading-loop" width="48"></iconify-icon>
+      <span class="ml-3 font-medium text-lg">Kérelmek betöltése...</span>
     </div>
   }
 
   @if (error) {
-    <div class="state-container error">
-      <iconify-icon icon="tabler:alert-triangle" width="32"></iconify-icon>
-      <span>{{ error }}</span>
+    <div class="bg-red-50 text-red-600 p-4 rounded-xl border border-red-100 mb-6 flex items-center gap-2">
+      <iconify-icon icon="tabler:alert-triangle" width="24"></iconify-icon>
+      <span class="font-bold">{{ error }}</span>
     </div>
   }
 
   @if (!loading && !error && requests.length === 0) {
-    <div class="state-container empty">
-      <iconify-icon icon="tabler:folder-check" width="48"></iconify-icon>
-      <span>Jelenleg nincs függőben lévő kérelem.</span>
+    <div class="bg-gray-50 rounded-2xl border border-gray-100 p-12 text-center flex flex-col items-center justify-center">
+      <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm text-gray-400 mb-4">
+        <iconify-icon icon="tabler:folder-check" width="40"></iconify-icon>
+      </div>
+      <h3 class="text-xl font-bold text-gray-800">Minden rendben!</h3>
+      <p class="text-gray-500 mt-2">Jelenleg nincs új, függőben lévő Host kérelem.</p>
     </div>
   }
 
   @if (!loading && requests.length > 0) {
-    <div class="table-card">
-      <div class="table-responsive">
-        <table class="request-table">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
           <thead>
-            <tr>
-              <th>#</th>
-              <th>Felhasználó</th>
-              <th>Ingatlan</th>
-              <th>Kérelem dátuma</th>
-              <th>Állapot</th>
-              <th class="text-center">Műveletek</th>
+            <tr class="bg-gray-50 border-b border-gray-100 text-gray-500 text-sm uppercase tracking-wider">
+              <th class="p-4 font-bold rounded-tl-2xl w-12 text-center">#</th>
+              <th class="p-4 font-bold">Felhasználó</th>
+              <th class="p-4 font-bold">Ingatlan</th>
+              <th class="p-4 font-bold">Kérelem dátuma</th>
+              <th class="p-4 font-bold text-center">Állapot</th>
+              <th class="p-4 font-bold text-right rounded-tr-2xl">Műveletek</th>
             </tr>
           </thead>
-          <tbody>
-            @for (r of requests; track r; let i = $index) {
-              <tr>
-                <td class="row-index">{{ i + 1 }}.</td>
+          <tbody class="divide-y divide-gray-50">
+            @for (r of requests; track r.id; let i = $index) {
+              <tr class="hover:bg-indigo-50/30 transition-colors group">
+                <td class="p-4 text-center text-gray-400 font-medium">{{ i + 1 }}.</td>
                 
-                <td>
-                  <div class="user-meta">
-                    <div class="avatar-placeholder">
-                      {{ r.userName.charAt(0) }}
+                <td class="p-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold uppercase">
+                      {{ r.username ? r.username.charAt(0) : '?' }}
                     </div>
-                    <div class="meta-info">
-                      <span class="meta-title">{{ r.userName }}</span>
-                      <span class="meta-sub">ID: {{ r.userId }}</span>
+                    <div>
+                      <div class="font-bold text-gray-800">{{ r.username }}</div>
+                      <div class="text-xs text-gray-400 font-medium">ID: #{{ r.userId }}</div>
                     </div>
                   </div>
                 </td>
 
-                <td>
-                  <div class="property-meta">
-                    <span class="meta-title">{{ r.propertyTitle }}</span>
-                    <span class="meta-sub">Prop ID: #{{ r.propertyId }}</span>
-                  </div>
+                <td class="p-4">
+                  <div class="font-medium text-gray-800">{{ r.propertyTitle }}</div>
+                  <div class="text-xs text-gray-400">Prop ID: #{{ r.propertyId }}</div>
                 </td>
 
-                <td>
-                  <div class="date-meta">
-                    <span class="date-main">{{ r.requestedAt | date:'yyyy.MM.dd' }}</span>
-                    <span class="date-sub">{{ r.requestedAt | date:'HH:mm' }}</span>
-                  </div>
+                <td class="p-4">
+                  <div class="text-gray-700 font-medium">{{ r.requestedAt | date:'yyyy. MM. dd.' }}</div>
+                  <div class="text-xs text-gray-400">{{ r.requestedAt | date:'HH:mm' }}</div>
                 </td>
 
-                <td>
-                  <span class="status-badge" 
-                        [class.approved]="r.isApproved" 
-                        [class.pending]="!r.isApproved">
-                    @if(r.isApproved) {
-                      <iconify-icon icon="tabler:check"></iconify-icon> Jóváhagyva
-                    } @else {
-                      <iconify-icon icon="tabler:clock"></iconify-icon> Függőben
-                    }
+                <td class="p-4 text-center">
+                  <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-yellow-50 text-yellow-600 border border-yellow-200">
+                    <iconify-icon icon="tabler:clock"></iconify-icon> Függőben
                   </span>
-                  @if(r.approvedAt) {
-                    <div class="approval-date">
-                      Jóváhagyva: {{ r.approvedAt | date:'MM.dd' }}
-                    </div>
-                  }
                 </td>
 
-                <td>
-                  <div class="action-buttons">
-                    @if (!r.isApproved) {
-                      <button (click)="approveRequest(r.id)" class="btn-action btn-approve" title="Jóváhagyás">
-                        <iconify-icon icon="tabler:check" width="18"></iconify-icon>
-                        <span>Elfogadás</span>
-                      </button>
-                    }
-                    <button (click)="rejectRequest(r.id)" class="btn-action btn-reject" title="Elutasítás">
-                      <iconify-icon icon="tabler:x" width="18"></iconify-icon>
+                <td class="p-4 text-right">
+                  <div class="flex items-center justify-end gap-2">
+                    <button (click)="openApproveModal(r)" class="px-3 py-1.5 bg-emerald-50 text-emerald-600 hover:bg-emerald-500 hover:text-white rounded-lg transition-colors font-bold text-sm flex items-center gap-1">
+                      <iconify-icon icon="tabler:check" width="16"></iconify-icon> Elfogad
+                    </button>
+                    <button (click)="openRejectModal(r)" class="px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-500 hover:text-white rounded-lg transition-colors font-bold text-sm flex items-center gap-1">
+                      <iconify-icon icon="tabler:x" width="16"></iconify-icon> Elutasít
                     </button>
                   </div>
                 </td>
@@ -111,4 +98,78 @@
       </div>
     </div>
   }
+
+  @if (showApproveModal && selectedRequest) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate-fade-in">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform animate-scale-up">
+        
+        <div class="bg-emerald-50 p-6 flex flex-col items-center text-center border-b border-emerald-100">
+          <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-emerald-500 shadow-sm mb-4">
+            <iconify-icon icon="tabler:shield-check" width="32"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800">Kérelem jóváhagyása</h3>
+        </div>
+
+        <div class="p-6 text-center">
+          <p class="text-gray-600 mb-2">Biztosan jóváhagyod ezt a kérelmet?</p>
+          <p class="font-bold text-lg text-gray-800">{{ selectedRequest.username }}</p>
+          <p class="text-sm text-gray-500">mostantól hivatalos Host (Házigazda) lesz.</p>
+        </div>
+
+        <div class="p-4 bg-gray-50 border-t border-gray-100 flex gap-3 justify-end">
+          <button (click)="closeModals()" class="px-5 py-2.5 text-gray-600 font-bold hover:bg-gray-200 rounded-xl transition-colors">Mégsem</button>
+          <button (click)="confirmApprove()" [disabled]="isProcessing" class="px-5 py-2.5 bg-emerald-500 text-white font-bold hover:bg-emerald-600 shadow-md shadow-emerald-200 rounded-xl transition-colors flex items-center gap-2 disabled:opacity-50">
+            @if (isProcessing) { <iconify-icon icon="line-md:loading-loop" width="20"></iconify-icon> Mentés... } 
+            @else { <iconify-icon icon="tabler:check"></iconify-icon> Igen, jóváhagyom }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showRejectModal && selectedRequest) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate-fade-in">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform animate-scale-up">
+        
+        <div class="bg-red-50 p-6 flex flex-col items-center text-center border-b border-red-100">
+          <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-red-500 shadow-sm mb-4">
+            <iconify-icon icon="tabler:shield-x" width="32"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800">Kérelem elutasítása</h3>
+        </div>
+
+        <div class="p-6 text-center">
+          <p class="text-gray-600 mb-2">Biztosan elutasítod a kérelmet?</p>
+          <p class="font-bold text-lg text-gray-800">{{ selectedRequest.username }}</p>
+          <p class="text-sm text-gray-500">A felhasználó nem kap Host jogosultságot.</p>
+        </div>
+
+        <div class="p-4 bg-gray-50 border-t border-gray-100 flex gap-3 justify-end">
+          <button (click)="closeModals()" class="px-5 py-2.5 text-gray-600 font-bold hover:bg-gray-200 rounded-xl transition-colors">Mégsem</button>
+          <button (click)="confirmReject()" [disabled]="isProcessing" class="px-5 py-2.5 bg-red-600 text-white font-bold hover:bg-red-700 shadow-md shadow-red-200 rounded-xl transition-colors flex items-center gap-2 disabled:opacity-50">
+            @if (isProcessing) { <iconify-icon icon="line-md:loading-loop" width="20"></iconify-icon> Törlés... } 
+            @else { <iconify-icon icon="tabler:x"></iconify-icon> Igen, elutasítom }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showSuccessToast) {
+    <div class="fixed top-6 right-6 z-50 animate-fade-in-down">
+      <div class="bg-emerald-50 border border-emerald-200 shadow-xl shadow-emerald-100/50 rounded-2xl p-4 flex items-start gap-4 max-w-sm">
+        <div class="bg-emerald-500 text-white rounded-full p-1.5 flex-shrink-0 mt-0.5">
+          <iconify-icon icon="tabler:check" width="20"></iconify-icon>
+        </div>
+        <div>
+          <h4 class="font-bold text-emerald-800">Sikeres művelet</h4>
+          <p class="text-sm text-emerald-600 mt-1 leading-tight">{{ toastMessage }}</p>
+        </div>
+        <button (click)="showSuccessToast = false" class="text-emerald-400 hover:text-emerald-600 p-1">
+          <iconify-icon icon="tabler:x" width="20"></iconify-icon>
+        </button>
+      </div>
+    </div>
+  }
+
 </div>

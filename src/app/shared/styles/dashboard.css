@@ -153,6 +153,7 @@ main {
   filter: blur(140px);
   opacity: 0.38;
   z-index: 0;
+  pointer-events: none;
 }
 
 .user-container::before {
@@ -187,6 +188,7 @@ main {
   filter: blur(140px);
   opacity: 0.38;
   z-index: 0;
+  pointer-events: none;
 }
 
 .admin-container::before {

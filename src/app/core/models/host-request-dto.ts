@@ -2,7 +2,7 @@ export interface HostRequestDto {
   id:number
   userId: number;
   propertyId: number;
-  userName: string;
+  username: string;
   propertyTitle: string;
   isApproved: boolean;
   approvedAt?: string;

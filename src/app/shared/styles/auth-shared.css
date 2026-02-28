@@ -91,25 +91,58 @@ html, body {
 
 /* ===== INPUTS ===== */
 
+/* ===== JAVÍTOTT INPUTS (Látható szöveg és keret) ===== */
+.auth-card label {
+  display: block;
+  color: #475569; /* Sötétszürke feliratok */
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
 .auth-card input {
   width: 100%;
   padding: 14px 18px;
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.25);
-  background: rgba(255,255,255,0.08);
-  color: #fff;
+  /* Erősebb keret, hogy látszódjon */
+  border: 1px solid rgba(109, 40, 217, 0.2); 
+  /* Világosabb, de látható háttér */
+  background: rgba(255, 255, 255, 0.9); 
+  /* SÖTÉT SZÖVEG, hogy látszódjon a fehér háttéren */
+  color: #1e293b; 
   font-size: 1.05rem;
+  margin-bottom: 5px;
 }
 
 .auth-card input::placeholder {
-  color: #cbd5e1;
+  /* Sötétebb placeholder */
+  color: #94a3b8; 
 }
 
 .auth-card input:focus {
   outline: none;
-  border-color: #a78bfa;
-  box-shadow: 0 0 15px rgba(167, 139, 250, 0.5);
-  transform: scale(1.03);
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+/* ===== JAVÍTOTT AUTH CARD (Üveg effekt sötétebb árnyékkal) ===== */
+.auth-card {
+  position: relative;
+  width: 480px;
+  padding: 55px 45px;
+  border-radius: 28px;
+  backdrop-filter: blur(20px);
+  /* Kicsit opákabb fehér háttér a kártyának */
+  background: rgba(255, 255, 255, 0.95); 
+  box-shadow:
+      0 10px 25px -5px rgba(0, 0, 0, 0.1),
+      0 8px 10px -6px rgba(0, 0, 0, 0.1),
+      0 0 40px rgba(124, 58, 237, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  z-index: 2;
+  animation: authPop .7s ease forwards;
 }
 
 /* ===== BUTTON ===== */

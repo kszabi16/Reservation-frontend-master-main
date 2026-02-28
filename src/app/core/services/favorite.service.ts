@@ -23,7 +23,7 @@ export class FavoriteService {
   }
 
   /** Egy adott felhasználó összes kedvencének lekérése */
-  getFavoritesByUser(userId: number): Observable<FavoriteDto[]> {
+  getMyFavorites(userId: number): Observable<FavoriteDto[]> {
     return this.http.get<FavoriteDto[]>(`${this.apiUrl}/user/${userId}`);
   }
 }

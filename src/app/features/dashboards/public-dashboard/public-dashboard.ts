@@ -24,6 +24,8 @@ export class PublicDashboardComponent implements OnInit {
   maxPrice: number | null = null;
   minCapacity: number | null = null;
 
+  showAuthWarning = false;
+
   constructor(
     private propertyService: PropertyService,
     private authService: AuthService,
@@ -33,6 +35,16 @@ export class PublicDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loadAll();
     
+  }
+  toggleFavorite(): void {
+    
+    this.displayAuthWarning();
+  }
+  displayAuthWarning(): void {
+    this.showAuthWarning = true;
+    setTimeout(() => {
+      this.showAuthWarning = false;
+    }, 4000);
   }
 
   loadAll(): void {
