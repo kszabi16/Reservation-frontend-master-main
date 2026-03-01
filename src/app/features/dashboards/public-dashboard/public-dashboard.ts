@@ -18,6 +18,7 @@ export class PublicDashboardComponent implements OnInit {
   properties: PropertyDto[] = [];
   loading = true;
   error = '';
+  Math = Math; // Hogy használhassuk a Math függvényeket a template-ben
 
   searchLocation = '';
   minPrice: number | null = null;
@@ -25,6 +26,10 @@ export class PublicDashboardComponent implements OnInit {
   minCapacity: number | null = null;
 
   showAuthWarning = false;
+  
+  getStars(): number[] {
+    return [1, 2, 3, 4, 5];
+  }
 
   constructor(
     private propertyService: PropertyService,

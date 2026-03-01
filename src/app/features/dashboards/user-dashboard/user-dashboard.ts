@@ -25,6 +25,11 @@ export class UserDashboardComponent implements OnInit {
   maxPrice: number | null = null;
   minCapacity: number | null = null;
 
+  Math = Math;
+
+  getStars(): number[] {
+      return [1, 2, 3, 4, 5];
+    }
   // Ide mentjük a bejelentkezett felhasználó kedvenceit!
   favoritePropertyIds: Set<number> = new Set<number>();
 
