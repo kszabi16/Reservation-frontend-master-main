@@ -4,6 +4,7 @@ import { RegisterComponent } from './features/auth/register/register.component';
 import { authGuard } from './core/guards/auth.guard';
 import { LayoutComponent } from './shared/layout/layout.component';
 import { MiniLayoutComponent } from './features/mini-sidebar/mini-sidebar';
+import { AdminPendingPropertiesComponent } from './features/dashboards/admin-dashboard/admin-pending-properties/admin-pending-properties';
 
 // Property modul komponensek
 
@@ -201,6 +202,15 @@ export const routes: Routes = [
 
       },
       {
+        path:'admin/pending-properties',
+        loadComponent(){
+          return import('./features/dashboards/admin-dashboard/admin-pending-properties/admin-pending-properties')
+          .then(m=>m.AdminPendingPropertiesComponent);
+
+        }
+          
+      },
+      {
         path: 'admin-dashboard',
         //canActivate: [authGuard('Admin')],
         loadComponent: () =>
@@ -208,7 +218,12 @@ export const routes: Routes = [
             (m) => m.AdminDashboardComponent
           ),
       },
-      
+      {
+        path:"logs",
+        loadComponent() {
+          return import('./features/dashboards/admin-dashboard/admin-logs/admin-logs').then(m => m.AdminLogs)
+        }
+      } 
     ],
   },
 

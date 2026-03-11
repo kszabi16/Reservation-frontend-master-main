@@ -1,6 +1,6 @@
 <div class="user-container font-sans text-slate-600 bg-gray-50/50">
 
-  <main class="flex-1 p-4 lg:p-8 min-h-screen relative">
+  <main class="flex-1 p-4 lg:p-8 relative">
     <router-outlet></router-outlet>
 
     <div class="px-2 mb-4 sm:hidden">
@@ -10,7 +10,7 @@
       </button>
     </div>
 
-    <div class="bg-white/90 backdrop-blur-xl shadow-lg border border-white/20 rounded-3xl p-6 mb-10 sticky top-4 z-20">
+    <div class="bg-white/90 backdrop-blur-xl shadow-lg border border-white/20 rounded-3xl p-6 mb-10 sticky top-4 z-50">
       
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end">
         
@@ -101,22 +101,40 @@
         @for (p of properties; track p) {
           <div class="group bg-white rounded-[2rem] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-100 overflow-hidden flex flex-col h-full">
             
-            <figure class="relative h-64 w-full overflow-hidden">
-              <img src="https://cdn.flyonui.com/fy-assets/components/card/image-9.png"
+            <figure class="relative h-64 w-full overflow-hidden bg-gray-100 group">
+              <img [src]="getActualImage(p)"
                 alt="{{ p.title }}"
-                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
               
-              <div class="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
+              <div class="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1 z-20">
                 <span class="text-indigo-900 font-bold text-sm">{{ p.pricePerNight | currency:'HUF':'symbol':'1.0-0' }}</span>
                 <span class="text-xs text-slate-500">/ éj</span>
               </div>
 
               <button (click)="toggleFavorite()" 
-                      class="absolute top-4 right-4 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition text-slate-400 hover:text-rose-500 backdrop-blur-sm z-10">
+                      class="absolute top-4 right-4 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition text-slate-400 hover:text-rose-500 backdrop-blur-sm z-20 focus:outline-none">
                       <iconify-icon icon="tabler:heart" width="20" height="20"></iconify-icon>
               </button>
-            </figure>
 
+              @if (p.imageUrls && p.imageUrls.length > 1) {
+                <div class="absolute inset-0 flex items-center justify-between px-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+                  <button (click)="prevImage(p, $event)" class="bg-black/50 hover:bg-black text-white rounded-full w-8 h-8 flex items-center justify-center focus:outline-none pointer-events-auto shadow backdrop-blur-sm">
+                    &#10094;
+                  </button>
+                  <button (click)="nextImage(p, $event)" class="bg-black/50 hover:bg-black text-white rounded-full w-8 h-8 flex items-center justify-center focus:outline-none pointer-events-auto shadow backdrop-blur-sm">
+                    &#10095;
+                  </button>
+                </div>
+              
+                <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-1 z-10">
+                  @for (img of p.imageUrls; track img; let i = $index) {
+                    <div class="w-2 h-2 rounded-full shadow-sm transition-colors"
+                         [ngClass]="{'bg-white': (currentImageIndices[p.id] || 0) === i, 'bg-white/50': (currentImageIndices[p.id] || 0) !== i}">
+                    </div>
+                  }
+                </div>
+              }
+            </figure>
             <div class="p-6 flex flex-col flex-1">
               <div class="flex items-start justify-between mb-2">
                  <div>

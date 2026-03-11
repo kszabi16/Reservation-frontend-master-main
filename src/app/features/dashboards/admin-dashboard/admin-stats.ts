@@ -1,16 +1,18 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { RouterModule } from '@angular/router'; // Ezt is be kell húzni a linkek miatt!
 import { PropertyService } from '../../../core/services/property.service';
 import { BookingService } from '../../../core/services/booking.service';
 import { UserService } from '../../../core/services/user-service';
 import { BookingStatus } from '../../../core/models/booking-dto';
 import { AdminStats } from '../../../core/models/stats-dto';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-stats',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CurrencyPipe, RouterModule],
   templateUrl: './admin-stats.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
@@ -39,39 +41,59 @@ export class AdminStatsComponent implements OnInit {
   loadAllData(): void {
     this.loading = true;
     
-    // Több kérés párhuzamos futtatása
+    // A catchError(of([])) garantálja, hogy ha valamelyik szerver hívás elszáll,
+    // akkor is továbbmegy a kód, csak egy üres tömböt ad vissza arra az adatra.
     forkJoin({
-      properties: this.propertyService.getAllProperties(),
-      bookings: this.bookingService.getAllBookings() // Megjegyzés: a service-ben ezt jelezted, hogy be kell fejezni
+      users: this.userService.getAllUsers().pipe(
+        catchError(err => { console.error('Hiba a usereknél:', err); return of([]); })
+      ),
+      properties: this.propertyService.getAllProperties().pipe(
+        catchError(err => { console.error('Hiba az ingatlanoknál:', err); return of([]); })
+      ),
+      pendingProperties: this.propertyService.getPendingProperties().pipe(
+        catchError(err => { console.error('Hiba a függő ingatlanoknál:', err); return of([]); })
+      ),
+      bookings: this.bookingService.getAllBookings().pipe(
+        catchError(err => { console.error('Hiba a foglalásoknál:', err); return of([]); })
+      )
     }).subscribe({
       next: (res) => {
-        this.calculateStats(res.properties, res.bookings);
+        this.calculateStats(res.users, res.properties, res.pendingProperties, res.bookings);
         this.loading = false;
       },
       error: (err) => {
-        console.error('Hiba a statisztikák betöltésekor:', err);
+        console.error('Kritikus hiba a statisztikák lekérésekor:', err);
         this.loading = false;
       }
     });
   }
 
-  private calculateStats(properties: any[], bookings: any[]): void {
-    this.stats.totalProperties = properties.length;
-    this.stats.pendingProperties = properties.filter(p => !p.isApproved).length;
-    
-    this.stats.totalBookings = bookings.length;
-    this.stats.confirmedBookings = bookings.filter(b => b.status === BookingStatus.Confirmed).length;
+  private calculateStats(users: any[], properties: any[], pendingProperties: any[], bookings: any[]): void {
+    // 1. Felhasználók
+    this.stats.totalUsers = users.length;
+    this.stats.totalHosts = users.filter(u => u.role === 'Host').length;
 
-    // Bevétel számítás (Csak a visszaigazolt foglalásokból)
+    // 2. Ingatlanok (Elfogadott + Függő egyben a teljes számhoz)
+    this.stats.totalProperties = properties.length + pendingProperties.length;
+    this.stats.pendingProperties = pendingProperties.length;
+    
+    // 3. Foglalások
+    this.stats.totalBookings = bookings.length;
+    // (A backendtől függően a státusz lehet string vagy szám, ezért többféleképpen is lekezeljük)
+    this.stats.confirmedBookings = bookings.filter(b => b.status === BookingStatus.Confirmed || b.status === 1 || b.status === 'Confirmed').length;
+
+    // 4. Bevétel számítás (Csak a visszaigazolt foglalásokból)
     this.stats.totalRevenue = bookings
-      .filter(b => b.status === BookingStatus.Confirmed)
+      .filter(b => b.status === BookingStatus.Confirmed || b.status === 1 || b.status === 'Confirmed')
       .reduce((sum, b) => {
-        const prop = properties.find(p => p.id === b.propertyId);
+        const prop = properties.find(p => p.id === b.propertyId) || pendingProperties.find(p => p.id === b.propertyId);
         if (prop) {
           const start = new Date(b.startDate);
           const end = new Date(b.endDate);
           const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-          return sum + (days * prop.pricePerNight);
+          // Ha valamiért ugyanaz a nap, minimum 1 éjszakát számolunk
+          const validDays = days > 0 ? days : 1; 
+          return sum + (validDays * prop.pricePerNight);
         }
         return sum;
       }, 0);

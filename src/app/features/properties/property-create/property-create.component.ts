@@ -35,46 +35,55 @@ export class PropertyCreateComponent {
     private router: Router,
     private http: HttpClient 
   ) {}
+  selectedFiles: File[] = []
 
-  onFileSelected(event: any): void {
+  onFileSelected(event: any) {
     if (event.target.files && event.target.files.length > 0) {
-      this.selectedFile = event.target.files[0];
+      
+      this.selectedFiles = Array.from(event.target.files);
+    } else {
+      this.selectedFiles = []; 
     }
   }
-
-  // Ez az egyetlen gombnyomásra lefutó metódus!
-  submitProperty() {
+  removeFile(index: number) {
+    this.selectedFiles.splice(index, 1);
+  }
+ submitProperty() {
     this.loading = true;
     this.error = '';
     this.message = '';
 
-    // 1. Először létrehozzuk az ingatlant
+  
     this.propertyService.createProperty(this.property).subscribe({
       next: (createdProperty) => {
         
-        // 2. Ha a felhasználó választott ki képet, azt felküldjük az új végpontra
-        if (this.selectedFile && createdProperty.id) {
+        
+        if (this.selectedFiles && this.selectedFiles.length > 0 && createdProperty.id) {
           const formData = new FormData();
-          formData.append('file', this.selectedFile);
+          
+        
+          this.selectedFiles.forEach((file: File) => {
+            formData.append('files', file);
+          });
 
-          this.http.post(`${environment.apiUrl}/property/${createdProperty.id}/upload-image`, formData)
+         
+          this.http.post(`${environment.apiUrl}/property/${createdProperty.id}/upload-images`, formData)
             .subscribe({
                next: () => {
                  this.loading = false;
-                 this.message = 'Ingatlan és kép sikeresen feladva! Az admin hamarosan ellenőrzi.';
+                 this.message = 'Ingatlan és a képek sikeresen feladva! Az admin hamarosan ellenőrzi.';
                  setTimeout(() => this.router.navigate(['/properties']), 3000);
                },
                error: (err) => {
                  this.loading = false;
-                 this.error = 'Az ingatlan létrejött, de a kép feltöltése a Google Drive-ra sikertelen.';
+                 this.error = 'Az ingatlan létrejött, de a képek feltöltése sikertelen volt.';
                  console.error(err);
                }
             });
         } 
-        // 3. Ha nem volt kép, akkor is jelezzük a sikert
         else {
            this.loading = false;
-           this.message = 'Ingatlan sikeresen feladva (kép nélkül)! Az admin hamarosan ellenőrzi.';
+           this.message = 'Ingatlan sikeresen feladva (képek nélkül)! Az admin hamarosan ellenőrzi.';
            setTimeout(() => this.router.navigate(['/properties']), 3000);
         }
 
@@ -85,5 +94,5 @@ export class PropertyCreateComponent {
         console.error(err);
       }
     });
-  }
+}
 }

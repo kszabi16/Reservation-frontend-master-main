@@ -1,0 +1,69 @@
+<div class="p-6 max-w-7xl mx-auto bg-white min-h-screen">
+  
+  <div class="flex items-center gap-4 mb-8">
+    <div class="bg-gray-800 text-white p-3 rounded-2xl shadow-lg shadow-gray-200">
+      <iconify-icon icon="tabler:terminal-2" width="32"></iconify-icon>
+    </div>
+    <div>
+      <h2 class="text-3xl font-bold text-gray-800">Rendszernaplók</h2>
+      <p class="text-gray-500 mt-1">Az alkalmazás eseményeinek, hibáinak és figyelmeztetéseinek listája.</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="flex justify-center items-center py-20 text-gray-600">
+      <iconify-icon icon="line-md:loading-loop" width="48"></iconify-icon>
+      <span class="ml-3 font-medium text-lg">Naplók betöltése...</span>
+    </div>
+  } @else {
+    
+    <div class="bg-gray-50 rounded-2xl shadow-inner border border-gray-200 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-gray-200 text-gray-600 text-xs uppercase tracking-wider">
+              <th class="p-4 font-bold">Dátum</th>
+              <th class="p-4 font-bold">Szint</th>
+              <th class="p-4 font-bold">Üzenet</th>
+              <th class="p-4 font-bold">Részletek</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            
+            @if (logs.length === 0) {
+              <tr>
+                <td colspan="4" class="p-8 text-center text-gray-500 italic">
+                  Nincs megjeleníthető naplóbejegyzés.
+                </td>
+              </tr>
+            }
+
+            @for (log of logs; track log.id) {
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="p-4 text-sm text-gray-600 whitespace-nowrap font-mono">
+                  {{ log.createdAt | date:'yyyy.MM.dd. HH:mm:ss' }}
+                </td>
+                <td class="p-4">
+                  <span class="px-2.5 py-1 text-xs font-bold rounded-full border"
+                        [ngClass]="{
+                          'bg-blue-50 text-blue-700 border-blue-200': log.level === 'Info',
+                          'bg-yellow-50 text-yellow-700 border-yellow-200': log.level === 'Warning',
+                          'bg-red-50 text-red-700 border-red-200': log.level === 'Error'
+                        }">
+                    {{ log.level }}
+                  </span>
+                </td>
+                <td class="p-4 text-sm font-semibold text-gray-800">
+                  {{ log.message }}
+                </td>
+                <td class="p-4 text-xs text-gray-500 font-mono break-all max-w-xs">
+                  {{ log.details || '-' }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>

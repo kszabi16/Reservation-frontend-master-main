@@ -89,6 +89,14 @@
                     <button (click)="openDeleteModal(user)" class="p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-colors" title="Törlés">
                       <iconify-icon icon="tabler:trash" width="20"></iconify-icon>
                     </button>
+                    @if (user.role === 'Host') {
+                    <button (click)="toggleTrusted(user)" 
+                                  class="px-3 py-1 text-sm font-semibold rounded-lg shadow-sm transition"
+                                  [ngClass]="user.isTrustedHost ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'">
+                            <iconify-icon [icon]="user.isTrustedHost ? 'tabler:shield-check' : 'tabler:shield-x'" class="mr-1"></iconify-icon>
+                            {{ user.isTrustedHost ? 'Megbízható' : 'Nem megbízható' }}
+                          </button>
+                        }
                   </div>
                 </td>
                 

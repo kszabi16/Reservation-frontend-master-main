@@ -9,6 +9,8 @@ export interface PropertyDto {
   isApproved: boolean;
   averageRating?: number;
   reviewCount?: number;
+  imageUrl?: string;
+  imageUrls?: string[];
 }
 export interface CreatePropertyDto {
   title: string;

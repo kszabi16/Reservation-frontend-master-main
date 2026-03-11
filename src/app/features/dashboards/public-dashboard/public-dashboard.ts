@@ -26,6 +26,8 @@ export class PublicDashboardComponent implements OnInit {
   minCapacity: number | null = null;
 
   showAuthWarning = false;
+
+  currentImageIndices: { [key: number]: number } = {};
   
   getStars(): number[] {
     return [1, 2, 3, 4, 5];
@@ -124,5 +126,32 @@ export class PublicDashboardComponent implements OnInit {
   }
 
 
-  
+  nextImage(property: PropertyDto, event: Event) {
+    event.stopPropagation(); // Ne kattintson át a részletekre lapozáskor
+    event.preventDefault();
+    if (!property.imageUrls || property.imageUrls.length === 0) return;
+    
+    const curr = this.currentImageIndices[property.id] || 0;
+    this.currentImageIndices[property.id] = (curr + 1) % property.imageUrls.length;
+  }
+
+  // Kép léptetése hátra
+  prevImage(property: PropertyDto, event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+    if (!property.imageUrls || property.imageUrls.length === 0) return;
+    
+    const curr = this.currentImageIndices[property.id] || 0;
+    this.currentImageIndices[property.id] = (curr - 1 + property.imageUrls.length) % property.imageUrls.length;
+  }
+
+  // Aktuális kép lekérése a HTML számára
+  getActualImage(property: PropertyDto): string {
+    if (property.imageUrls && property.imageUrls.length > 0) {
+      const index = this.currentImageIndices[property.id] || 0;
+      return property.imageUrls[index];
+    }
+    // Ha egyáltalán nincs kép, mutasson egy default képet, vagy a régi egyetlen imageUrl-t
+    return property.imageUrl || 'https://cdn.flyonui.com/fy-assets/components/card/image-9.png'; 
+  }
 }

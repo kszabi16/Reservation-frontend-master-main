@@ -75,4 +75,20 @@ export class PropertyService {
   getAllPropertiesForAdmin(): Observable<PropertyDto[]> {
     return this.http.get<PropertyDto[]>(`${this.apiUrl}/all`);
   }
+  uploadImages(propertyId: number, files: File[]): Observable<any> {
+  const formData = new FormData();
+  
+  files.forEach(file => {
+    formData.append('files', file); 
+  });
+
+  return this.http.post(`${this.apiUrl}/${propertyId}/upload-images`, formData);
+}
+getPendingProperties(): Observable<PropertyDto[]> {
+  return this.http.get<PropertyDto[]>(`${this.apiUrl}/pending`);
+}
+
+approveProperty(id: number): Observable<any> {
+  return this.http.put(`${this.apiUrl}/${id}/approve`, {});
+}
 }

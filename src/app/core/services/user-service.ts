@@ -40,4 +40,7 @@ getAllUsers(): Observable<UserDto[]> {
   updateUser(id: number, userData: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, userData);
   }
+  toggleTrustedHost(userId: number): Observable<any> {
+  return this.http.put(`${this.apiUrl}/${userId}/toggle-trusted`, {});
+}
 }

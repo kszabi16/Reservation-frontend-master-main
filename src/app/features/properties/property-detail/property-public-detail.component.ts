@@ -44,6 +44,8 @@ export class PropertyPublicDetailComponent implements OnInit {
   bookingError = '';
   today: string = new Date().toISOString().split('T')[0]; // Mai dátum a naptár tiltásához (min)
 
+  currentImageIndex: number = 0;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -241,5 +243,27 @@ export class PropertyPublicDetailComponent implements OnInit {
       }
     });
     
+  }
+  nextImage(event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+    if (!this.property?.imageUrls || this.property.imageUrls.length === 0) return;
+    
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.property.imageUrls.length;
+  }
+
+  prevImage(event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+    if (!this.property?.imageUrls || this.property.imageUrls.length === 0) return;
+    
+    this.currentImageIndex = (this.currentImageIndex - 1 + this.property.imageUrls.length) % this.property.imageUrls.length;
+  }
+
+  getActualImage(): string {
+    if (this.property?.imageUrls && this.property.imageUrls.length > 0) {
+      return this.property.imageUrls[this.currentImageIndex];
+    }
+    return this.property?.imageUrl || 'https://cdn.flyonui.com/fy-assets/components/card/image-9.png'; 
   }
 }

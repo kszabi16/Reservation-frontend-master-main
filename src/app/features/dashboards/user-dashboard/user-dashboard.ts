@@ -27,6 +27,8 @@ export class UserDashboardComponent implements OnInit {
 
   Math = Math;
 
+  currentImageIndices: { [key: number]: number } = {};
+
   getStars(): number[] {
       return [1, 2, 3, 4, 5];
     }
@@ -137,5 +139,31 @@ export class UserDashboardComponent implements OnInit {
     this.maxPrice = null;
     this.minCapacity = null;
     this.loadAll();
+  }
+
+  nextImage(property: PropertyDto, event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+    if (!property.imageUrls || property.imageUrls.length === 0) return;
+    
+    const curr = this.currentImageIndices[property.id] || 0;
+    this.currentImageIndices[property.id] = (curr + 1) % property.imageUrls.length;
+  }
+
+  prevImage(property: PropertyDto, event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+    if (!property.imageUrls || property.imageUrls.length === 0) return;
+    
+    const curr = this.currentImageIndices[property.id] || 0;
+    this.currentImageIndices[property.id] = (curr - 1 + property.imageUrls.length) % property.imageUrls.length;
+  }
+
+  getActualImage(property: PropertyDto): string {
+    if (property.imageUrls && property.imageUrls.length > 0) {
+      const index = this.currentImageIndices[property.id] || 0;
+      return property.imageUrls[index];
+    }
+    return property.imageUrl || 'https://cdn.flyonui.com/fy-assets/components/card/image-9.png'; 
   }
 }

@@ -104,6 +104,7 @@ export class UserAdminComponent implements OnInit {
     this.showDeleteModal = false;
     this.userToDelete = null;
   }
+  
 
   confirmDelete(): void {
     if (!this.userToDelete) return;
@@ -175,4 +176,13 @@ export class UserAdminComponent implements OnInit {
   editUser(userId: number): void {
     this.router.navigate(['/admin-user-edit', userId]);
   }
+  toggleTrusted(user: any) {
+  this.userService.toggleTrustedHost(user.id).subscribe({
+    next: () => {
+      user.isTrustedHost = !user.isTrustedHost; // Felület frissítése
+      alert(`${user.username} státusza sikeresen módosítva!`);
+    },
+    error: (err) => console.error(err)
+  });
+}
 }

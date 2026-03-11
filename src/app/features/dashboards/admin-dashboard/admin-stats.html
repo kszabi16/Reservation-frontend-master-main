@@ -21,6 +21,17 @@
       
       <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
         <div class="flex justify-between items-start mb-4">
+          <div class="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
+            <iconify-icon icon="tabler:users" width="24"></iconify-icon>
+          </div>
+          <span class="text-xs text-gray-400 font-medium">{{ stats.totalHosts }} házigazda</span>
+        </div>
+        <h3 class="text-gray-500 text-sm font-medium">Regisztrált felhasználók</h3>
+        <p class="text-3xl font-black text-gray-800 mt-1">{{ stats.totalUsers }}</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex justify-between items-start mb-4">
           <div class="p-2 bg-blue-50 text-blue-600 rounded-lg">
             <iconify-icon icon="tabler:building-estate" width="24"></iconify-icon>
           </div>
@@ -45,7 +56,7 @@
         <p class="text-3xl font-black text-gray-800 mt-1">{{ stats.totalBookings }}</p>
       </div>
 
-      <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow lg:col-span-2 bg-gradient-to-br from-indigo-600 to-indigo-800 text-white border-none">
+      <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow bg-gradient-to-br from-indigo-600 to-indigo-800 text-white border-none">
         <div class="flex justify-between items-start mb-4">
           <div class="p-2 bg-white/20 text-white rounded-lg">
             <iconify-icon icon="tabler:coin" width="24"></iconify-icon>
@@ -54,7 +65,7 @@
         </div>
         <h3 class="text-indigo-100 text-sm font-medium">Becsült teljes forgalom</h3>
         <p class="text-4xl font-black mt-1">{{ stats.totalRevenue | currency:'HUF':'symbol':'1.0-0' }}</p>
-        <p class="text-indigo-200 text-xs mt-2 italic">* A visszaigazolt foglalások alapján számolva</p>
+        <p class="text-indigo-200 text-[10px] mt-2 italic">* Csak a visszaigazolt foglalások alapján</p>
       </div>
 
     </div>
@@ -70,7 +81,7 @@
               <span class="font-bold text-gray-800">{{ stats.totalProperties - stats.pendingProperties }}</span>
             </div>
             <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
-              <div class="bg-green-500 h-full" [style.width.%]="((stats.totalProperties - stats.pendingProperties) / stats.totalProperties) * 100"></div>
+              <div class="bg-green-500 h-full" [style.width.%]="stats.totalProperties > 0 ? ((stats.totalProperties - stats.pendingProperties) / stats.totalProperties) * 100 : 0"></div>
             </div>
           </div>
           <div>
@@ -79,13 +90,17 @@
               <span class="font-bold text-gray-800">{{ stats.pendingProperties }}</span>
             </div>
             <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
-              <div class="bg-yellow-400 h-full" [style.width.%]="(stats.pendingProperties / stats.totalProperties) * 100"></div>
+              <div class="bg-yellow-400 h-full" [style.width.%]="stats.totalProperties > 0 ? (stats.pendingProperties / stats.totalProperties) * 100 : 0"></div>
             </div>
           </div>
         </div>
       </div>
 
       <div class="grid grid-cols-2 gap-4">
+        <a routerLink="/admin/pending-properties" class="bg-white p-6 rounded-2xl border border-gray-100 hover:border-indigo-300 transition-all group flex flex-col items-center justify-center text-center">
+          <iconify-icon icon="tabler:home-question" class="text-indigo-600 mb-3 group-hover:scale-110 transition-transform" width="32"></iconify-icon>
+          <span class="font-bold text-gray-800">Függő ingatlanok</span>
+        </a>
         <a routerLink="/host-requests" class="bg-white p-6 rounded-2xl border border-gray-100 hover:border-indigo-300 transition-all group flex flex-col items-center justify-center text-center">
           <iconify-icon icon="tabler:user-plus" class="text-indigo-600 mb-3 group-hover:scale-110 transition-transform" width="32"></iconify-icon>
           <span class="font-bold text-gray-800">Host kérelmek</span>
