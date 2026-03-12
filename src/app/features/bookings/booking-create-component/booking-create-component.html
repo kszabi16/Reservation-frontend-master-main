@@ -1,24 +1,46 @@
-<div class="admin-container">
-  <div class="admin-card" style="max-width: 600px;">
+<div class="admin-create-container">
+  <div class="admin-create-card">
 
-    <h1 class="admin-title">Új foglalás</h1>
+    <h1 class="admin-title">Új foglalás létrehozása</h1>
 
-    <label>Ingatlan ID</label>
-    <input type="number" [(ngModel)]="model.propertyId" class="form-input">
+    @if (success) {
+      <div class="alert-box success">
+        <iconify-icon icon="tabler:circle-check"></iconify-icon> Sikeres foglalás!
+      </div>
+    }
+    @if (error) {
+      <div class="alert-box error">
+        <iconify-icon icon="tabler:alert-circle"></iconify-icon> {{ error }}
+      </div>
+    }
 
-    <label>Vendég ID</label>
-    <input type="number" [(ngModel)]="model.guestId" class="form-input">
+    <div class="form-content">
+      <div class="form-group">
+        <label>Ingatlan ID</label>
+        <input type="number" [(ngModel)]="model.propertyId" class="form-input" placeholder="Pl. 1">
+      </div>
 
-    <label>Kezdő dátum</label>
-    <input type="date" [(ngModel)]="model.startDate" class="form-input">
+      <div class="form-group">
+        <label>Vendég ID</label>
+        <input type="number" [(ngModel)]="model.guestId" class="form-input" placeholder="Pl. 42">
+      </div>
 
-    <label>Záró dátum</label>
-    <input type="date" [(ngModel)]="model.endDate" class="form-input">
+      <div class="date-picker-grid">
+        <div class="form-group">
+          <label>Kezdő dátum</label>
+          <input type="date" [(ngModel)]="model.startDate" class="form-input">
+        </div>
 
-    <button class="btn-details" (click)="create()">Foglalás létrehozása</button>
+        <div class="form-group">
+          <label>Záró dátum</label>
+          <input type="date" [(ngModel)]="model.endDate" class="form-input">
+        </div>
+      </div>
 
-    <p *ngIf="success" style="color: lightgreen;">Sikeres foglalás!</p>
-    <p *ngIf="error" style="color: salmon;">{{ error }}</p>
+      <button class="btn-primary" (click)="create()">
+        Foglalás rögzítése
+      </button>
+    </div>
 
   </div>
 </div>

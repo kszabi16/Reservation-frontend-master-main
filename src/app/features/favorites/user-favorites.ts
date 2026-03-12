@@ -9,7 +9,8 @@ import { AuthService } from '../../core/services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './user-favorites.html',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  styleUrl:'./user-favorites.css'
 })
 export class UserFavoritesComponent implements OnInit {
   favorites: any[] = [];
@@ -17,6 +18,8 @@ export class UserFavoritesComponent implements OnInit {
   error = '';
   showToast = false;
   toastMessage = '';
+
+  currentImageIndices: { [key: number]: number } = {};
 
   constructor(
     private favoriteService: FavoriteService,
@@ -37,7 +40,6 @@ export class UserFavoritesComponent implements OnInit {
     }
 
     this.loading = true;
-    // Átadjuk a userId-t a kérésnek!
     this.favoriteService.getMyFavorites(userId).subscribe({
       next: (data) => {
         this.favorites = data;
@@ -51,6 +53,33 @@ export class UserFavoritesComponent implements OnInit {
     });
   }
 
+ getActualImage(fav: any): string {
+  const backendUrl = 'https://localhost:7102';
+  
+  if (fav.property?.imageUrls && fav.property.imageUrls.length > 0) {
+    const index = this.currentImageIndices[fav.propertyId] || 0;
+    const imgPath = fav.property.imageUrls[index];
+    return imgPath.startsWith('http') ? imgPath : backendUrl + imgPath;
+  }
+
+  if (fav.property?.imageUrl) {
+    const imgPath = fav.property.imageUrl;
+    return imgPath.startsWith('http') ? imgPath : backendUrl + imgPath;
+  }
+
+  if (fav.imageUrls && fav.imageUrls.length > 0) {
+    const index = this.currentImageIndices[fav.propertyId] || 0;
+    const imgPath = fav.imageUrls[index];
+    return imgPath.startsWith('http') ? imgPath : backendUrl + imgPath;
+  }
+
+  if (fav.imageUrl) {
+    const imgPath = fav.imageUrl;
+    return imgPath.startsWith('http') ? imgPath : backendUrl + imgPath;
+  }
+
+  return 'https://as2.ftcdn.net/v2/jpg/00/89/55/15/1000_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg'; 
+}
   removeFavorite(propertyId: number): void {
     const removedItem = this.favorites.find(f => f.propertyId === propertyId);
     this.favorites = this.favorites.filter(f => f.propertyId !== propertyId);

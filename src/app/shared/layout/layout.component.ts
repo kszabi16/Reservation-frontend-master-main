@@ -9,9 +9,7 @@ import { AuthService } from '../../core/services/auth.service';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css',
-    '../../shared/styles/dashboard.css'
-  ],
+  styleUrl: './layout.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class LayoutComponent implements OnInit {

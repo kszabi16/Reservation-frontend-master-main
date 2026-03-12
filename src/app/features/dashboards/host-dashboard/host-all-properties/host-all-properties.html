@@ -1,0 +1,88 @@
+<div class="my-properties-container">
+  
+  <header class="list-header">
+    <div class="header-text">
+      <h2>Saját ingatlanjaim</h2>
+      <p>Itt kezelheted a feltöltött szálláshelyeidet.</p>
+    </div>
+    <a routerLink="/property/create" class="btn-primary add-property-btn">
+      <iconify-icon icon="tabler:plus"></iconify-icon>
+      Új ingatlan feladása
+    </a>
+  </header>
+
+  @if (loading) {
+    <div class="loading-state">
+      <iconify-icon icon="line-md:loading-loop"></iconify-icon>
+    </div>
+  }
+
+  @if (error) {
+    <div class="alert-box error">
+      <iconify-icon icon="tabler:alert-circle"></iconify-icon>
+      {{ error }}
+    </div>
+  }
+
+  @if (!loading && myProperties.length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon-circle">
+        <iconify-icon icon="tabler:building-off"></iconify-icon>
+      </div>
+      <h3>Még nincs feltöltött ingatlanod</h3>
+      
+      <p>Kezdd el a hirdetést az első ingatlanod feladásával!</p>
+      <a routerLink="/property/create" class="link-highlight">Első ingatlan feladása →</a>
+    </div>
+  }
+
+  <div class="property-grid">
+    @for (p of myProperties; track p.id) {
+      <div class="property-card">
+        
+        <div class="card-media">
+          <div class="card-media">
+              <img [src]="getActualImage(p)" [alt]="p.title" class="property-img">
+              
+              <div class="status-overlay">
+                <span class="status-tag" [class.active]="p.isApproved" [class.pending]="!p.isApproved">
+                  {{ p.isApproved ? 'Aktív' : 'Jóváhagyásra vár' }}
+                </span>
+              </div>
+            </div>
+          
+          <div class="status-overlay">
+            <span class="status-tag" [class.active]="p.isApproved" [class.pending]="!p.isApproved">
+              {{ p.isApproved ? 'Aktív' : 'Jóváhagyásra vár' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="card-content">
+          <h3 class="property-title">{{ p.title }}</h3>
+          <p class="property-location">
+            <iconify-icon icon="tabler:map-pin"></iconify-icon> {{ p.location }}
+          </p>
+
+          <div class="card-footer">
+            <div class="property-price">
+              {{ p.pricePerNight | currency:'HUF':'symbol':'1.0-0' }} <span>/ éj</span>
+            </div>
+            
+            <div class="action-group">
+              <a [routerLink]="['/property/edit', p.id]" class="icon-btn edit" title="Szerkesztés">
+                <iconify-icon icon="tabler:edit"></iconify-icon>
+              </a>
+              <button (click)="deleteProperty(p.id)" class="icon-btn delete" title="Törlés">
+                <iconify-icon icon="tabler:trash"></iconify-icon>
+              </button>
+              <a [routerLink]="['/property/detail', p.id]" class="icon-btn view" title="Megtekintés">
+                <iconify-icon icon="tabler:eye"></iconify-icon>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

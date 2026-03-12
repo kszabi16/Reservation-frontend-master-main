@@ -1,8 +1,230 @@
-@import './app/shared/styles/dashboard.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* ===== GLOBÁLIS VÁLTOZÓK (Prémium Sötét Mód) ===== */
+:root {
+  /* Színek - Mély, gazdag sötét tónusok */
+  --bg-color: #0b0f19; /* Nagyon sötét éjkék */
+  --surface-color: rgba(30, 41, 59, 0.4); /* Füstüveg kártya háttér */
+  --surface-border: rgba(255, 255, 255, 0.08); /* Hajszálvékony üveg keret */
+  
+  --text-main: #f8fafc; /* Ragyogó fehér főszöveg */
+  --text-muted: #94a3b8; /* Palaszürke másodlagos szöveg */
+  
+  /* Elsődleges szín (Electric Cyan / Neon kék) */
+  --primary: #0ea5e9; 
+  --primary-hover: #38bdf8;
+  --primary-glow: rgba(14, 165, 233, 0.4);
 
+  /* Formák és effektek */
+  --radius-lg: 20px;
+  --radius-md: 12px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+html, body {
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  overflow-x: hidden;
+}
+
+*, *::before, *::after {
+  transition: var(--transition);
+}
+
+/* ===== HÁTTÉR EFFEKTEK (Mély tengeri fények) ===== */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 20px;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* Két elegáns, lassan mozgó fényforrás a sötétben */
+.background-blob {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+  opacity: 0.15; /* Nagyon finom, nem tolakodó */
+  animation: blobMove 20s infinite alternate ease-in-out;
+}
+
+.background-blob.blob-1 {
+  background: #0ea5e9; /* Cián fény */
+  top: -10%;
+  left: -10%;
+}
+
+.background-blob.blob-2 {
+  background: #8b5cf6; /* Lila fény */
+  bottom: -10%;
+  right: -10%;
+  animation-delay: -10s;
+}
+
+@keyframes blobMove {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(100px, 50px) scale(1.2); }
+}
+
+/* ===== AUTH CARD (Prémium Üveg Kártya) ===== */
+.auth-card {
+  position: relative;
+  width: 440px;
+  padding: 50px 40px;
+  background: var(--surface-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); /* Mély árnyék */
+  z-index: 2;
+  animation: cardFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+}
+
+@keyframes cardFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===== TITLE ===== */
+.auth-card h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+}
+
+/* ===== ŰRLAP ELEMEK ===== */
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+/* Prémium Input mezők */
+.auth-card input {
+  width: 100%;
+  padding: 15px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2); /* Sötétebb, befelé süllyedő mező */
+  color: var(--text-main);
+  font-size: 1rem;
+}
+
+.auth-card input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.auth-card input:focus {
+  outline: none;
+  background: rgba(0, 0, 0, 0.4);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+/* ===== GOMB ===== */
+.btn-primary {
+  width: 100%;
+  margin-top: 10px;
+  padding: 15px 0;
+  background: linear-gradient(135deg, #0ea5e9, #2563eb); /* Elegáns cián-kék átmenet */
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 10px 20px -10px var(--primary);
+}
+
+.btn-primary:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px -10px var(--primary);
+  filter: brightness(1.1);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ===== LINK KAGYLÓ ÉS LÁBLÉC ===== */
+.auth-footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.auth-card a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.auth-card a:hover {
+  color: var(--primary-hover);
+  text-shadow: 0 0 10px var(--primary-glow);
+}
+
+/* ===== HIBAÜZENETEK ===== */
+.error-box {
+  background: rgba(220, 38, 38, 0.1); /* Sötét pirosas üveg */
+  color: #fca5a5;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.error-text {
+  color: #f87171;
+  font-size: 0.8rem;
+  margin-top: 6px;
+  display: block;
+}
+
+/* Hibás input stílusa */
+.auth-card input.invalid-input {
+  border-color: rgba(220, 38, 38, 0.5);
+  background-color: rgba(220, 38, 38, 0.05);
+}
+
+.auth-card input.invalid-input:focus {
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.2);
+}

@@ -2,7 +2,7 @@ import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { PropertyService } from '../../../core/services/property.service';
-import { FavoriteService } from '../../../core/services/favorite.service'; // <-- EZT BEHÚZTUK
+import { FavoriteService } from '../../../core/services/favorite.service';
 import { PropertyDto } from '../../../core/models/property-dto';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
@@ -32,19 +32,17 @@ export class UserDashboardComponent implements OnInit {
   getStars(): number[] {
       return [1, 2, 3, 4, 5];
     }
-  // Ide mentjük a bejelentkezett felhasználó kedvenceit!
   favoritePropertyIds: Set<number> = new Set<number>();
 
   constructor(
     private propertyService: PropertyService,
-    private favoriteService: FavoriteService, // <-- INJEKTÁLTUK
+    private favoriteService: FavoriteService,
     public authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loadAll();
-    // Betöltjük a kedvenceket is az indulásnál!
     this.loadUserFavorites();
   }
 
@@ -63,11 +61,10 @@ export class UserDashboardComponent implements OnInit {
     });
   }
 
-  // --- KEDVENCEK LOGIKA KEZDŐDIK ---
  loadUserFavorites(): void {
-    const userId = this.authService.getUserIdFromToken(); // <-- ID lekérése
+    const userId = this.authService.getUserIdFromToken(); 
     if (userId) {
-      // ITT ÁTADJUK A userId-t a szerviznek!
+
       this.favoriteService.getMyFavorites(userId).subscribe({
         next: (favorites) => {
           this.favoritePropertyIds = new Set(favorites.map(f => f.propertyId));
@@ -83,7 +80,6 @@ export class UserDashboardComponent implements OnInit {
       return;
     }
 
-    // Azonnali UI frissítés a gyors érzetért
     const wasFavorite = this.favoritePropertyIds.has(propertyId);
     if (wasFavorite) {
       this.favoritePropertyIds.delete(propertyId);
@@ -91,7 +87,6 @@ export class UserDashboardComponent implements OnInit {
       this.favoritePropertyIds.add(propertyId);
     }
 
-    // Backend hívás
     this.favoriteService.toggleFavorite(propertyId).subscribe({
       next: (res) => {
         if (res.isFavorite) {
@@ -102,7 +97,6 @@ export class UserDashboardComponent implements OnInit {
       },
       error: (err) => {
         console.error('Hiba a kedvencelés során:', err);
-        // Hiba esetén visszacsináljuk
         if (wasFavorite) {
           this.favoritePropertyIds.add(propertyId);
         } else {
@@ -111,7 +105,7 @@ export class UserDashboardComponent implements OnInit {
       }
     });
   }
-  // --- KEDVENCEK LOGIKA VÉGE ---
+
 
   applyFilters(): void {
     this.loading = true;
@@ -164,6 +158,6 @@ export class UserDashboardComponent implements OnInit {
       const index = this.currentImageIndices[property.id] || 0;
       return property.imageUrls[index];
     }
-    return property.imageUrl || 'https://cdn.flyonui.com/fy-assets/components/card/image-9.png'; 
+    return property.imageUrl || 'https://as2.ftcdn.net/v2/jpg/00/89/55/15/1000_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg'; 
   }
 }

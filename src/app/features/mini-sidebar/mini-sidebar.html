@@ -1,47 +1,52 @@
-<div class="layout flex min-h-screen bg-gray-50">
+<div class="layout-wrapper">
 
-  <aside class="sidebar w-64 bg-white shadow-lg flex flex-col">
+  <aside class="sidebar">
 
-    <div class="sidebar-header p-6 border-b border-gray-100">
-      <span class="logo-text text-2xl font-black text-indigo-700 tracking-tight flex items-center gap-2">
-        <iconify-icon icon="tabler:building-estate"></iconify-icon> Reservation
-      </span>
+    <div class="sidebar-header">
+      <div class="logo">
+        <iconify-icon icon="tabler:building-estate"></iconify-icon>
+        <span>Reservation</span>
+      </div>
     </div>
 
-    <ul class="sidebar-menu flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-      
-      <li>
-        <a routerLink="/public-dashboard"
-           routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold"
-           [routerLinkActiveOptions]="{exact: true}"
-           class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
-          <iconify-icon icon="tabler:home" width="22"></iconify-icon>
-          <span>Kezdőlap</span>
-        </a>
-      </li>
+    <nav class="sidebar-nav">
+      <ul class="nav-list">
+        
+        <li>
+          <a routerLink="/public-dashboard"
+             routerLinkActive="active"
+             [routerLinkActiveOptions]="{exact: true}"
+             class="nav-link">
+            <iconify-icon icon="tabler:home"></iconify-icon>
+            <span>Kezdőlap</span>
+          </a>
+        </li>
 
-      <li>
-        <a routerLink="/auth/login"
-           routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold"
-           class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer mt-4 border border-indigo-100">
-          <iconify-icon icon="tabler:login" width="22"></iconify-icon>
-          <span>Belépés</span>
-        </a>
-      </li>
+        <li class="nav-spacer"></li>
 
-      <li>
-        <a routerLink="/auth/register"
-           routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold"
-           class="flex items-center gap-3 w-full p-3 rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition-colors cursor-pointer shadow-sm">
-          <iconify-icon icon="tabler:user-plus" width="22"></iconify-icon>
-          <span>Regisztráció</span>
-        </a>
-      </li>
+        <li>
+          <a routerLink="/auth/login"
+             routerLinkActive="active"
+             class="nav-link login-link">
+            <iconify-icon icon="tabler:login"></iconify-icon>
+            <span>Belépés</span>
+          </a>
+        </li>
 
-    </ul>
+        <li>
+          <a routerLink="/auth/register"
+             routerLinkActive="active"
+             class="nav-link register-link">
+            <iconify-icon icon="tabler:user-plus"></iconify-icon>
+            <span>Regisztráció</span>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
   </aside>
 
-  <main class="main-content flex-1 overflow-y-auto">
+  <main class="content-area">
     <router-outlet></router-outlet>
   </main>
 

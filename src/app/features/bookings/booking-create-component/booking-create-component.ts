@@ -3,12 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BookingService } from '../../../core/services/booking.service';
 import { CreateBookingDto } from '../../../core/models/booking-dto';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'booking-create',
   standalone: true,
   templateUrl: './booking-create-component.html',
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  styleUrl: './booking-create-component.css'
 })
 export class BookingCreateComponent {
 

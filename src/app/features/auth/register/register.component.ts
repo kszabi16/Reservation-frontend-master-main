@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, Validators } 
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 
 @Component({
@@ -10,7 +11,7 @@ import { AuthService } from '../../../core/services/auth.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule,RouterModule],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class RegisterComponent {
  form: FormGroup<{

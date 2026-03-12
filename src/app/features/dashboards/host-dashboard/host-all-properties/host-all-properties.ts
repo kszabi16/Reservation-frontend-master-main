@@ -1,16 +1,17 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { PropertyService } from '../../../core/services/property.service';
-import { AuthService } from '../../../core/services/auth.service';
-import { PropertyDto } from '../../../core/models/property-dto';
+import { PropertyService } from '../../../../core/services/property.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { PropertyDto } from '../../../../core/models/property-dto';
 
 @Component({
   selector: 'app-host-all-properties',
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './host-all-properties.html',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  styleUrl:'./host-all-properties.css'
 })
 export class HostAllPropertiesComponent implements OnInit {
   myProperties: PropertyDto[] = [];
@@ -57,5 +58,23 @@ export class HostAllPropertiesComponent implements OnInit {
         error: (err) => console.error('Hiba a törlés során:', err)
       });
     }
+  }
+  getActualImage(property: PropertyDto): string {
+    const backendUrl = 'https://localhost:7102'; // Cseréld, ha nem ezen a porton fut a backend!
+
+    // 1. Ha van képek tömbje és nem üres, az első képet adjuk vissza
+    if (property.imageUrls && property.imageUrls.length > 0) {
+      const imgPath = property.imageUrls[0];
+      return imgPath.startsWith('http') ? imgPath : backendUrl + imgPath;
+    }
+
+    // 2. Ha csak egy imageUrl mező van
+    if (property.imageUrl) {
+      const imgPath = property.imageUrl;
+      return imgPath.startsWith('http') ? imgPath : backendUrl + imgPath;
+    }
+
+    // 3. Ha egyáltalán nincs kép, egy beépített placeholder képet adunk vissza
+    return 'https://placehold.co/600x400/1e293b/cbd5e1?text=Nincs+k%C3%A9p';
   }
 }

@@ -1,0 +1,210 @@
+.favorites-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.header-icon {
+  padding: 12px;
+  border-radius: 16px;
+  display: flex;
+  font-size: 32px;
+  color: white;
+}
+.property-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.property-card:hover .property-img {
+  transform: scale(1.05);
+}
+.heart-icon {
+  background: #f43f5e;
+  box-shadow: 0 8px 16px rgba(244, 63, 94, 0.3);
+}
+
+.header-text h2 { font-size: 2rem; font-weight: 800; margin: 0; color: var(--text-main); }
+.header-text p { color: var(--text-muted); margin-top: 4px; }
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 80px 0;
+  font-size: 48px;
+  color: #f43f5e;
+}
+
+.empty-favorites {
+  background: var(--card-bg);
+  border: 1px dashed var(--card-border);
+  border-radius: 32px;
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.empty-icon-wrapper {
+  width: 96px;
+  height: 96px;
+  background: rgba(244, 63, 94, 0.1);
+  color: #f43f5e;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  margin-bottom: 24px;
+}
+
+.browse-btn {
+  display: inline-flex;
+  width: auto !important;
+  margin-top: 24px;
+  padding: 12px 32px !important;
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.property-card {
+  background: var(--surface-color);
+  border: 1px solid var(--surface-border);
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+}
+
+.property-card:hover {
+  transform: translateY(-6px);
+  border-color: #f43f5e;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.card-media {
+  width: 100%;
+  height: 200px; /* Fix magasság, hogy minden kártya egyforma legyen */
+  min-height: 200px;
+  max-height: 200px;
+  position: relative;
+  overflow: hidden; /* Levágja a képek kilógó részeit */
+  flex-shrink: 0; /* Nem engedi, hogy a flexbox összenyomja vagy kinyújtsa */
+}
+
+.media-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: #334155;
+}
+
+.remove-fav-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  background: white;
+  color: #f43f5e;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: var(--transition);
+}
+
+.remove-fav-btn:hover {
+  transform: scale(1.1);
+  background: #fff1f2;
+}
+.card-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.property-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+.property-location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+.main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Kitölti a 200px magas dobozt, torzulás nélkül */
+  display: block;
+  transition: transform 0.5s ease; /* Finom animáció hover-re */
+}
+.property-location iconify-icon { color: var(--primary); }
+
+.card-footer {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--surface-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.property-price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.property-price span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.btn-view {
+  padding: 8px 16px;
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--primary-glow);
+  transition: var(--transition);
+}
+
+.btn-view:hover {
+  background: var(--primary);
+  color: white;
+}
+.property-card:hover .main-img {
+  transform: scale(1.08);
+}

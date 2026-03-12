@@ -9,7 +9,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './host-request-admin.component.html',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  styleUrl:'./host-request-admin.component.css'
 })
 export class HostRequestAdminComponent implements OnInit {
   requests: HostRequestDto[] = [];

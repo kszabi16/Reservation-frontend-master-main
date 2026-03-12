@@ -1,114 +1,125 @@
-<div class="user-container">
-  <main class="flex-1 p-6 bg-base-100 min-h-screen">
-    
-    <div class="px-2 mb-4 sm:hidden">
-      <button
-        type="button"
-        class="btn btn-text btn-square"
-        aria-haspopup="dialog"
-        aria-expanded="false"
-        aria-controls="collapsible-sidebar"
-        data-overlay="#collapsible-sidebar">
-        <iconify-icon icon="tabler:menu-2" width="24" height="24"></iconify-icon>
+<div class="host-dashboard-container">
+  <main class="dashboard-content">
+
+    <div class="mobile-nav-trigger">
+      <button type="button" class="btn-icon">
+        <iconify-icon icon="tabler:menu-2"></iconify-icon>
       </button>
     </div>
 
-    <div class="admin-container">
-      <div class="admin-card">
-        
-        <div class="mb-8">
-          <h1 class="admin-title text-3xl font-bold">Host Kezelőfelület</h1>
-          <p class="admin-subtitle text-gray-500">Itt láthatod a teendőidet, és kiválaszthatod, melyik műveletet szeretnéd elvégezni.</p>
-        </div>
+    <div class="dashboard-card">
+      
+      <header class="dashboard-header">
+        <h1 class="page-title">Host Kezelőfelület</h1>
+        <p class="page-subtitle">Itt láthatod a teendőidet, és kiválaszthatod, melyik műveletet szeretnéd elvégezni.</p>
+      </header>
 
-        <div class="mb-12 bg-indigo-50/50 p-6 rounded-2xl border border-indigo-100">
-          <h3 class="text-xl font-bold text-gray-800 mb-5 flex items-center gap-2">
-            <iconify-icon icon="tabler:bell-ringing" class="text-indigo-600"></iconify-icon>
+      <section class="notifications-panel">
+        <div class="panel-header">
+          <h3 class="section-title">
+            <iconify-icon icon="tabler:bell-ringing"></iconify-icon>
             Elbírálásra váró kérelmek
             @if (notifications.length > 0) {
-              <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full shadow-sm">{{ notifications.length }} új</span>
+              <span class="count-badge">{{ notifications.length }} új</span>
             }
           </h3>
+        </div>
 
-          @if (loadingNotifications) {
-            <div class="flex justify-center items-center py-6 text-indigo-600">
-              <iconify-icon icon="line-md:loading-loop" width="32"></iconify-icon>
-              <span class="ml-3 font-medium">Kérelmek betöltése...</span>
-            </div>
-          }
-
-          @if (!loadingNotifications && notifications.length === 0) {
-            <div class="bg-white rounded-xl p-6 text-center border border-dashed border-gray-300">
-              <div class="inline-flex items-center justify-center w-12 h-12 bg-gray-50 text-green-500 rounded-full mb-2">
-                <iconify-icon icon="tabler:check" width="24"></iconify-icon>
-              </div>
-              <p class="text-gray-500 font-medium">Jelenleg nincs új foglalási kérelmed.</p>
-            </div>
-          }
-
-          <div class="space-y-3">
-            @for (notif of notifications; track notif.id) {
-              <div class="bg-white p-4 rounded-xl shadow-sm border border-l-4 border-l-yellow-400 border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                
-                <div class="flex flex-col">
-                  <div class="flex items-center gap-2 mb-1">
-                    <span class="bg-yellow-100 text-yellow-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Új foglalás</span>
-                    <span class="text-xs text-gray-400">ID: #{{ notif.id }}</span>
-                  </div>
-                  
-                  <div class="flex items-center gap-4 mt-1 text-sm text-gray-600">
-                    <span title="Ingatlan azonosítója"><iconify-icon icon="tabler:building-estate" class="inline align-text-bottom text-indigo-400"></iconify-icon> <strong>#{{ notif.propertyId }}</strong></span>
-                    <span title="Vendég azonosítója"><iconify-icon icon="tabler:user" class="inline align-text-bottom text-indigo-400"></iconify-icon> <strong>#{{ notif.guestId }}</strong></span>
-                    <span class="text-gray-800 font-medium bg-gray-50 px-2 py-0.5 rounded">
-                      <iconify-icon icon="tabler:calendar-event" class="inline align-text-bottom text-indigo-500 mr-1"></iconify-icon>
-                      {{ notif.startDate | date:'MM. dd.' }} - {{ notif.endDate | date:'MM. dd.' }}
-                    </span>
-                  </div>
-                </div>
-
-                <div class="flex gap-2">
-                  <button 
-                    (click)="acceptBooking(notif.id)"
-                    class="bg-green-50 hover:bg-green-100 text-green-700 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border border-green-200 flex items-center gap-1">
-                    <iconify-icon icon="tabler:check"></iconify-icon> Elfogad
-                  </button>
-                  <button 
-                    (click)="rejectBooking(notif.id)"
-                    class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border border-red-200 flex items-center gap-1">
-                    <iconify-icon icon="tabler:x"></iconify-icon> Elutasít
-                  </button>
-                </div>
-                
-              </div>
-            }
+        @if (loadingNotifications) {
+          <div class="loading-state">
+            <iconify-icon icon="line-md:loading-loop"></iconify-icon>
+            <span>Kérelmek betöltése...</span>
           </div>
+        }
+
+        @if (!loadingNotifications && notifications.length === 0) {
+          <div class="empty-notifications">
+            <div class="empty-icon-circle">
+              <iconify-icon icon="tabler:check"></iconify-icon>
+            </div>
+            <p>Jelenleg nincs új foglalási kérelmed.</p>
+          </div>
+        }
+
+        <div class="notifications-list">
+          @for (notif of notifications; track notif.id) {
+            <div class="notification-item">
+              
+              <div class="notif-info">
+                <div class="notif-meta">
+                  <span class="type-tag">Új foglalás</span>
+                  <span class="notif-id">ID: #{{ notif.id }}</span>
+                </div>
+                
+                <div class="notif-details">
+                  <span class="detail-item" title="Ingatlan azonosítója">
+                    <iconify-icon icon="tabler:building-estate"></iconify-icon> 
+                    <strong>#{{ notif.propertyId }}</strong>
+                  </span>
+                  <span class="detail-item" title="Vendég azonosítója">
+                    <iconify-icon icon="tabler:user"></iconify-icon> 
+                    <strong>#{{ notif.guestId }}</strong>
+                  </span>
+                  <span class="date-badge">
+                    <iconify-icon icon="tabler:calendar-event"></iconify-icon>
+                    {{ notif.startDate | date:'MM. dd.' }} - {{ notif.endDate | date:'MM. dd.' }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="notif-actions">
+                <button (click)="acceptBooking(notif.id)" class="btn-accept">
+                  <iconify-icon icon="tabler:check"></iconify-icon> Elfogad
+                </button>
+                <button (click)="rejectBooking(notif.id)" class="btn-reject">
+                  <iconify-icon icon="tabler:x"></iconify-icon> Elutasít
+                </button>
+              </div>
+              
+            </div>
+          }
         </div>
-        <h3 class="text-xl font-bold text-gray-800 mb-4">Gyorsmenü</h3>
-        <div class="admin-grid">
+      </section>
+
+      <section class="quick-menu-section">
+        <h3 class="section-title">Gyorsmenü</h3>
+        <div class="quick-menu-grid">
           
-          <a routerLink="/host-all-properties" class="admin-button-card">
-            <h3>Ingatlanjaim</h3>
-            <p>A feltöltött ingatlanok listázása és kezelése.</p>
+          <a routerLink="/host-all-properties" class="menu-card">
+            <iconify-icon icon="tabler:building-estate" class="menu-icon"></iconify-icon>
+            <div class="menu-text">
+              <h3>Ingatlanjaim</h3>
+              <p>A feltöltött ingatlanok listázása és kezelése.</p>
+            </div>
           </a>
 
-          <a routerLink="/property/create" class="admin-button-card">
-            <h3>Új ingatlan feladása</h3>
-            <p>Adj hozzá új ingatlant a rendszerhez részletes adatokkal.</p>
+          <a routerLink="/property/create" class="menu-card">
+            <iconify-icon icon="tabler:circle-plus" class="menu-icon"></iconify-icon>
+            <div class="menu-text">
+              <h3>Új ingatlan feladása</h3>
+              <p>Adj hozzá új ingatlant a rendszerhez részletes adatokkal.</p>
+            </div>
           </a>
 
-          <a routerLink="/user-dashboard" class="admin-button-card">
-            <h3>Ingatlanok</h3>
-            <p>Az oldalon lévő ingatlanok.</p>
+          <a routerLink="/user-dashboard" class="menu-card">
+            <iconify-icon icon="tabler:search" class="menu-icon"></iconify-icon>
+            <div class="menu-text">
+              <h3>Böngészés</h3>
+              <p>Az oldalon lévő összes elérhető ingatlan megtekintése.</p>
+            </div>
           </a>
 
-          <a routerLink="/host-bookings" class="admin-button-card">
-            <h3>Foglalásaim</h3>
-            <p>Aktív, elfogadott és folyamatban lévő foglalások kezelése.</p>
+          <a routerLink="/host-bookings" class="menu-card">
+            <iconify-icon icon="tabler:calendar-check" class="menu-icon"></iconify-icon>
+            <div class="menu-text">
+              <h3>Foglalásaim</h3>
+              <p>Aktív, elfogadott és folyamatban lévő foglalások kezelése.</p>
+            </div>
           </a>
 
         </div>
+      </section>
 
-      </div>
     </div>
   </main>
 </div>

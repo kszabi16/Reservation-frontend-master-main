@@ -91,4 +91,7 @@ getPendingProperties(): Observable<PropertyDto[]> {
 approveProperty(id: number): Observable<any> {
   return this.http.put(`${this.apiUrl}/${id}/approve`, {});
 }
+getAllAmenities(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/amenities`);
+  }
 }

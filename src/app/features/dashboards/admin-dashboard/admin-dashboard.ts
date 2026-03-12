@@ -7,7 +7,8 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './admin-dashboard.html',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  styleUrl:'./admin-dashboard.css'
 })
 export class AdminDashboardComponent {
 

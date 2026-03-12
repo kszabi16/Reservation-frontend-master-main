@@ -11,6 +11,7 @@ export interface PropertyDto {
   reviewCount?: number;
   imageUrl?: string;
   imageUrls?: string[];
+  amenities?: string[];
 }
 export interface CreatePropertyDto {
   title: string;
@@ -18,4 +19,5 @@ export interface CreatePropertyDto {
   location: string;
   pricePerNight: number;
   capacity: number;
+  amenities?: string[];
 }

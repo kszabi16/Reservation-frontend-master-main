@@ -9,7 +9,8 @@ import { BookingDto } from '../../core/models/booking-dto';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './calendar.component.html',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  styleUrl:'./calendar.component.css'
 })
 export class CalendarComponent implements OnInit {
   bookings: BookingDto[] = [];

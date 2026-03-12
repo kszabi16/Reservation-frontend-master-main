@@ -1,0 +1,113 @@
+<div class="stats-page-container">
+  
+  <header class="page-header">
+    <div class="header-icon-box">
+      <iconify-icon icon="tabler:chart-bar"></iconify-icon>
+    </div>
+    <div class="header-text">
+      <h2>Rendszer Statisztikák</h2>
+      <p>Átfogó kép a platform aktuális állapotáról és forgalmáról.</p>
+    </div>
+  </header>
+
+  @if (loading) {
+    <div class="loading-container">
+      <iconify-icon icon="line-md:loading-loop"></iconify-icon>
+      <p>Adatok összegzése...</p>
+    </div>
+  } @else {
+    
+    <div class="stats-summary-grid">
+      
+      <div class="stat-card">
+        <div class="card-top">
+          <div class="icon-wrapper emerald">
+            <iconify-icon icon="tabler:users"></iconify-icon>
+          </div>
+          <span class="sub-label">{{ stats.totalHosts }} házigazda</span>
+        </div>
+        <h3 class="stat-title">Regisztrált felhasználók</h3>
+        <p class="stat-value">{{ stats.totalUsers }}</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="card-top">
+          <div class="icon-wrapper blue">
+            <iconify-icon icon="tabler:building-estate"></iconify-icon>
+          </div>
+          @if (stats.pendingProperties > 0) {
+            <span class="status-badge-mini warning">
+              {{ stats.pendingProperties }} új kérelem
+            </span>
+          }
+        </div>
+        <h3 class="stat-title">Összes ingatlan</h3>
+        <p class="stat-value">{{ stats.totalProperties }}</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="card-top">
+          <div class="icon-wrapper purple">
+            <iconify-icon icon="tabler:calendar-check"></iconify-icon>
+          </div>
+          <span class="sub-label">Sikeres: {{ stats.confirmedBookings }}</span>
+        </div>
+        <h3 class="stat-title">Foglalások száma</h3>
+        <p class="stat-value">{{ stats.totalBookings }}</p>
+      </div>
+
+      <div class="stat-card highlight-card">
+        <div class="card-top">
+          <div class="icon-wrapper glass">
+            <iconify-icon icon="tabler:coin"></iconify-icon>
+          </div>
+          <iconify-icon icon="tabler:trending-up" class="trend-icon"></iconify-icon>
+        </div>
+        <h3 class="stat-title">Becsült teljes forgalom</h3>
+        <p class="stat-value large">{{ stats.totalRevenue | currency:'HUF':'symbol':'1.0-0' }}</p>
+        <p class="disclaimer">* Csak a visszaigazolt foglalások alapján</p>
+      </div>
+
+    </div>
+
+    <div class="stats-visuals-grid">
+      
+      <div class="card distribution-card">
+        <h3 class="card-title">Ingatlanok megoszlása</h3>
+        <div class="progress-list">
+          <div class="progress-item">
+            <div class="progress-labels">
+              <span>Jóváhagyott</span>
+              <span class="val">{{ stats.totalProperties - stats.pendingProperties }}</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-fill approved" [style.width.%]="stats.totalProperties > 0 ? ((stats.totalProperties - stats.pendingProperties) / stats.totalProperties) * 100 : 0"></div>
+            </div>
+          </div>
+
+          <div class="progress-item">
+            <div class="progress-labels">
+              <span>Jóváhagyásra vár</span>
+              <span class="val">{{ stats.pendingProperties }}</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-fill pending" [style.width.%]="stats.totalProperties > 0 ? (stats.pendingProperties / stats.totalProperties) * 100 : 0"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-admin-links">
+        <a routerLink="/admin/pending-properties" class="nav-tile">
+          <iconify-icon icon="tabler:home-question"></iconify-icon>
+          <span>Függő ingatlanok</span>
+        </a>
+        <a routerLink="/host-requests" class="nav-tile">
+          <iconify-icon icon="tabler:user-plus"></iconify-icon>
+          <span>Host kérelmek</span>
+        </a>
+      </div>
+
+    </div>
+  }
+</div>

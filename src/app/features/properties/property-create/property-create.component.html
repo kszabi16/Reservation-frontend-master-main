@@ -1,93 +1,91 @@
-<div class="p-6 max-w-3xl mx-auto bg-white min-h-screen">
-  
-  <div class="flex items-center gap-4 mb-8">
-    <div class="bg-indigo-600 text-white p-3 rounded-2xl shadow-lg shadow-indigo-200 flex items-center justify-center">
-      <iconify-icon icon="tabler:home-plus" width="32"></iconify-icon>
-    </div>
-    <div>
-      <h2 class="text-3xl font-bold text-gray-800">Új ingatlan feladása</h2>
-      <p class="text-gray-500 mt-1">Hirdess meg egy új szálláshelyet egyszerűen és gyorsan.</p>
-    </div>
-  </div>
+<div class="create-property-wrapper">
 
-  @if (message) {
-    <div class="bg-green-50 text-green-700 p-4 rounded-xl border border-green-200 mb-6 flex items-center gap-3">
-      <iconify-icon icon="tabler:check" width="24"></iconify-icon>
-      <span class="font-medium">{{ message }}</span>
+  <header class="page-header">
+    <div class="header-icon">
+      <iconify-icon icon="tabler:home-plus"></iconify-icon>
     </div>
-  }
+    <div class="header-text">
+      <h2 class="page-title">Új ingatlan feladása</h2>
+      <p class="page-subtitle">Hirdess meg egy új szálláshelyet egyszerűen és gyorsan.</p>
+    </div>
+  </header>
+
   @if (error) {
-    <div class="bg-red-50 text-red-600 p-4 rounded-xl border border-red-200 mb-6 flex items-center gap-3">
-      <iconify-icon icon="tabler:alert-circle" width="24"></iconify-icon>
+    <div class="alert-box error">
+      <iconify-icon icon="tabler:alert-circle"></iconify-icon>
       <span class="font-medium">{{ error }}</span>
     </div>
   }
 
-  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-    <form (ngSubmit)="submitProperty()" #form="ngForm" class="space-y-6">
+  <div class="card form-card">
+    <form (ngSubmit)="submitProperty()" #form="ngForm" class="property-form">
 
-      <div>
-        <label class="block text-sm font-bold text-gray-700 mb-2">Szállás neve *</label>
+      <div class="form-group">
+        <label>Szállás neve *</label>
         <input 
           type="text" 
           [(ngModel)]="property.title" 
           name="title" 
           required 
+          minlength="3"
           placeholder="Pl.: Napfényes Apartman a belvárosban" 
-          class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" />
+          class="form-input" />
       </div>
 
-      <div>
-        <label class="block text-sm font-bold text-gray-700 mb-2">Leírás *</label>
+      <div class="form-group">
+        <label>Leírás *</label>
         <textarea 
           [(ngModel)]="property.description" 
           name="description" 
           required 
+          minlength="10"
           rows="4" 
-          placeholder="Írd le, miért különleges ez a hely, mik a főbb jellemzői..." 
-          class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all resize-none"></textarea>
+          placeholder="Írd le, miért különleges ez a hely..." 
+          class="form-input textarea"></textarea>
       </div>
 
-      <div>
-        <label class="block text-sm font-bold text-gray-700 mb-2">Helyszín (Város / Cím) *</label>
-        <div class="relative flex items-center">
-          <iconify-icon icon="tabler:map-pin" class="absolute left-4 text-gray-400" width="20"></iconify-icon>
+      <div class="form-group">
+        <label>Helyszín (Város / Cím) *</label>
+        <div class="input-with-icon">
+          <iconify-icon icon="tabler:map-pin" class="inner-icon"></iconify-icon>
           <input 
             type="text" 
             [(ngModel)]="property.location" 
             name="location" 
             required 
-            class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" 
+            minlength="3"
+            class="form-input with-icon" 
             placeholder="Pl.: 1051 Budapest, Példa utca 1." />
         </div>
       </div>
 
-      <div class="mb-5">
-        <label class="block text-sm font-semibold text-gray-700 mb-2">
-          <iconify-icon icon="tabler:camera" class="inline align-text-bottom text-indigo-500 mr-1"></iconify-icon>
-          Ingatlan képei (akár több is kiválasztható)
+      <div class="form-group">
+        <label>
+          <iconify-icon icon="tabler:camera"></iconify-icon>
+          Ingatlan képei (akár több is)
         </label>
         
-        <input 
-          type="file" 
-          (change)="onFileSelected($event)" 
-          multiple 
-          accept="image/*" 
-          class="w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-all cursor-pointer border border-gray-200 rounded-lg bg-white"
-        />
+        <div class="file-upload-wrapper">
+          <input 
+            type="file" 
+            (change)="onFileSelected($event)" 
+            multiple 
+            accept="image/*" 
+            class="file-input-native"
+          />
+        </div>
 
         @if (selectedFiles.length > 0) {
-          <div class="mt-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
-            <p class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">Kiválasztott képek ({{ selectedFiles.length }} db):</p>
-            <ul class="space-y-1">
+          <div class="selected-files-container">
+            <p class="file-list-title">Kiválasztott képek ({{ selectedFiles.length }} db):</p>
+            <ul class="file-list">
               @for (file of selectedFiles; track file.name; let i = $index) {
-                <li class="flex items-center justify-between text-sm text-gray-700 bg-white px-2 py-1 rounded shadow-sm">
-                  <span class="truncate flex-1">
-                    <iconify-icon icon="tabler:photo" class="inline text-gray-400 mr-1"></iconify-icon>
+                <li class="file-item">
+                  <span class="file-name">
+                    <iconify-icon icon="tabler:photo"></iconify-icon>
                     {{ file.name }}
                   </span>
-                  
-                  <button type="button" (click)="removeFile(i)" class="text-red-400 hover:text-red-600 ml-2" title="Eltávolítás">
+                  <button type="button" (click)="removeFile(i)" class="btn-remove-file" title="Eltávolítás">
                     <iconify-icon icon="tabler:x"></iconify-icon>
                   </button>
                 </li>
@@ -97,49 +95,78 @@
         }
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label class="block text-sm font-bold text-gray-700 mb-2">Ár / éj (HUF) *</label>
-          <div class="relative flex items-center">
+      <div class="form-grid-row">
+        <div class="form-group">
+          <label>Ár / éjszaka (HUF) *</label>
+          <div class="input-with-suffix">
             <input 
               type="number" 
               [(ngModel)]="property.pricePerNight" 
               name="pricePerNight" 
               required 
               min="1"
-              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" />
-            <span class="absolute right-4 text-gray-400 font-medium">Ft</span>
+              class="form-input" />
+            <span class="suffix">Ft</span>
           </div>
         </div>
 
-        <div>
-          <label class="block text-sm font-bold text-gray-700 mb-2">Férőhely (Fő) *</label>
-          <div class="relative flex items-center">
+        <div class="form-group">
+          <label>Férőhely (Fő) *</label>
+          <div class="input-with-icon">
             <input 
               type="number" 
               [(ngModel)]="property.capacity" 
               name="capacity" 
               required 
               min="1"
-              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" />
-            <iconify-icon icon="tabler:users" class="absolute right-4 text-gray-400" width="20"></iconify-icon>
+              class="form-input" />
+            <iconify-icon icon="tabler:users" class="inner-icon right"></iconify-icon>
           </div>
         </div>
       </div>
 
-      <div class="pt-6 mt-6 border-t border-gray-100 flex justify-end">
+      <div class="form-group amenities-group">
+        <label>
+          <iconify-icon icon="tabler:sparkles"></iconify-icon>
+          Felszereltség és Szolgáltatások
+        </label>
+        
+        @if (availableAmenities.length === 0) {
+          <div class="loading-amenities">
+            <iconify-icon icon="line-md:loading-loop"></iconify-icon>
+            Opciók betöltése...
+          </div>
+        }
+
+        <div class="amenities-grid">
+          @for (amenity of availableAmenities; track amenity) {
+            <label class="amenity-checkbox-card" [class.selected]="isAmenitySelected(amenity)">
+              <input 
+                type="checkbox" 
+                class="hidden-checkbox"
+                [checked]="isAmenitySelected(amenity)"
+                (change)="toggleAmenity(amenity)"
+              />
+              <div class="checkbox-custom">
+                <iconify-icon icon="tabler:check"></iconify-icon>
+              </div>
+              <span class="amenity-name">{{ amenity }}</span>
+            </label>
+          }
+        </div>
+      </div>
+      <div class="form-actions">
         <button 
           type="submit" 
           [disabled]="form.invalid || loading" 
-          class="px-8 py-3 rounded-xl font-bold text-white transition-colors flex items-center gap-2"
-          [ngClass]="form.invalid || loading ? 'bg-indigo-300 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 shadow-sm'">
+          class="btn-primary submit-btn">
           
           @if (loading) {
-            <iconify-icon icon="line-md:loading-loop" width="20"></iconify-icon>
-            Feldolgozás...
+            <iconify-icon icon="line-md:loading-loop"></iconify-icon>
+            <span>Feldolgozás...</span>
           } @else {
-            <iconify-icon icon="tabler:plus" width="20"></iconify-icon>
-            Ingatlan létrehozása
+            <iconify-icon icon="tabler:plus"></iconify-icon>
+            <span>Ingatlan létrehozása</span>
           }
         </button>
       </div>
@@ -147,3 +174,15 @@
     </form>
   </div>
 </div>
+
+@if (message) {
+  <div class="toast-notification">
+    <div class="toast-content success">
+      <iconify-icon icon="tabler:check" class="toast-check-icon"></iconify-icon>
+      <div class="toast-text">
+        <h4>Sikeres feladás!</h4>
+        <p>{{ message }}</p>
+      </div>
+    </div>
+  </div>
+}

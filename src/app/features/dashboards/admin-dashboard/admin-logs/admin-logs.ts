@@ -7,7 +7,8 @@ import { LogService, SystemLogDto } from '../../../../core/services/log.service'
   standalone: true,
   imports: [CommonModule, DatePipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  templateUrl: './admin-logs.html'
+  templateUrl: './admin-logs.html',
+  styleUrl:'./admin-logs.css'
 })
 export class AdminLogs implements OnInit {
   logs: SystemLogDto[] = [];

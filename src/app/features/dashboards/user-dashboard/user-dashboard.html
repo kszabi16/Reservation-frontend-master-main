@@ -1,190 +1,149 @@
-<div class="user-container font-sans text-slate-600 bg-gray-50/50">
+<div class="dashboard-wrapper">
 
-  <main class="flex-1 p-4 lg:p-8 relative">
+  <main class="dashboard-main">
     <router-outlet></router-outlet>
 
-    <div class="px-2 mb-4 sm:hidden">
-      <button type="button" class="btn btn-text btn-square text-indigo-900"
-        aria-haspopup="dialog" aria-expanded="false" aria-controls="collapsible-sidebar" data-overlay="#collapsible-sidebar">
-        <iconify-icon icon="tabler:menu-2" width="24" height="24"></iconify-icon>
+    <div class="mobile-nav-toggle">
+      <button type="button" class="btn-icon">
+        <iconify-icon icon="tabler:menu-2"></iconify-icon>
       </button>
     </div>
 
-    <div class="bg-white/90 backdrop-blur-xl shadow-lg border border-white/20 rounded-3xl p-6 mb-10 sticky top-4 z-50">
-      
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end">
+    <section class="filter-section">
+      <div class="filter-grid">
         
-        <div class="lg:col-span-4 flex flex-col gap-1">
-          <label class="text-xs font-bold text-indigo-900 uppercase tracking-wider ml-1">Helyszín</label>
-          <div class="relative group">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-400 group-focus-within:text-violet-600 transition">
-              <iconify-icon icon="tabler:map-pin" width="20"></iconify-icon>
-            </span>
-            <input type="text" placeholder="Hová utaznál?" [(ngModel)]="searchLocation"
-              class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition shadow-sm placeholder:text-slate-400" />
+        <div class="filter-group">
+          <label>Helyszín</label>
+          <div class="input-container">
+            <iconify-icon icon="tabler:map-pin" class="input-icon"></iconify-icon>
+            <input type="text" placeholder="Hová utaznál?" [(ngModel)]="searchLocation" />
           </div>
         </div>
 
-        <div class="lg:col-span-4 flex gap-2">
-          <div class="flex-1 flex flex-col gap-1">
-             <label class="text-xs font-bold text-indigo-900 uppercase tracking-wider ml-1">Ár (tól)</label>
-             <div class="relative group">
-               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-400 group-focus-within:text-violet-600 transition">
-                 <iconify-icon icon="tabler:currency-florin" width="18"></iconify-icon>
-               </span>
-               <input type="number" placeholder="Min" [(ngModel)]="minPrice"
-                 class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl py-3 pl-9 pr-3 focus:outline-none focus:ring-2 focus:ring-violet-500 transition shadow-sm" />
-             </div>
-          </div>
-          <div class="flex-1 flex flex-col gap-1">
-             <label class="text-xs font-bold text-indigo-900 uppercase tracking-wider ml-1">Ár (ig)</label>
-             <div class="relative group">
-               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-400 group-focus-within:text-violet-600 transition">
-                 <iconify-icon icon="tabler:currency-florin" width="18"></iconify-icon>
-               </span>
-               <input type="number" placeholder="Max" [(ngModel)]="maxPrice"
-                 class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl py-3 pl-9 pr-3 focus:outline-none focus:ring-2 focus:ring-violet-500 transition shadow-sm" />
-             </div>
+        <div class="filter-group price-range">
+          <label>Árkeret (HUF)</label>
+          <div class="dual-input">
+            <div class="input-container">
+              <iconify-icon icon="tabler:currency-florin" class="input-icon small"></iconify-icon>
+              <input type="number" placeholder="Min" [(ngModel)]="minPrice" />
+            </div>
+            <div class="input-container">
+              <iconify-icon icon="tabler:currency-florin" class="input-icon small"></iconify-icon>
+              <input type="number" placeholder="Max" [(ngModel)]="maxPrice" />
+            </div>
           </div>
         </div>
 
-        <div class="lg:col-span-2 flex flex-col gap-1">
-          <label class="text-xs font-bold text-indigo-900 uppercase tracking-wider ml-1">Vendégek</label>
-          <div class="relative group">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-400 group-focus-within:text-violet-600 transition">
-              <iconify-icon icon="tabler:users" width="18"></iconify-icon>
-            </span>
-            <input type="number" placeholder="Fő" [(ngModel)]="minCapacity"
-              class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl py-3 pl-9 pr-3 focus:outline-none focus:ring-2 focus:ring-violet-500 transition shadow-sm" />
+        <div class="filter-group guests">
+          <label>Vendégek</label>
+          <div class="input-container">
+            <iconify-icon icon="tabler:users" class="input-icon"></iconify-icon>
+            <input type="number" placeholder="Fő" [(ngModel)]="minCapacity" />
           </div>
         </div>
 
-        <div class="lg:col-span-2 flex gap-2">
-          <button (click)="applyFilters()"
-            class="flex-1 bg-indigo-900 hover:bg-violet-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex justify-center items-center gap-2">
-            <iconify-icon icon="tabler:search" width="18"></iconify-icon>
+        <div class="filter-actions">
+          <button (click)="applyFilters()" class="btn-primary">
+            <iconify-icon icon="tabler:search"></iconify-icon>
             <span>Keresés</span>
           </button>
           
-          <button (click)="resetFilters()" title="Szűrők törlése"
-            class="bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-red-500 font-medium p-3 rounded-xl transition border border-slate-200">
-            <iconify-icon icon="tabler:refresh" width="20"></iconify-icon>
+          <button (click)="resetFilters()" title="Szűrők törlése" class="btn-reset">
+            <iconify-icon icon="tabler:refresh"></iconify-icon>
           </button>
         </div>
       </div>
-    </div>
+    </section>
 
-
-    <div class="flex items-center justify-between mb-8 px-2">
-      <h2 class="text-3xl font-bold text-indigo-950 tracking-tight">Elérhető szállások</h2>
-      <span class="text-sm font-medium text-slate-500 bg-white px-3 py-1 rounded-full shadow-sm border border-slate-100">
+    <div class="listing-header">
+      <h2>Elérhető szállások</h2>
+      <div class="result-badge">
         {{ properties.length }} találat
-      </span>
+      </div>
     </div>
 
     @if (loading) {
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 animate-pulse">
-        <div class="h-96 bg-gray-200 rounded-3xl"></div>
-        <div class="h-96 bg-gray-200 rounded-3xl"></div>
-        <div class="h-96 bg-gray-200 rounded-3xl"></div>
+      <div class="loading-grid">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
       </div>
     }
+
     @if (error) {
-      <div class="bg-red-50 border border-red-100 text-red-600 p-4 rounded-2xl text-center shadow-sm">
-        <iconify-icon icon="tabler:alert-circle" width="24" class="mb-2"></iconify-icon>
+      <div class="error-container">
+        <iconify-icon icon="tabler:alert-circle"></iconify-icon>
         <p>{{ error }}</p>
       </div>
     }
 
     @if (!loading && !error) {
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 pb-10">
-        @for (p of properties; track p) {
-          <div class="group bg-white rounded-[2rem] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-100 overflow-hidden flex flex-col h-full">
+      <div class="property-grid">
+        @for (p of properties; track p.id) {
+          <div class="property-card">
             
-            <figure class="relative h-64 w-full overflow-hidden bg-gray-100 group">
+            <figure class="card-image-area">
+              <img [src]="getActualImage(p)" alt="{{ p.title }}" class="main-img" />
               
-              <img [src]="getActualImage(p)"
-                alt="{{ p.title }}"
-                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
-              
-              <div class="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1 z-20">
-                <span class="text-indigo-900 font-bold text-sm">{{ p.pricePerNight | currency:'HUF':'symbol':'1.0-0' }}</span>
-                <span class="text-xs text-slate-500">/ éj</span>
+              <div class="price-overlay">
+                <span class="amount">{{ p.pricePerNight | currency:'HUF':'symbol':'1.0-0' }}</span>
+                <span class="per-night">/ éj</span>
               </div>
 
               <button (click)="toggleFavorite(p.id)" 
-                      class="absolute top-4 right-4 p-2 rounded-full shadow-lg transition backdrop-blur-sm z-20 focus:outline-none"
-                      [ngClass]="favoritePropertyIds.has(p.id) ? 'bg-rose-50 text-rose-500 hover:bg-rose-100' : 'bg-white/80 text-slate-400 hover:bg-white hover:text-rose-500'">
-                @if (favoritePropertyIds.has(p.id)) {
-                  <iconify-icon icon="tabler:heart-filled" width="20" height="20"></iconify-icon>
-                } @else {
-                  <iconify-icon icon="tabler:heart" width="20" height="20"></iconify-icon>
-                }
+                      class="fav-toggle"
+                      [class.is-favorite]="favoritePropertyIds.has(p.id)">
+                <iconify-icon [icon]="favoritePropertyIds.has(p.id) ? 'tabler:heart-filled' : 'tabler:heart'"></iconify-icon>
               </button>
 
               @if (p.imageUrls && p.imageUrls.length > 1) {
-                <div class="absolute inset-0 flex items-center justify-between px-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
-                  <button (click)="prevImage(p, $event)" class="bg-black/50 hover:bg-black text-white rounded-full w-8 h-8 flex items-center justify-center focus:outline-none pointer-events-auto shadow backdrop-blur-sm">
-                    &#10094;
-                  </button>
-                  <button (click)="nextImage(p, $event)" class="bg-black/50 hover:bg-black text-white rounded-full w-8 h-8 flex items-center justify-center focus:outline-none pointer-events-auto shadow backdrop-blur-sm">
-                    &#10095;
-                  </button>
+                <div class="gallery-nav">
+                  <button (click)="prevImage(p, $event)" class="nav-arrow prev">&#10094;</button>
+                  <button (click)="nextImage(p, $event)" class="nav-arrow next">&#10095;</button>
                 </div>
-              
-                <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-1 z-10">
+                
+                <div class="gallery-dots">
                   @for (img of p.imageUrls; track img; let i = $index) {
-                    <div class="w-2 h-2 rounded-full shadow-sm transition-colors"
-                         [ngClass]="{'bg-white': (currentImageIndices[p.id] || 0) === i, 'bg-white/50': (currentImageIndices[p.id] || 0) !== i}">
-                    </div>
+                    <div class="dot" [class.active]="(currentImageIndices[p.id] || 0) === i"></div>
                   }
                 </div>
               }
             </figure>
 
-            <div class="p-6 flex flex-col flex-1">
-              <div class="flex items-start justify-between mb-2">
-                 <div>
-                    <h5 class="text-xl font-bold text-indigo-950 mb-1 group-hover:text-violet-600 transition-colors line-clamp-1">{{ p.title }}</h5>
-                    <div class="flex items-center text-slate-500 text-sm gap-1">
-                      <iconify-icon icon="tabler:map-pin" class="text-violet-500"></iconify-icon>
-                      {{ p.location }}
-                    </div>
-                 </div>
+            <div class="card-info">
+              <div class="info-header">
+                <h5 class="title">{{ p.title }}</h5>
+                <div class="location">
+                  <iconify-icon icon="tabler:map-pin"></iconify-icon>
+                  {{ p.location }}
+                </div>
               </div>
 
-              <div class="border-t border-slate-100 my-4 pt-4 flex items-center justify-between text-sm text-slate-600">
-                 <div class="flex items-center gap-2 bg-slate-50 px-3 py-1 rounded-lg">
-                   <iconify-icon icon="tabler:users" class="text-indigo-400"></iconify-icon>
-                   <span class="font-medium">{{ p.capacity }} vendég</span>
-                 </div>
-                 <div class="border-t border-slate-100 my-4 pt-4 flex items-center justify-between text-sm text-slate-600">
-  <div class="flex items-center gap-1.5" [title]="p.averageRating + ' csillag'">
-    <div class="flex items-center">
-      @for (star of getStars(); track star) {
-        <iconify-icon 
-          [icon]="star <= Math.round(p.averageRating || 0) ? 'tabler:star-filled' : 'tabler:star'" 
-          [class]="star <= Math.round(p.averageRating || 0) ? 'text-amber-400' : 'text-slate-300'"
-          width="16">
-        </iconify-icon>
-      }
-    </div>
-    <span class="font-bold text-slate-700 text-sm ml-1">
-      {{ p.averageRating ? p.averageRating.toFixed(1) : '0.0' }}
-    </span>
-  </div>
-</div>
+              <div class="card-stats">
+                <div class="capacity">
+                  <iconify-icon icon="tabler:users"></iconify-icon>
+                  <span>{{ p.capacity }} vendég</span>
+                </div>
+                
+                <div class="rating" [title]="p.averageRating + ' csillag'">
+                  <div class="stars">
+                    @for (star of [1,2,3,4,5]; track star) {
+                      <iconify-icon 
+                        [icon]="star <= Math.round(p.averageRating || 0) ? 'tabler:star-filled' : 'tabler:star'" 
+                        [class.active]="star <= Math.round(p.averageRating || 0)">
+                      </iconify-icon>
+                    }
+                  </div>
+                  <span class="rating-num">{{ p.averageRating ? p.averageRating.toFixed(1) : '0.0' }}</span>
+                </div>
               </div>
 
-              <p class="text-sm text-slate-500 line-clamp-2 mb-6">{{ p.description }}</p>
+              <p class="description">{{ p.description }}</p>
 
-              <div class="mt-auto">
-                <button [routerLink]="['/property', p.id]"
-                  class="w-full bg-white border-2 border-indigo-100 text-indigo-900 hover:bg-indigo-900 hover:border-indigo-900 hover:text-white font-bold py-3 rounded-xl transition-all duration-300 flex justify-center items-center gap-2 group/btn">
-                  <span>Részletek megtekintése</span>
-                  <iconify-icon icon="tabler:arrow-right" class="group-hover/btn:translate-x-1 transition-transform"></iconify-icon>
-                </button>
-              </div>
+              <button [routerLink]="['/property', p.id]" class="btn-details">
+                <span>Részletek megtekintése</span>
+                <iconify-icon icon="tabler:arrow-right"></iconify-icon>
+              </button>
             </div>
           </div>
         }

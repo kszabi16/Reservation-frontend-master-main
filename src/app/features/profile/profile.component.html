@@ -1,122 +1,127 @@
-<div class="profile-container">
+<div class="profile-page-container">
 
-  <div class="page-header">
+  <header class="page-header">
     <h2 class="page-title">Fiókom beállításai</h2>
     <p class="page-subtitle">Kezeld a személyes adataidat és a biztonsági beállításokat.</p>
-  </div>
+  </header>
 
-  <div *ngIf="loading" class="loading-container">
-    <iconify-icon icon="line-md:loading-loop" width="40"></iconify-icon>
-    <p>Adatok betöltése...</p>
-  </div>
+  @if (loading) {
+    <div class="loading-state">
+      <iconify-icon icon="line-md:loading-loop"></iconify-icon>
+      <p>Adatok betöltése...</p>
+    </div>
+  }
 
-  <div *ngIf="message" [class]="'alert-box ' + message.type">
-    <iconify-icon [icon]="message.type === 'success' ? 'tabler:check' : 'tabler:alert-circle'"></iconify-icon>
-    {{ message.text }}
-  </div>
+  @if (message) {
+    <div [class]="'alert-box ' + message.type">
+      <iconify-icon [icon]="message.type === 'success' ? 'tabler:check' : 'tabler:alert-circle'"></iconify-icon>
+      {{ message.text }}
+    </div>
+  }
 
-  <div class="profile-grid" *ngIf="!loading && user">
-    
-    <div class="profile-sidebar">
-      <div class="card profile-card">
-        <div class="profile-cover"></div>
-<div class="flex flex-col items-center mb-8 mt-4">
-          <div class="relative group cursor-pointer rounded-full">
-            
-            <div class="w-32 h-32 rounded-full border-4 border-indigo-100 shadow-xl overflow-hidden bg-indigo-50 flex items-center justify-center">
-              @if (user?.avatarUrl) {
-                <img [src]="'https://localhost:7102' + user.avatarUrl" class="w-full h-full object-cover">
+  @if (!loading && user) {
+    <div class="profile-grid">
+      
+      <aside class="profile-sidebar">
+        <div class="card user-summary-card">
+          <div class="profile-cover"></div>
+          
+          <div class="avatar-section">
+            <div class="avatar-wrapper">
+              @if (user.avatarUrl) {
+                <img [src]="'https://localhost:7102' + user.avatarUrl" class="avatar-img">
               } @else {
-                <span class="text-4xl font-black text-indigo-300">{{ (user?.username || 'U').charAt(0).toUpperCase() }}</span>
+                <div class="avatar-placeholder">
+                  {{ (user.username || 'U').charAt(0).toUpperCase() }}
+                </div>
               }
+              <label class="avatar-upload-overlay">
+                <iconify-icon icon="tabler:camera"></iconify-icon>
+                <span>Módosít</span>
+                <input type="file" (change)="onAvatarSelected($event)" accept="image/*">
+              </label>
             </div>
-
-            <label class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white text-xs font-bold uppercase tracking-wider rounded-full z-10">
-              <iconify-icon icon="tabler:camera" width="24" class="mb-1"></iconify-icon>
-              Módosít
-              <input type="file" (change)="onAvatarSelected($event)" class="hidden" accept="image/*">
-            </label>
             
+            <h2 class="display-name">{{ user.username }}</h2>
+            <p class="display-role">{{ user.role }}</p>
           </div>
-          
-          <h2 class="mt-4 text-2xl font-bold text-gray-800">{{ user?.username }}</h2>
-        </div>
 
-        <div class="profile-info-center">
-          <h3 class="user-name">{{ user.username }}</h3>
-          <p class="user-role">{{ user.role }}</p>
-          
-          <div class="badges">
-            <span *ngIf="user.isTrustedHost" class="badge badge-verified">
-              <iconify-icon icon="tabler:shield-check-filled"></iconify-icon> Hitelesített Host
-            </span>
+          <div class="badges-container">
+            @if (user.isTrustedHost) {
+              <span class="badge badge-verified">
+                <iconify-icon icon="tabler:shield-check-filled"></iconify-icon> Hitelesített Host
+              </span>
+            }
             <span class="badge badge-basic">Tag</span>
           </div>
-        </div>
 
-        <hr class="divider">
+          <div class="profile-divider"></div>
 
-        <div class="mini-stats">
-          <div class="stat-item">
-            <span class="stat-value">0</span>
-            <span class="stat-label">Utazás</span>
+          <div class="profile-mini-stats">
+            <div class="stat-box">
+              <span class="stat-val">0</span>
+              <span class="stat-lbl">Utazás</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-val">-</span>
+              <span class="stat-lbl">Értékelés</span>
+            </div>
           </div>
-          <div class="stat-item">
-            <span class="stat-value">-</span>
-            <span class="stat-label">Értékelés</span>
+          
+          <div class="joined-info">
+            Csatlakozott: {{ user.createdAt | date:'yyyy. MMMM' }}
           </div>
         </div>
-        
-        <div class="joined-date">
-          Csatlakozott: {{ user.createdAt | date:'yyyy. MMMM' }}
+      </aside>
+
+      <section class="profile-content">
+        <div class="card settings-card">
+          <div class="card-header">
+            <h3>Személyes adatok</h3>
+            <span class="user-id">ID: #{{ user.id }}</span>
+          </div>
+
+          <div class="form-layout">
+            <div class="form-group">
+              <label>Felhasználónév</label>
+              <input type="text" [(ngModel)]="user.username" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label>E-mail cím</label>
+              <input type="email" [value]="user.email" class="form-input readonly" disabled>
+              <p class="input-helper">Az e-mail cím nem módosítható.</p>
+            </div>
+
+            <div class="form-group">
+              <label>Telefonszám</label>
+              <input type="tel" [(ngModel)]="user.phoneNumber" placeholder="+36 30 123 4567" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label>Lakhely</label>
+              <input type="text" [(ngModel)]="user.location" placeholder="Pl. Budapest, Magyarország" class="form-input">
+            </div>
+
+            <div class="form-group full-width">
+              <label>Bemutatkozás (Bio)</label>
+              <textarea [(ngModel)]="user.bio" class="form-input" rows="4" 
+                        placeholder="Írj pár szót magadról..."></textarea>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+             <button (click)="saveProfile()" class="btn-primary" [disabled]="saving">
+               @if (saving) {
+                 <iconify-icon icon="line-md:loading-loop"></iconify-icon> Mentés...
+               } @else {
+                 Változtatások mentése
+               }
+             </button>
+          </div>
         </div>
-      </div>
+      </section>
+
     </div>
-
-    <div class="profile-content">
-      
-      <div class="card content-card">
-        <div class="card-header-row">
-          <h3>Személyes adatok</h3>
-          <span class="text-sm text-gray-400">ID: {{ user.id }}</span>
-        </div>
-
-        <div class="form-grid-2">
-          <div class="form-group">
-            <label class="input-label">Felhasználónév</label>
-            <input type="text" [(ngModel)]="user.username" class="form-input">
-          </div>
-
-          <div class="form-group">
-            <label class="input-label">E-mail cím</label>
-            <input type="email" [value]="user.email" class="form-input disabled-input" disabled>
-            <span class="helper-text">Az e-mail cím nem módosítható.</span>
-          </div>
-
-          <div class="form-group">
-            <label class="input-label">Telefonszám</label>
-            <input type="tel" [(ngModel)]="user.phoneNumber" placeholder="+36 30 123 4567" class="form-input">
-          </div>
-
-          <div class="form-group">
-            <label class="input-label">Lakhely</label>
-            <input type="text" [(ngModel)]="user.location" placeholder="Pl. Budapest, Magyarország" class="form-input">
-          </div>
-
-          <div class="form-group full-width">
-             <label class="input-label">Bemutatkozás (Bio)</label>
-             <textarea [(ngModel)]="user.bio" class="form-input textarea" rows="4" 
-                       placeholder="Írj pár szót magadról, amit látni fognak a szállásadók vagy a vendégek..."></textarea>
-          </div>
-        </div>
-        
-        <div class="card-footer-actions">
-           <button (click)="saveProfile()" class="btn btn-primary" [disabled]="saving">
-             <span *ngIf="saving"><iconify-icon icon="line-md:loading-loop"></iconify-icon> Mentés...</span>
-             <span *ngIf="!saving">Változtatások mentése</span>
-           </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  }
 </div>

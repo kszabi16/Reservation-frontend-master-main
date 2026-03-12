@@ -18,7 +18,7 @@ export class PublicDashboardComponent implements OnInit {
   properties: PropertyDto[] = [];
   loading = true;
   error = '';
-  Math = Math; // Hogy használhassuk a Math függvényeket a template-ben
+  Math = Math;
 
   searchLocation = '';
   minPrice: number | null = null;
@@ -127,7 +127,7 @@ export class PublicDashboardComponent implements OnInit {
 
 
   nextImage(property: PropertyDto, event: Event) {
-    event.stopPropagation(); // Ne kattintson át a részletekre lapozáskor
+    event.stopPropagation();
     event.preventDefault();
     if (!property.imageUrls || property.imageUrls.length === 0) return;
     
@@ -135,7 +135,6 @@ export class PublicDashboardComponent implements OnInit {
     this.currentImageIndices[property.id] = (curr + 1) % property.imageUrls.length;
   }
 
-  // Kép léptetése hátra
   prevImage(property: PropertyDto, event: Event) {
     event.stopPropagation();
     event.preventDefault();
@@ -144,14 +143,12 @@ export class PublicDashboardComponent implements OnInit {
     const curr = this.currentImageIndices[property.id] || 0;
     this.currentImageIndices[property.id] = (curr - 1 + property.imageUrls.length) % property.imageUrls.length;
   }
-
-  // Aktuális kép lekérése a HTML számára
   getActualImage(property: PropertyDto): string {
     if (property.imageUrls && property.imageUrls.length > 0) {
       const index = this.currentImageIndices[property.id] || 0;
       return property.imageUrls[index];
     }
-    // Ha egyáltalán nincs kép, mutasson egy default képet, vagy a régi egyetlen imageUrl-t
-    return property.imageUrl || 'https://cdn.flyonui.com/fy-assets/components/card/image-9.png'; 
+ 
+    return property.imageUrl || 'https://as2.ftcdn.net/v2/jpg/00/89/55/15/1000_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg'; 
   }
 }

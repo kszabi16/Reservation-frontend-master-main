@@ -27,7 +27,7 @@
           Jóváhagyás
         </button>
 
-        <button class="btn-details"
+        <button class="btn-details btn-danger"
                 *ngIf="b.status !== BookingStatus.Cancelled"
                 (click)="cancel(b.id)">
           Lemondás

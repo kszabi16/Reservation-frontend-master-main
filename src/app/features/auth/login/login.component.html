@@ -1,8 +1,4 @@
 <div class="auth-container">
-  
-  <div class="background-blob blob-1"></div>
-  <div class="background-blob blob-2"></div>
-
   <div class="auth-card">
 
     <h2>Bejelentkezés</h2>
@@ -13,7 +9,6 @@
         {{ error }}
       </div>
     }
-
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
       <div class="form-group">
@@ -48,7 +43,7 @@
         }
       </div>
 
-      <button type="submit" [disabled]="form.invalid || loading">
+    <button type="submit" class="btn-primary" [disabled]="form.invalid || loading">
         {{ loading ? 'Bejelentkezés...' : 'Bejelentkezés' }}
       </button>
 

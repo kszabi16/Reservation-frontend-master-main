@@ -9,16 +9,16 @@ import { UserService } from '../../../../core/services/user-service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './admin-user-create.html',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  styleUrl:'./admin-user-create.css'
 })
 export class AdminUserCreateComponent {
-  
-  // Az űrlap adatai
+
   userData = {
     username: '',
     email: '',
     password: '',
-    role: 'Guest' // Alapértelmezett szerepkör
+    role: 'Guest' 
   };
   
   loading = false;
@@ -39,7 +39,7 @@ export class AdminUserCreateComponent {
 
     this.loading = true;
     this.error = '';
-    this.successMessage = ''; // Alaphelyzetbe állítjuk gombnyomáskor
+    this.successMessage = '';
 
     this.userService.createUser(this.userData).subscribe({
       next: () => {
@@ -52,9 +52,9 @@ export class AdminUserCreateComponent {
       },
       error: (err) => {
         console.error('Hiba a mentés során:', err);
-        this.loading = false; // A töltés ikon megállítása
+        this.loading = false;
 
-        // Megnézzük, hogy a backend küldött-e nekünk konkrét "message"-t
+        
         if (err.error && err.error.message) {
           
           if (err.error.message.includes('Email')) {
@@ -64,11 +64,11 @@ export class AdminUserCreateComponent {
             this.error = 'Ez a felhasználónév már foglalt! Kérlek, válassz másikat.';
           } 
           else {
-            this.error = err.error.message; // Bármilyen más backend hiba
+            this.error = err.error.message;
           }
 
         } else {
-          // Ha nincs konkrét üzenet, akkor "általános" szerver hiba
+       
           this.error = 'Szerver hiba történt a felhasználó létrehozásakor.';
         }
       }

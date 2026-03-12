@@ -1,0 +1,227 @@
+<div class="property-detail-container">
+  @if (!loading && property) {
+    
+    <div class="card property-main-card">
+      <div class="gallery-container">
+        <img [src]="getActualImage()" alt="{{ property.title }}" class="main-gallery-img" />
+        
+        @if (property.imageUrls && property.imageUrls.length > 1) {
+          <div class="gallery-nav">
+            <button (click)="prevImage($event)" class="nav-btn prev">&#10094;</button>
+            <button (click)="nextImage($event)" class="nav-btn next">&#10095;</button>
+          </div>
+        
+          <div class="gallery-dots">
+            @for (img of property.imageUrls; track img; let i = $index) {
+              <div class="dot" 
+                   (click)="currentImageIndex = i"
+                   [class.active]="currentImageIndex === i">
+              </div>
+            }
+          </div>
+        }
+      </div>
+      
+      <div class="property-info-header">
+        <div class="title-group">
+          <h2 class="detail-title">{{ property.title }}</h2>
+          <div class="detail-meta">
+            <div class="meta-item">
+              <iconify-icon icon="tabler:map-pin"></iconify-icon>
+              <span>{{ property.location }}</span>
+            </div>
+            <div class="meta-item">
+              <iconify-icon icon="tabler:users"></iconify-icon>
+              <span>{{ property.capacity }} fő</span>
+            </div>
+          </div>
+        </div>
+        <div class="price-box">
+          <span class="amount">{{ property.pricePerNight | currency:'HUF':'symbol':'1.0-0' }}</span>
+          <span class="unit">/ éjszaka</span>
+        </div>
+      </div>
+
+      <div class="property-description">
+        <p>{{ property.description }}</p>
+      </div>
+
+      @if (property.amenities && property.amenities.length > 0) {
+        <div class="amenities-detail-section">
+          <h3 class="amenities-subtitle">
+            <iconify-icon icon="tabler:sparkles"></iconify-icon>
+            Felszereltség és kényelem
+          </h3>
+          <div class="amenities-detail-grid">
+            @for (amenity of property.amenities; track amenity) {
+              <div class="amenity-detail-item">
+                <iconify-icon icon="tabler:circle-check"></iconify-icon>
+                <span>{{ amenity }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+
+    <div class="card booking-card">
+      <h3 class="section-title">
+        <iconify-icon icon="tabler:calendar-event"></iconify-icon>
+        Foglalás leadása
+      </h3>
+
+      <div class="booking-form-grid">
+        <div class="form-group">
+          <label>Érkezés</label>
+          <input type="date" [(ngModel)]="startDate" [min]="today" class="form-input">
+        </div>
+        <div class="form-group">
+          <label>Távozás</label>
+          <input type="date" [(ngModel)]="endDate" [min]="startDate || today" class="form-input">
+        </div>
+      </div>
+
+      @if (calculatedPrice > 0) {
+        <div class="price-summary">
+          <div class="summary-details">
+            <p class="summary-label">Összesítő:</p>
+            <p class="summary-calc">
+              <iconify-icon icon="tabler:moon"></iconify-icon>
+              {{ totalDays }} éjszaka × {{ property.pricePerNight | currency:'HUF':'symbol':'1.0-0' }}
+            </p>
+          </div>
+          <div class="total-amount">
+            {{ calculatedPrice | currency:'HUF':'symbol':'1.0-0' }}
+          </div>
+        </div>
+      }
+
+      @if (bookingError) {
+        <div class="alert-box error">
+          <iconify-icon icon="tabler:alert-circle"></iconify-icon> {{ bookingError }}
+        </div>
+      }
+      @if (bookingSuccess) {
+        <div class="alert-box success">
+          <iconify-icon icon="tabler:circle-check"></iconify-icon> Sikeres foglalás! Kérjük, várd meg a házigazda visszaigazolását.
+        </div>
+      }
+
+      <div class="booking-actions">
+        @if (!authService.isLoggedIn()) {
+          <p class="auth-warning">A foglaláshoz be kell jelentkezned.</p>
+        }
+        <button (click)="bookProperty()"
+                [disabled]="bookingLoading || !startDate || !endDate || calculatedPrice === 0 || !authService.isLoggedIn()"
+                class="btn-primary book-btn">
+          @if (bookingLoading) {
+            <iconify-icon icon="line-md:loading-loop"></iconify-icon> <span>Foglalás...</span>
+          } @else {
+            <iconify-icon icon="tabler:check"></iconify-icon> <span>Lefoglalom</span>
+          }
+        </button>
+      </div>
+    </div>
+
+    <div class="card reviews-card">
+      <h3 class="section-title">
+        <iconify-icon icon="tabler:messages"></iconify-icon>
+        Vendégek értékelései ({{ comments.length }})
+      </h3>
+
+      <div class="leave-review-box">
+        @if (authService.isLoggedIn()) {
+          <h4>Írd meg a véleményed!</h4>
+          
+          <div class="rating-picker">
+            <span class="picker-label">Értékelésed:</span>
+            <div class="stars-row">
+              @for (star of stars; track star) {
+                <button (click)="setRating(star)" class="star-btn">
+                  <iconify-icon [icon]="star <= newCommentRating ? 'tabler:star-filled' : 'tabler:star'"
+                                [class.active]="star <= newCommentRating">
+                  </iconify-icon>
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="textarea-wrapper">
+            <textarea [(ngModel)]="newCommentText" rows="3" class="form-input" 
+                      placeholder="Milyen volt itt a pihenés? Oszd meg másokkal is..."></textarea>
+            <button (click)="submitComment()"
+                    [disabled]="submittingComment || !newCommentText.trim() || newCommentRating === 0"
+                    class="btn-primary submit-comment-btn">
+              @if (submittingComment) { 
+                <iconify-icon icon="line-md:loading-loop"></iconify-icon>
+              } @else { 
+                Értékelés beküldése 
+              }
+            </button>
+          </div>
+        } @else {
+          <div class="auth-prompt">
+            <p>Csak bejelentkezett felhasználók írhatnak értékelést.</p>
+            <a routerLink="/auth/login" class="btn-outline">Jelentkezz be itt</a>
+          </div>
+        }
+      </div>
+
+      <div class="comments-list">
+        @if (comments.length === 0) {
+          <div class="empty-comments">
+            <p>Még nem érkezett értékelés. Légy te az első!</p>
+          </div>
+        }
+
+        @for (c of comments; track c.id) {
+          <div class="comment-item">
+            <div class="comment-header">
+              <div class="comment-author">
+                <div class="author-avatar">
+                  @if (c.userAvatarUrl) {
+                    <img [src]="'https://localhost:7102' + c.userAvatarUrl">
+                  } @else {
+                    <span>{{ (c.userName || 'V').charAt(0).toUpperCase() }}</span>
+                  }
+                </div>
+                <div class="author-info">
+                  <span class="author-name">{{ c.userName || 'Vendég' }}</span>
+                  <span class="comment-date">{{ c.createdAt | date:'yyyy. MM. dd.' }}</span>
+                </div>
+              </div>
+              
+              <div class="comment-actions">
+                @if (authService.isLoggedIn()) {
+                  <button (click)="toggleCommentLike(c.id)" class="like-btn" [class.liked]="likedCommentIds.has(c.id)">
+                    <iconify-icon [icon]="likedCommentIds.has(c.id) ? 'tabler:thumb-up-filled' : 'tabler:thumb-up'"></iconify-icon>
+                  </button>
+                }
+                @if (authService.getUserIdFromToken() === c.userId || authService.getRoleFromToken() === 'Admin') {
+                  <button (click)="deleteComment(c.id)" class="delete-btn">
+                    <iconify-icon icon="tabler:trash"></iconify-icon>
+                  </button>
+                }
+              </div>
+            </div>
+            <p class="comment-text">{{ c.content }}</p>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="page-footer-nav">
+      <button (click)="goBack()" class="btn-ghost">
+        <iconify-icon icon="tabler:arrow-left"></iconify-icon> Vissza a listához
+      </button>
+    </div>
+  } 
+  
+  @else if (loading) {
+    <div class="loading-state">
+      <iconify-icon icon="line-md:loading-loop"></iconify-icon>
+      <p>Adatok betöltése...</p>
+    </div>
+  }
+</div>

@@ -1,63 +1,67 @@
-<div class="p-6 max-w-7xl mx-auto bg-white min-h-screen">
+<div class="admin-page-container">
   
-  <div class="flex items-center gap-4 mb-8">
-    <div class="bg-indigo-600 text-white p-3 rounded-2xl shadow-lg shadow-indigo-200">
-      <iconify-icon icon="tabler:home-check" width="32"></iconify-icon>
+  <header class="page-header">
+    <div class="header-icon-box">
+      <iconify-icon icon="tabler:home-check"></iconify-icon>
     </div>
-    <div>
-      <h2 class="text-3xl font-bold text-gray-800">Függő Ingatlanok</h2>
-      <p class="text-gray-500 mt-1">Jóváhagyásra váró, felhasználók által beküldött szálláshelyek.</p>
+    <div class="header-text">
+      <h2>Függő Ingatlanok</h2>
+      <p>Jóváhagyásra váró, felhasználók által beküldött szálláshelyek.</p>
     </div>
-  </div>
+  </header>
 
   @if (loading) {
-    <div class="flex justify-center items-center py-20 text-indigo-600">
-      <iconify-icon icon="line-md:loading-loop" width="48"></iconify-icon>
-      <span class="ml-3 font-medium text-lg">Ingatlanok betöltése...</span>
+    <div class="loading-state">
+      <iconify-icon icon="line-md:loading-loop"></iconify-icon>
+      <span>Ingatlanok betöltése...</span>
     </div>
   } @else {
 
     @if (pendingProperties.length === 0) {
-      <div class="bg-emerald-50 text-emerald-700 p-10 rounded-3xl border border-emerald-100 text-center shadow-sm max-w-3xl mx-auto mt-10">
-        <iconify-icon icon="tabler:circle-check" width="64" class="mb-4 text-emerald-500"></iconify-icon>
-        <h3 class="text-2xl font-bold mb-2">Minden rendben!</h3>
-        <p class="text-emerald-600 font-medium">Jelenleg nincs jóváhagyásra váró ingatlan a rendszerben.</p>
+      <div class="empty-success-box">
+        <iconify-icon icon="tabler:circle-check" class="success-icon"></iconify-icon>
+        <h3>Minden rendben!</h3>
+        <p>Jelenleg nincs jóváhagyásra váró ingatlan a rendszerben.</p>
       </div>
     }
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div class="property-grid">
       @for (p of pendingProperties; track p.id) {
-        <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col group">
+        <div class="property-card pending">
           
-          <div class="h-48 bg-gray-100 relative overflow-hidden">
-            <img [src]="(p.imageUrls && p.imageUrls.length > 0) ? p.imageUrls[0] : (p.imageUrl || 'https://cdn.flyonui.com/fy-assets/components/card/image-9.png')" 
+          <figure class="card-media">
+            <img [src]="(p.imageUrls && p.imageUrls.length > 0) ? p.imageUrls[0] : (p.imageUrl || 'assets/placeholder-home.png')" 
                  alt="{{ p.title }}" 
-                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                 class="property-img">
             
-            <div class="absolute top-3 left-3 bg-yellow-400/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm text-xs font-bold text-yellow-900 uppercase tracking-wide flex items-center gap-1">
-              <iconify-icon icon="tabler:clock-hour-4"></iconify-icon> Függőben
+            <div class="status-badge-overlay">
+              <iconify-icon icon="tabler:clock-hour-4"></iconify-icon> 
+              <span>Függőben</span>
             </div>
-          </div>
+          </figure>
           
-          <div class="p-5 flex-1 flex flex-col">
-            <h3 class="text-lg font-bold text-gray-800 mb-1 line-clamp-1 group-hover:text-indigo-600 transition-colors">{{ p.title }}</h3>
+          <div class="card-body">
+            <h3 class="property-title">{{ p.title }}</h3>
             
-            <div class="flex items-center text-gray-500 text-sm mb-3">
-              <iconify-icon icon="tabler:map-pin" class="mr-1 text-indigo-400"></iconify-icon> 
-              <span class="truncate">{{ p.location }}</span>
+            <div class="property-location">
+              <iconify-icon icon="tabler:map-pin"></iconify-icon> 
+              <span>{{ p.location }}</span>
             </div>
             
-            <p class="text-gray-600 text-sm line-clamp-2 mb-4 flex-1">{{ p.description }}</p>
+            <p class="property-desc">{{ p.description }}</p>
             
-            <div class="flex justify-between items-center pt-4 border-t border-gray-100 mb-4">
-              <span class="font-black text-indigo-700">{{ p.pricePerNight | currency:'HUF':'symbol':'1.0-0' }} <span class="text-xs font-normal text-gray-500">/ éj</span></span>
-              <span class="flex items-center text-sm font-medium text-gray-600 bg-gray-50 px-2 py-1 rounded-lg">
-                <iconify-icon icon="tabler:users" class="mr-1 text-indigo-400"></iconify-icon> {{ p.capacity }} fő
+            <div class="card-stats">
+              <span class="price">
+                {{ p.pricePerNight | currency:'HUF':'symbol':'1.0-0' }} 
+                <small>/ éj</small>
+              </span>
+              <span class="capacity">
+                <iconify-icon icon="tabler:users"></iconify-icon> {{ p.capacity }} fő
               </span>
             </div>
 
-            <button (click)="openApproveModal(p)" class="w-full bg-indigo-50 text-indigo-700 hover:bg-indigo-600 hover:text-white font-bold py-2.5 rounded-xl transition-colors flex justify-center items-center gap-2 border border-indigo-100 hover:border-indigo-600">
-              <iconify-icon icon="tabler:check" width="20"></iconify-icon>
+            <button (click)="openApproveModal(p)" class="btn-approve-action">
+              <iconify-icon icon="tabler:check"></iconify-icon>
               Megnézem / Jóváhagyás
             </button>
           </div>
@@ -68,35 +72,33 @@
 </div>
 
 @if (showConfirmModal && propertyToApprove) {
-  <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate-fade-in">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform animate-scale-up">
+  <div class="modal-overlay">
+    <div class="modal-card">
       
-      <div class="bg-indigo-50 p-6 flex flex-col items-center text-center border-b border-indigo-100">
-        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-indigo-600 shadow-sm mb-4">
-          <iconify-icon icon="tabler:home-check" width="32"></iconify-icon>
+      <div class="modal-header">
+        <div class="modal-icon-circle">
+          <iconify-icon icon="tabler:home-check"></iconify-icon>
         </div>
-        <h3 class="text-xl font-bold text-gray-800">Ingatlan publikálása</h3>
+        <h3>Ingatlan publikálása</h3>
       </div>
 
-      <div class="p-6 text-center">
-        <p class="text-gray-600 mb-4">Biztosan jóváhagyod és elérhetővé teszed mindenki számára a következő ingatlant?</p>
-        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-          <div class="font-bold text-lg text-indigo-900">{{ propertyToApprove.title }}</div>
-          <div class="text-sm text-gray-500 flex items-center justify-center gap-1 mt-1 font-medium">
+      <div class="modal-body">
+        <p>Biztosan jóváhagyod és elérhetővé teszed mindenki számára ezt az ingatlant?</p>
+        <div class="target-preview">
+          <div class="target-title">{{ propertyToApprove.title }}</div>
+          <div class="target-location">
             <iconify-icon icon="tabler:map-pin"></iconify-icon> {{ propertyToApprove.location }}
           </div>
         </div>
       </div>
 
-      <div class="p-4 bg-gray-50 border-t border-gray-100 flex gap-3 justify-end">
-        <button (click)="cancelApproval()" class="px-5 py-2.5 text-gray-600 font-bold hover:bg-gray-200 rounded-xl transition-colors">
-          Mégsem
-        </button>
-        <button (click)="confirmApproval()" [disabled]="isApproving" class="px-5 py-2.5 bg-indigo-600 text-white font-bold hover:bg-indigo-700 shadow-md shadow-indigo-200 rounded-xl transition-colors flex items-center gap-2 disabled:opacity-50">
+      <div class="modal-footer">
+        <button (click)="cancelApproval()" class="btn-ghost">Mégsem</button>
+        <button (click)="confirmApproval()" [disabled]="isApproving" class="btn-primary-confirm">
           @if (isApproving) {
-            <iconify-icon icon="line-md:loading-loop" width="20"></iconify-icon> Publikálás...
+            <iconify-icon icon="line-md:loading-loop"></iconify-icon> Publikálás...
           } @else {
-            <iconify-icon icon="tabler:check" width="20"></iconify-icon> Igen, publikálom
+            <iconify-icon icon="tabler:check"></iconify-icon> Igen, publikálom
           }
         </button>
       </div>
@@ -105,14 +107,12 @@
 }
 
 @if (showSuccessToast) {
-  <div class="fixed top-6 right-6 z-[100] animate-fade-in-down">
-    <div class="bg-emerald-50 border border-emerald-200 shadow-xl shadow-emerald-100/50 rounded-2xl p-4 flex items-start gap-4 max-w-sm">
-      <div class="bg-emerald-500 text-white rounded-full p-1.5 flex-shrink-0 mt-0.5 shadow-sm">
-        <iconify-icon icon="tabler:check" width="20"></iconify-icon>
-      </div>
-      <div>
-        <h4 class="font-bold text-emerald-900">Sikeres publikálás!</h4>
-        <p class="text-sm text-emerald-700 mt-1 leading-tight">Az ingatlan mostantól mindenki számára elérhető az oldalon.</p>
+  <div class="toast-notification">
+    <div class="toast-content success">
+      <iconify-icon icon="tabler:check" class="toast-check-icon"></iconify-icon>
+      <div class="toast-text">
+        <h4>Sikeres publikálás!</h4>
+        <p>Az ingatlan mostantól elérhető az oldalon.</p>
       </div>
     </div>
   </div>

@@ -8,13 +8,13 @@ import { PropertyService } from '../../../../core/services/property.service';
   standalone: true,
   imports: [CommonModule, CurrencyPipe, RouterModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  templateUrl: './admin-pending-properties.html'
+  templateUrl: './admin-pending-properties.html',
+  styleUrl: './admin-pending-properties.css'
 })
 export class AdminPendingPropertiesComponent implements OnInit {
   pendingProperties: any[] = [];
   loading = true;
 
-  // Modal és UI változók
   showConfirmModal = false;
   propertyToApprove: any = null;
   isApproving = false;
@@ -40,34 +40,26 @@ export class AdminPendingPropertiesComponent implements OnInit {
     });
   }
 
-  // Megnyitja a megerősítő ablakot
   openApproveModal(property: any) {
     this.propertyToApprove = property;
     this.showConfirmModal = true;
   }
 
-  // Bezárja a megerősítő ablakot
   cancelApproval() {
     this.showConfirmModal = false;
     this.propertyToApprove = null;
   }
 
-  // Véglegesíti a jóváhagyást
   confirmApproval() {
     if (!this.propertyToApprove) return;
-
     this.isApproving = true;
     this.propertyService.approveProperty(this.propertyToApprove.id).subscribe({
       next: () => {
-        // Kivesszük a listából
+     
         this.pendingProperties = this.pendingProperties.filter(p => p.id !== this.propertyToApprove.id);
-        
-        // Modal bezárása és állapot visszaállítása
         this.isApproving = false;
         this.showConfirmModal = false;
         this.propertyToApprove = null;
-
-        // Sikeres értesítés (Toast) megjelenítése 3 másodpercre
         this.showSuccessToast = true;
         setTimeout(() => this.showSuccessToast = false, 3000);
       },

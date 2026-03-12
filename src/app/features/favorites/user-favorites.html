@@ -1,62 +1,61 @@
-<div class="p-6 max-w-7xl mx-auto bg-gray-50/50 min-h-screen">
+<div class="favorites-container">
   
-  <div class="flex items-center gap-4 mb-8">
-    <div class="bg-rose-500 text-white p-3 rounded-2xl shadow-lg shadow-rose-200">
-      <iconify-icon icon="tabler:heart-filled" width="32"></iconify-icon>
+  <header class="page-header">
+    <div class="header-icon heart-icon">
+      <iconify-icon icon="tabler:heart-filled"></iconify-icon>
     </div>
-    <div>
-      <h2 class="text-3xl font-bold text-gray-800">Kedvenc ingatlanjaim</h2>
-      <p class="text-gray-500 mt-1">Az általad elmentett, kiszemelt szállások listája.</p>
+    <div class="header-text">
+      <h2>Kedvenc ingatlanjaim</h2>
+      <p>Az általad elmentett, kiszemelt szállások listája.</p>
     </div>
-  </div>
+  </header>
 
   @if (loading) {
-    <div class="flex justify-center py-20 text-rose-500">
-      <iconify-icon icon="line-md:loading-loop" width="48"></iconify-icon>
+    <div class="loading-state">
+      <iconify-icon icon="line-md:loading-loop"></iconify-icon>
     </div>
   }
 
   @if (!loading && favorites.length === 0) {
-    <div class="bg-white rounded-3xl border border-gray-100 p-12 text-center shadow-sm">
-      <div class="w-24 h-24 bg-rose-50 rounded-full flex items-center justify-center text-rose-300 mb-6 mx-auto">
-        <iconify-icon icon="tabler:heart-broken" width="48"></iconify-icon>
+    <div class="empty-favorites">
+      <div class="empty-icon-wrapper">
+        <iconify-icon icon="tabler:heart-broken"></iconify-icon>
       </div>
-      <h3 class="text-2xl font-bold text-gray-800">Még nincsenek kedvenceid</h3>
-      <p class="text-gray-500 mt-2">Böngéssz az ingatlanok között, és mentsd el őket!</p>
-      <a routerLink="/user-dashboard" class="mt-6 inline-flex px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-colors">
+      <h3>Még nincsenek kedvenceid</h3>
+      <p>Böngéssz az ingatlanok között, és mentsd el őket!</p>
+      <a routerLink="/user-dashboard" class="btn-primary browse-btn">
         Ingatlanok keresése
       </a>
     </div>
   }
 
   @if (!loading && favorites.length > 0) {
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="favorites-grid">
       @for (fav of favorites; track fav.id) {
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col relative">
+        <div class="property-card">
           
-          <div class="h-48 bg-gray-200 relative">
-            <button (click)="removeFavorite(fav.propertyId)" class="absolute top-3 right-3 z-20 w-10 h-10 bg-white hover:bg-rose-50 text-rose-500 rounded-full flex items-center justify-center shadow-md transition-transform hover:scale-110">
-              <iconify-icon icon="tabler:heart-filled" width="20"></iconify-icon>
+          <div class="card-media">
+            <button (click)="removeFavorite(fav.propertyId)" class="remove-fav-btn" title="Eltávolítás">
+              <iconify-icon icon="tabler:heart-filled"></iconify-icon>
             </button>
-            <div class="w-full h-full flex items-center justify-center text-gray-400">
-               <iconify-icon icon="tabler:home" width="40"></iconify-icon>
-            </div>
+            
+            <img [src]="getActualImage(fav)" alt="{{ fav.property?.title || fav.propertyTitle || 'Ingatlan' }}" class="main-img" />
           </div>
 
-          <div class="p-5 flex flex-col flex-grow">
-            <h3 class="text-xl font-bold text-gray-800 mb-1">
+          <div class="card-body">
+            <h3 class="property-title">
               {{ fav.property?.title || fav.propertyTitle || 'Ismeretlen ingatlan' }}
             </h3>
-            <div class="flex items-center text-gray-500 text-sm mb-4 gap-1">
-              <iconify-icon icon="tabler:map-pin" class="text-indigo-400"></iconify-icon>
+            <div class="property-location">
+              <iconify-icon icon="tabler:map-pin"></iconify-icon>
               <span>{{ fav.property?.location || fav.location || 'Ismeretlen helyszín' }}</span>
             </div>
 
-            <div class="mt-auto flex items-end justify-between pt-4 border-t border-gray-50">
-              <div class="text-lg font-bold text-indigo-600">
-                {{ (fav.property?.pricePerNight || fav.pricePerNight || 0) | currency:'HUF':'symbol':'1.0-0' }} / éj
+            <div class="card-footer">
+              <div class="property-price">
+                {{ (fav.property?.pricePerNight || fav.pricePerNight || 0) | currency:'HUF':'symbol':'1.0-0' }} <span>/ éj</span>
               </div>
-              <a [routerLink]="['/property', fav.propertyId]" class="px-4 py-2 bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-600 font-bold text-sm rounded-xl transition-colors">
+              <a [routerLink]="['/property', fav.propertyId]" class="btn-view">
                 Megnézem
               </a>
             </div>

@@ -106,14 +106,6 @@ export const routes: Routes = [
         canActivate: [authGuard()],
       },
       {
-        path: 'messages', 
-        //canActivate: [authGuard('User,Host')],
-        loadComponent: () =>
-          import('./features/messages/messages.component').then(
-            (m) => m.MessagesComponent
-          ),
-      },
-      {
         path: 'calendar',
         loadComponent: () =>
           import('./features/calendar/calendar.component').then(
@@ -144,7 +136,7 @@ export const routes: Routes = [
       {
         path: 'property/:id',
         loadComponent: () =>
-          import('./features/properties/property-detail/property-public-detail.component').then(
+          import('./features/properties/property-detail/property-detail').then(
             (m) => m.PropertyPublicDetailComponent
           ),
       },
@@ -162,7 +154,7 @@ export const routes: Routes = [
         path: 'host-all-properties',
         //canActivate: [authGuard('Host')],
         loadComponent: () =>
-          import('./features/dashboards/host-dashboard/host-all-properties').then(
+          import('./features/dashboards/host-dashboard/host-all-properties/host-all-properties').then(
             (m) => m.HostAllPropertiesComponent
           ),
       },
@@ -191,12 +183,12 @@ export const routes: Routes = [
       },
       {path: 'admin-users', 
         loadComponent: () => 
-          import('./features/dashboards/admin-dashboard/admin-users')
+          import('./features/dashboards/admin-dashboard/admin-users/admin-users')
         .then(m => m.UserAdminComponent)},
       { 
         path: 'admin-stats',
          loadComponent() {
-          return import('./features/dashboards/admin-dashboard/admin-stats')
+          return import('./features/dashboards/admin-dashboard/admin-stats/admin-stats')
           .then(m => m.AdminStatsComponent);
          }
 

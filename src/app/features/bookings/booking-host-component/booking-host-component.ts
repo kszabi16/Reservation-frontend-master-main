@@ -9,7 +9,8 @@ import { BookingService } from '../../../core/services/booking.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './booking-host-component.html',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  styleUrl: './booking-host-component.css'
 })
 export class BookingHostComponent implements OnInit {
   bookings: BookingDto[] = [];

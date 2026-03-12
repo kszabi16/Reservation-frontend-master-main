@@ -8,7 +8,8 @@ import { BookingDto, BookingStatus } from '../../../core/models/booking-dto';
   selector: 'booking-admin',
   standalone: true,
   templateUrl: './booking-admin-component.html',
-  imports: [CommonModule, FormsModule, DatePipe]
+  imports: [CommonModule, FormsModule, DatePipe],
+  styleUrl: './admin-bookings.component.css'
 })
 export class BookingAdminComponent {
 

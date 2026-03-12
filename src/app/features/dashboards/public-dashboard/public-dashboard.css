@@ -1,0 +1,264 @@
+.dashboard-container {
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  padding-bottom: 50px;
+}
+
+.main-content {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.search-bar {
+  position: sticky;
+  top: 20px;
+  z-index: 50;
+  background: var(--surface-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--surface-border);
+  border-radius: 30px;
+  padding: 24px;
+  margin-bottom: 40px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.search-group { display: flex; flex-direction: column; gap: 8px; }
+.search-group.location { grid-column: span 4; }
+.search-group.price { grid-column: span 4; }
+.search-group.guests { grid-column: span 2; }
+.search-actions { grid-column: span 2; display: flex; gap: 8px; }
+
+.search-group label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-left: 4px;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary);
+  font-size: 20px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid var(--surface-border);
+  border-radius: 14px;
+  color: white;
+  outline: none;
+}
+
+.price-inputs { display: flex; gap: 8px; }
+.price-inputs .input-wrapper { flex: 1; }
+.price-inputs input { padding-left: 15px; }
+
+.search-btn { height: 48px; flex: 1; margin: 0 !important; }
+.reset-btn {
+  height: 48px;
+  width: 48px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--surface-border);
+  border-radius: 14px;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 0 10px;
+}
+
+.result-count {
+  background: rgba(255,255,255,0.05);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.properties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.property-card {
+  background: var(--surface-color);
+  border: 1px solid var(--surface-border);
+  border-radius: 32px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+}
+
+.property-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--primary);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.card-media {
+  position: relative;
+  height: 260px;
+}
+
+.property-image { width: 100%; height: 100%; object-fit: cover; }
+
+.price-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(11, 15, 25, 0.8);
+  backdrop-filter: blur(8px);
+  padding: 8px 15px;
+  border-radius: 20px;
+  z-index: 10;
+}
+
+.price-badge .price { font-weight: 800; color: var(--primary); }
+.price-badge .unit { font-size: 0.7rem; color: var(--text-muted); margin-left: 4px; }
+
+.favorite-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.favorite-btn:hover { color: #f43f5e; background: white; }
+
+.card-content { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+
+.property-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 6px; }
+
+.location-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+  padding-top: 15px;
+  border-top: 1px solid var(--surface-border);
+}
+
+.capacity-tag {
+  background: rgba(255,255,255,0.03);
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rating-box { display: flex; align-items: center; gap: 8px; }
+.stars { color: #374151; display: flex; gap: 2px; }
+.stars iconify-icon.filled { color: #fbbf24; }
+.rating-value { font-weight: 800; font-size: 0.9rem; }
+
+.property-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.btn-details {
+  margin-top: auto;
+  background: transparent;
+  border: 1px solid var(--surface-border);
+  color: var(--text-main);
+  padding: 14px;
+  border-radius: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-details:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.auth-toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+}
+
+.toast-content {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 16px 24px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+}
+
+.toast-icon { background: #f59e0b; padding: 10px; border-radius: 50%; display: flex; color: white; }
+.toast-text .title { font-weight: 700; font-size: 0.9rem; }
+.toast-text .sub { font-size: 0.75rem; color: #94a3b8; }
+.toast-btn { width: auto !important; padding: 8px 20px !important; margin: 0 !important; font-size: 0.8rem !important; }
+.close-toast { background: transparent; border: none; color: #475569; cursor: pointer; }
+
+@media (max-width: 1024px) {
+  .search-grid { grid-template-columns: 1fr; }
+  .search-group.location, .search-group.price, .search-group.guests, .search-actions { grid-column: span 12; }
+}

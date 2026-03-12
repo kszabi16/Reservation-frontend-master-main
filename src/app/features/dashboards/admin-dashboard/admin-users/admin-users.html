@@ -1,0 +1,210 @@
+<div class="admin-page-container">
+  
+  <header class="page-header">
+    <div class="header-group">
+      <div class="header-icon">
+        <iconify-icon icon="tabler:users"></iconify-icon>
+      </div>
+      <div class="header-text">
+        <h2>Felhasználók kezelése</h2>
+        <p>Regisztrált fiókok, szerepkörök és jogosultságok adminisztrációja.</p>
+      </div>
+    </div>
+    
+    <button (click)="addUser()" class="btn-primary">
+      <iconify-icon icon="tabler:user-plus"></iconify-icon>
+      Új felhasználó
+    </button>
+  </header>
+
+  @if (loading) {
+    <div class="loading-state">
+      <iconify-icon icon="line-md:loading-loop"></iconify-icon>
+      <span>Felhasználók betöltése...</span>
+    </div>
+  } @else {
+
+    <div class="table-container card">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Felhasználó</th>
+            <th>Kapcsolat</th>
+            <th class="text-center">Szerepkör</th>
+            <th class="text-center">Regisztrált</th>
+            <th class="text-right">Műveletek</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          @for (user of users; track user.id) {
+            <tr class="table-row">
+              
+              <td>
+                <div class="user-cell">
+                  <div class="avatar-circle">
+                    {{ user.username.charAt(0).toUpperCase() }}
+                  </div>
+                  <div class="user-info">
+                    <div class="username">{{ user.username }}</div>
+                    <div class="user-id">ID: #{{ user.id }}</div>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div class="contact-cell">
+                  <iconify-icon icon="tabler:mail"></iconify-icon>
+                  {{ user.email }}
+                </div>
+              </td>
+
+              <td class="text-center">
+                <select 
+                  [ngModel]="user.role" 
+                  (ngModelChange)="changeRole(user, $event)"
+                  class="role-select"
+                  [ngClass]="'role-' + user.role.toLowerCase()">
+                  <option value="Guest">Guest</option>
+                  <option value="Host">Host</option>
+                  <option value="Admin">Admin</option>
+                </select>
+              </td>
+
+              <td class="text-center date-cell">
+                2024. 05. 12.
+              </td>
+
+              <td class="text-right">
+                <div class="action-buttons">
+                  <button (click)="openEditModal(user)" class="btn-icon edit" title="Szerkesztés">
+                    <iconify-icon icon="tabler:edit"></iconify-icon>
+                  </button>
+                  <button (click)="openDeleteModal(user)" class="btn-icon delete" title="Törlés">
+                    <iconify-icon icon="tabler:trash"></iconify-icon>
+                  </button>
+                  
+                  @if (user.role === 'Host') {
+                    <button (click)="toggleTrusted(user)" 
+                            class="trusted-toggle"
+                            [class.is-trusted]="user.isTrustedHost">
+                      <iconify-icon [icon]="user.isTrustedHost ? 'tabler:shield-check' : 'tabler:shield-x'"></iconify-icon>
+                      {{ user.isTrustedHost ? 'Megbízható' : 'Nem hiteles' }}
+                    </button>
+                  }
+                </div>
+              </td>
+              
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (showConfirmModal && pendingRoleChange) {
+    <div class="modal-overlay">
+      <div class="modal-card warning">
+        <div class="modal-header">
+          <div class="modal-icon-circle">
+            <iconify-icon icon="tabler:alert-triangle"></iconify-icon>
+          </div>
+          <h3>Szerepkör módosítása</h3>
+        </div>
+
+        <div class="modal-body">
+          <p>Biztosan módosítod <strong>{{ pendingRoleChange.user.username }}</strong> jogosultságát?</p>
+          <div class="role-change-preview">
+            <span class="old-role">{{ pendingRoleChange.user.role }}</span>
+            <iconify-icon icon="tabler:arrow-right"></iconify-icon>
+            <span class="new-role">{{ pendingRoleChange.newRole }}</span>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button (click)="cancelRoleChange()" class="btn-ghost">Mégsem</button>
+          <button (click)="confirmRoleChange()" class="btn-primary-confirm">Igen, módosítom</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showEditModal && editingUser) {
+    <div class="modal-overlay">
+      <div class="modal-card edit">
+        <div class="modal-header primary-bg">
+          <iconify-icon icon="tabler:user-edit"></iconify-icon>
+          <h3>Felhasználó szerkesztése</h3>
+        </div>
+
+        <div class="modal-body form-grid">
+          <div class="form-group">
+            <label>Felhasználónév</label>
+            <input type="text" [(ngModel)]="editingUser.username" class="form-input">
+          </div>
+          
+          <div class="form-group">
+            <label>E-mail cím</label>
+            <input type="email" [(ngModel)]="editingUser.email" class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label>Új jelszó <small>(opcionális)</small></label>
+            <input type="password" [(ngModel)]="editingUser.password" placeholder="••••••••" class="form-input">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button (click)="closeEditModal()" class="btn-ghost">Mégsem</button>
+          <button (click)="saveEditedUser()" [disabled]="isSaving" class="btn-primary-confirm">
+            {{ isSaving ? 'Mentés...' : 'Változtatások mentése' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showDeleteModal && userToDelete) {
+    <div class="modal-overlay">
+      <div class="modal-card danger">
+        <div class="modal-header danger-bg">
+          <div class="modal-icon-circle">
+            <iconify-icon icon="tabler:trash-x"></iconify-icon>
+          </div>
+          <h3>Felhasználó törlése</h3>
+        </div>
+
+        <div class="modal-body">
+          <p class="warning-text">FIGYELEM! A művelet nem vonható vissza!</p>
+          <div class="delete-info">
+            <span class="target-name">{{ userToDelete.username }}</span>
+            <span class="target-email">{{ userToDelete.email }}</span>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button (click)="cancelDelete()" class="btn-ghost">Mégsem</button>
+          <button (click)="confirmDelete()" [disabled]="isDeleting" class="btn-danger-confirm">
+            {{ isDeleting ? 'Törlés...' : 'Igen, véglegesen törlöm' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showSuccessModal) {
+    <div class="toast-notification">
+      <div class="toast-content success">
+        <iconify-icon icon="tabler:check"></iconify-icon>
+        <div class="toast-text">
+          <h4>Sikeres művelet</h4>
+          <p>{{ successMessage }}</p>
+        </div>
+        <button (click)="showSuccessModal = false" class="btn-close">
+          <iconify-icon icon="tabler:x"></iconify-icon>
+        </button>
+      </div>
+    </div>
+  }
+
+</div>

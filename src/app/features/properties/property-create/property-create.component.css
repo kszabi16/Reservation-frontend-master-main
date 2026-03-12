@@ -1,1 +1,238 @@
-@import '../properties.css';
+.create-property-wrapper {
+  max-width: 850px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* ===== FEJLÉC ===== */
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.header-icon {
+  background: var(--primary);
+  color: white;
+  padding: 12px;
+  border-radius: 18px;
+  font-size: 32px;
+  display: flex;
+  box-shadow: 0 10px 20px var(--primary-glow);
+}
+
+.page-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+}
+
+.page-subtitle {
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ===== ALERTEK (Inline) ===== */
+.alert-box {
+  padding: 16px 20px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.alert-box.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; }
+.alert-box iconify-icon { font-size: 24px; }
+
+/* ===== FORM KÁRTYA ===== */
+.form-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+.property-form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Inputok és Textarea */
+.form-input {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-size: 1rem;
+  transition: var(--transition);
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--primary);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+.textarea { min-height: 120px; resize: none; line-height: 1.6; }
+
+/* Ikonos mezők */
+.input-with-icon { position: relative; width: 100%; }
+.inner-icon {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--primary); font-size: 20px;
+}
+.inner-icon.right { left: auto; right: 16px; }
+.form-input.with-icon { padding-left: 50px; }
+
+/* Ár utótag */
+.input-with-suffix { position: relative; width: 100%; }
+.suffix {
+  position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); font-weight: 600;
+}
+
+/* Fájlfeltöltő egyedi stílus */
+.file-upload-wrapper {
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px dashed var(--surface-border);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  transition: var(--transition);
+}
+.file-upload-wrapper:hover { border-color: var(--primary); background: rgba(255, 255, 255, 0.05); }
+.file-input-native { width: 100%; color: var(--text-muted); cursor: pointer; }
+.file-input-native::file-selector-button {
+  background: var(--primary-glow); color: var(--primary); border: 1px solid var(--primary);
+  padding: 8px 16px; border-radius: 8px; margin-right: 15px; font-weight: 700; cursor: pointer; transition: var(--transition);
+}
+.file-input-native::file-selector-button:hover { background: var(--primary); color: white; }
+
+/* Kiválasztott fájlok listája */
+.selected-files-container {
+  margin-top: 15px; background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 15px;
+}
+.file-list-title { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+.file-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.file-item {
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255, 255, 255, 0.03); padding: 8px 12px; border-radius: 8px; font-size: 0.85rem;
+}
+.file-name { display: flex; align-items: center; gap: 8px; color: var(--text-main); }
+.file-name iconify-icon { color: var(--primary); }
+.btn-remove-file {
+  background: none; border: none; color: #ef4444; cursor: pointer; font-size: 18px; display: flex; transition: var(--transition);
+}
+.btn-remove-file:hover { transform: scale(1.2); }
+
+/* Rács elrendezés */
+.form-grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+/* ===== GOMB ÉS LETILTOTT (DISABLED) ÁLLAPOT ===== */
+.form-actions {
+  margin-top: 20px;
+  padding-top: 30px;
+  border-top: 1px solid var(--surface-border);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit-btn {
+  width: auto !important;
+  min-width: 240px;
+  padding: 14px 32px !important;
+  font-size: 1.1rem !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px var(--primary-glow);
+}
+
+/* EZT AKARTAD: Vizuálisan inaktív gomb, amíg nincs minden kitöltve */
+.submit-btn:disabled {
+  background: #334155; /* Sötétszürke */
+  color: #94a3b8; /* Világosszürke szöveg */
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  opacity: 0.7;
+}
+
+.toast-notification {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  z-index: 2000;
+  animation: slideInDown 0.4s ease-out forwards;
+}
+
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.toast-content { 
+  background: #111827; 
+  border: 1px solid #10b981; 
+  padding: 16px 24px; 
+  border-radius: 20px;
+  display: flex; 
+  align-items: center; 
+  gap: 15px; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.toast-check-icon { 
+  background: #10b981; 
+  color: white; 
+  padding: 5px; 
+  border-radius: 50%; 
+  font-size: 18px; 
+}
+
+.toast-text h4 { margin: 0; color: #10b981; font-size: 0.95rem; }
+.toast-text p { margin: 4px 0 0; font-size: 0.8rem; color: var(--text-muted); }
+
+/* Reszponzivitás */
+@media (max-width: 700px) {
+  .form-grid-row { grid-template-columns: 1fr; }
+  .form-card { padding: 24px; }
+  .submit-btn { width: 100% !important; }
+}

@@ -1,77 +1,85 @@
-<div class="p-6 max-w-3xl mx-auto bg-white min-h-screen">
+<div class="admin-form-container">
   
-  <div class="flex items-center gap-4 mb-8">
-    <button (click)="cancel()" class="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500">
-      <iconify-icon icon="tabler:arrow-left" width="24"></iconify-icon>
-    </button>
-    <div class="bg-indigo-600 text-white p-3 rounded-2xl shadow-lg shadow-indigo-200">
-      <iconify-icon icon="tabler:user-plus" width="32"></iconify-icon>
+  <header class="form-header">
+    <div class="header-left">
+      <button (click)="cancel()" class="btn-back" title="Vissza">
+        <iconify-icon icon="tabler:arrow-left"></iconify-icon>
+      </button>
+      <div class="header-icon-box">
+        <iconify-icon icon="tabler:user-plus"></iconify-icon>
+      </div>
+      <div class="header-titles">
+        <h2>Új felhasználó felvétele</h2>
+        <p>Hozz létre egy új fiókot és oszd ki a jogosultságokat.</p>
+      </div>
     </div>
-    <div>
-      <h2 class="text-3xl font-bold text-gray-800">Új felhasználó felvétele</h2>
-      <p class="text-gray-500 mt-1">Hozz létre egy új fiókot és oszd ki a jogosultságokat.</p>
-    </div>
-  </div>
+  </header>
 
   @if (error) {
-    <div class="bg-red-50 text-red-600 p-4 rounded-xl border border-red-100 mb-6 flex items-center gap-2">
-      <iconify-icon icon="tabler:alert-circle" width="20"></iconify-icon>
-      <span class="font-medium">{{ error }}</span>
+    <div class="alert-box error">
+      <iconify-icon icon="tabler:alert-circle"></iconify-icon>
+      <span>{{ error }}</span>
     </div>
   }
   @if (successMessage) {
-    <div class="bg-emerald-50 text-emerald-600 p-4 rounded-xl border border-emerald-200 shadow-sm mb-6 flex items-center gap-2 animate-fade-in-up">
-      <iconify-icon icon="tabler:check" width="24" class="bg-emerald-100 rounded-full p-1"></iconify-icon>
-      <span class="font-bold text-emerald-800">{{ successMessage }}</span>
-      <span class="ml-auto text-sm text-emerald-600 opacity-70">Átirányítás...</span>
+    <div class="alert-box success">
+      <iconify-icon icon="tabler:check"></iconify-icon>
+      <div class="alert-content">
+        <span class="font-bold">{{ successMessage }}</span>
+        <span class="redirect-text">Átirányítás...</span>
+      </div>
     </div>
   }
 
-  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-    <form (ngSubmit)="onSubmit()" #userForm="ngForm" class="space-y-6">
+  <div class="card form-card">
+    <form (ngSubmit)="onSubmit()" #userForm="ngForm" class="user-form">
       
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label class="block text-sm font-bold text-gray-700 mb-2">Felhasználónév *</label>
-          <input 
-            type="text" 
-            name="username" 
-            [(ngModel)]="userData.username" 
-            required
-            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
-            placeholder="pl. admin_pista">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Felhasználónév *</label>
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              name="username" 
+              [(ngModel)]="userData.username" 
+              required
+              class="form-input"
+              placeholder="pl. admin_pista">
+          </div>
         </div>
 
-        <div>
-          <label class="block text-sm font-bold text-gray-700 mb-2">E-mail cím *</label>
-          <input 
-            type="email" 
-            name="email" 
-            [(ngModel)]="userData.email" 
-            required
-            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
-            placeholder="pl. pista@példa.hu">
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label class="block text-sm font-bold text-gray-700 mb-2">Jelszó *</label>
-          <input 
-            type="password" 
-            name="password" 
-            [(ngModel)]="userData.password" 
-            required
-            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
-            placeholder="Ideiglenes jelszó">
+        <div class="form-group">
+          <label>E-mail cím *</label>
+          <div class="input-wrapper">
+            <input 
+              type="email" 
+              name="email" 
+              [(ngModel)]="userData.email" 
+              required
+              class="form-input"
+              placeholder="pl. pista@példa.hu">
+          </div>
         </div>
 
-        <div>
-          <label class="block text-sm font-bold text-gray-700 mb-2">Szerepkör *</label>
+        <div class="form-group">
+          <label>Jelszó *</label>
+          <div class="input-wrapper">
+            <input 
+              type="password" 
+              name="password" 
+              [(ngModel)]="userData.password" 
+              required
+              class="form-input"
+              placeholder="Ideiglenes jelszó">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Szerepkör *</label>
           <select 
             name="role" 
             [(ngModel)]="userData.role"
-            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all cursor-pointer bg-white">
+            class="form-select">
             <option value="Guest">Guest (Sima felhasználó)</option>
             <option value="Host">Host (Házigazda)</option>
             <option value="Admin">Admin (Rendszergazda)</option>
@@ -79,22 +87,16 @@
         </div>
       </div>
 
-      <div class="flex items-center justify-end gap-3 pt-6 mt-6 border-t border-gray-100">
-        <button 
-          type="button" 
-          (click)="cancel()"
-          class="px-6 py-2.5 rounded-xl font-bold text-gray-600 hover:bg-gray-100 transition-colors">
+      <div class="form-actions">
+        <button type="button" (click)="cancel()" class="btn-ghost">
           Mégsem
         </button>
-        <button 
-          type="submit" 
-          [disabled]="loading"
-          class="px-6 py-2.5 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+        <button type="submit" [disabled]="loading" class="btn-primary-confirm">
           @if (loading) {
-            <iconify-icon icon="line-md:loading-loop" width="20"></iconify-icon>
-            Mentés folyamatban...
+            <iconify-icon icon="line-md:loading-loop"></iconify-icon>
+            Mentés...
           } @else {
-            <iconify-icon icon="tabler:device-floppy" width="20"></iconify-icon>
+            <iconify-icon icon="tabler:device-floppy"></iconify-icon>
             Felhasználó létrehozása
           }
         </button>

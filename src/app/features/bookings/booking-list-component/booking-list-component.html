@@ -1,70 +1,71 @@
-<div class="p-6 max-w-7xl mx-auto bg-gray-50/50 min-h-screen">
+<div class="user-bookings-container">
   
-  <div class="flex items-center gap-4 mb-8">
-    <div class="bg-indigo-600 text-white p-3 rounded-2xl shadow-lg shadow-indigo-200">
-      <iconify-icon icon="tabler:calendar-check" width="32"></iconify-icon>
+  <header class="page-header">
+    <div class="header-icon">
+      <iconify-icon icon="tabler:calendar-check"></iconify-icon>
     </div>
-    <div>
-      <h2 class="text-3xl font-bold text-gray-800">Foglalásaim</h2>
-      <p class="text-gray-500 mt-1">Kövesd nyomon korábbi és jövőbeli foglalásaidat.</p>
+    <div class="header-text">
+      <h2>Foglalásaim</h2>
+      <p>Kövesd nyomon korábbi és jövőbeli foglalásaidat.</p>
     </div>
-  </div>
+  </header>
 
   @if (loading) {
-    <div class="flex justify-center py-20">
-      <iconify-icon icon="line-md:loading-loop" width="48" class="text-indigo-600"></iconify-icon>
+    <div class="loading-container">
+      <iconify-icon icon="line-md:loading-loop"></iconify-icon>
     </div>
   }
 
   @if (!loading && bookings.length === 0) {
-    <div class="bg-white rounded-3xl p-12 text-center shadow-sm border border-gray-100">
-      <iconify-icon icon="tabler:calendar-off" width="64" class="text-gray-300 mb-4"></iconify-icon>
-      <h3 class="text-xl font-bold text-gray-800">Még nincs foglalásod</h3>
-      <p class="text-gray-500 mt-2">Böngéssz az ingatlanok között és foglald le az álomszállásod!</p>
-      <a routerLink="/public-dashboard" class="mt-6 inline-flex px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-colors">
+    <div class="empty-state">
+      <iconify-icon icon="tabler:calendar-off" class="empty-icon"></iconify-icon>
+      <h3>Még nincs foglalásod</h3>
+      <p>Böngéssz az ingatlanok között és foglald le az álomszállásod!</p>
+      <a routerLink="/public-dashboard" class="btn-primary browse-btn">
         Szállások böngészése
       </a>
     </div>
   }
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div class="bookings-grid">
     @for (b of bookings; track b.id) {
-      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition-shadow">
+      <div class="booking-card" [class.cancelled-card]="b.status === BookingStatus.Cancelled">
         
-        <div class="p-6">
-          <div class="flex justify-between items-start mb-4">
-            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">#{{ b.id }} számú foglalás</span>
-            
-            <span class="px-3 py-1 rounded-full text-xs font-bold border"
-              [ngClass]="{
-                'bg-emerald-50 text-emerald-600 border-emerald-100': b.status === BookingStatus.Confirmed,
-                'bg-orange-50 text-orange-600 border-orange-100': b.status === BookingStatus.Pending,
-                'bg-red-50 text-red-600 border-red-100': b.status === BookingStatus.Cancelled
-              }">
-              {{ b.status }}
-            </span>
-          </div>
+        <div class="card-header">
+          <span class="booking-id">#{{ b.id }} számú foglalás</span>
+          
+          <span class="status-badge" [ngClass]="{
+            'status-confirmed': b.status === BookingStatus.Confirmed,
+            'status-pending': b.status === BookingStatus.Pending,
+            'status-cancelled': b.status === BookingStatus.Cancelled
+          }">
+            {{ b.status }}
+          </span>
+        </div>
 
-          <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <iconify-icon icon="tabler:home" class="text-indigo-500"></iconify-icon>
+        <div class="card-body">
+          <h3 class="property-id">
+            <iconify-icon icon="tabler:home"></iconify-icon>
             Ingatlan ID: {{ b.propertyId }}
           </h3>
 
-          <div class="space-y-3 mb-6">
-            <div class="flex items-center gap-3 text-sm text-gray-600">
-              <iconify-icon icon="tabler:calendar-event" class="text-gray-400" width="18"></iconify-icon>
-              <span>{{ b.startDate | date:'yyyy. MM. dd.' }} – {{ b.endDate | date:'yyyy. MM. dd.' }}</span>
-            </div>
+          <div class="date-info">
+            <iconify-icon icon="tabler:calendar-event"></iconify-icon>
+            <span>{{ b.startDate | date:'yyyy. MM. dd.' }} – {{ b.endDate | date:'yyyy. MM. dd.' }}</span>
           </div>
+        </div>
 
+        <div class="card-footer">
           @if (b.status !== BookingStatus.Cancelled) {
-            <button (click)="cancel(b.id)" 
-              class="w-full py-3 px-4 border-2 border-red-50 text-red-600 font-bold rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300 flex items-center justify-center gap-2 group/btn">
-              <iconify-icon icon="tabler:calendar-cancel" width="18"></iconify-icon>
+            <button (click)="cancel(b.id)" class="btn-cancel-outline">
+              <iconify-icon icon="tabler:calendar-cancel"></iconify-icon>
               Foglalás lemondása
             </button>
+          } @else {
+             <p class="cancelled-info">Ez a foglalás lemondásra került.</p>
           }
         </div>
+
       </div>
     }
   </div>

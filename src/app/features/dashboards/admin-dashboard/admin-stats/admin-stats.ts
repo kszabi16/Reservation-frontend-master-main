@@ -1,11 +1,11 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { RouterModule } from '@angular/router'; // Ezt is be kell húzni a linkek miatt!
-import { PropertyService } from '../../../core/services/property.service';
-import { BookingService } from '../../../core/services/booking.service';
-import { UserService } from '../../../core/services/user-service';
-import { BookingStatus } from '../../../core/models/booking-dto';
-import { AdminStats } from '../../../core/models/stats-dto';
+import { RouterModule } from '@angular/router'; 
+import { PropertyService } from '../../../../core/services/property.service';
+import { BookingService } from '../../../../core/services/booking.service';
+import { UserService } from '../../../../core/services/user-service';
+import { BookingStatus } from '../../../../core/models/booking-dto';
+import { AdminStats } from '../../../../core/models/stats-dto';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -14,7 +14,8 @@ import { catchError } from 'rxjs/operators';
   standalone: true,
   imports: [CommonModule, CurrencyPipe, RouterModule],
   templateUrl: './admin-stats.html',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  styleUrl:'./admin-stats.css'
 })
 export class AdminStatsComponent implements OnInit {
   stats: AdminStats = {

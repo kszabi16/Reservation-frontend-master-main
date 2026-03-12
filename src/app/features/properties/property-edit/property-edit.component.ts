@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './property-edit.component.html',
-  styleUrl: '../properties.css',
+  styleUrl: './property-edit.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PropertyEditComponent implements OnInit {

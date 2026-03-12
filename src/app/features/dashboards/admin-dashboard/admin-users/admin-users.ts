@@ -2,15 +2,16 @@ import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { UserService } from '../../../core/services/user-service';
-import { UserDto } from '../../../core/models/user-dto'
+import { UserService } from '../../../../core/services/user-service';
+import { UserDto } from '../../../../core/models/user-dto'
 
 @Component({
   selector: 'app-user-admin',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule, DatePipe],
   templateUrl: './admin-users.html',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  styleUrl:'./admin-users.css'
 })
 export class UserAdminComponent implements OnInit {
   users: UserDto[] = [];

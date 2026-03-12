@@ -8,7 +8,8 @@ import { BookingDto, BookingStatus } from '../../../core/models/booking-dto';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './booking-list-component.html',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  styleUrl: './booking-list-component.css'
 })
 export class BookingListComponent implements OnInit {
   bookings: BookingDto[] = [];

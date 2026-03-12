@@ -1,41 +1,71 @@
-<div class="admin-container">
-  <div class="admin-card">
-    <h1 class="admin-title">Admin Kezelőfelület</h1>
-    <p class="admin-subtitle">Válaszd ki, melyik adminisztrációs modulba szeretnél belépni.</p>
+<div class="admin-dashboard-container">
+  <div class="admin-main-card">
+    
+    <header class="admin-header">
+      <h1 class="admin-title">Admin Kezelőfelület</h1>
+      <p class="admin-subtitle">Válaszd ki, melyik adminisztrációs modulba szeretnél belépni.</p>
+    </header>
 
-    <div class="admin-grid">
+    <div class="admin-nav-grid">
 
-
-      <a routerLink="/property/admin" class="admin-button-card">
-        <h3>Ingatlanok kezelése</h3>
-        <p>Ingatlanok jóváhagyása, módosítása és adminisztrációja.</p>
+      <a routerLink="/property/admin" class="nav-card">
+        <div class="card-icon">
+          <iconify-icon icon="tabler:building-cog"></iconify-icon>
+        </div>
+        <div class="card-text">
+          <h3>Ingatlanok kezelése</h3>
+          <p>Ingatlanok jóváhagyása, módosítása és adminisztrációja.</p>
+        </div>
       </a>
 
-      
-      <a routerLink="/host-requests" class="admin-button-card">
-        <h3>Kérelmek kezelése</h3>
-        <p>Host jogosultság kérelmek elbírálása.</p>
+      <a routerLink="/host-requests" class="nav-card">
+        <div class="card-icon">
+          <iconify-icon icon="tabler:user-check"></iconify-icon>
+        </div>
+        <div class="card-text">
+          <h3>Kérelmek kezelése</h3>
+          <p>Host jogosultság kérelmek elbírálása a rendszeredben.</p>
+        </div>
       </a>
 
-      
-      <a routerLink="/admin-users" class="admin-button-card">
-        <h3>Felhasználók kezelése</h3>
-        <p>Regisztrált felhasználók listázása, jogosultságok módosítása.</p>
+      <a routerLink="/admin-users" class="nav-card">
+        <div class="card-icon">
+          <iconify-icon icon="tabler:users-group"></iconify-icon>
+        </div>
+        <div class="card-text">
+          <h3>Felhasználók kezelése</h3>
+          <p>Regisztrált felhasználók listázása és jogosultságok módosítása.</p>
+        </div>
       </a>
 
-      
-      <a routerLink="/admin-stats" class="admin-button-card">
-        <h3>Statisztikák</h3>
-        <p>Rendszerhasználati statisztikák, grafikonok és kimutatások.</p>
+      <a routerLink="/admin-stats" class="nav-card">
+        <div class="card-icon">
+          <iconify-icon icon="tabler:chart-bar"></iconify-icon>
+        </div>
+        <div class="card-text">
+          <h3>Statisztikák</h3>
+          <p>Rendszerhasználati statisztikák, grafikonok és kimutatások.</p>
+        </div>
       </a>
 
-      <a routerLink="/admin/pending-properties" class="admin-button-card">
-        <h3>Ingatlan jóváhagyások</h3>
-        <p>Függőben lévő ingatlanok felülvizsgálata</p>
+      <a routerLink="/admin/pending-properties" class="nav-card">
+        <div class="card-icon">
+          <iconify-icon icon="tabler:home-search"></iconify-icon>
+        </div>
+        <div class="card-text">
+          <h3>Ingatlan jóváhagyások</h3>
+          <p>Függőben lévő ingatlan hirdetések felülvizsgálata.</p>
+        </div>
       </a>
-      <a routerLink="/logs" class="admin-button-card">
-        <h3>Rendszer naplók</h3>
-        <p>API hívások, hibák és rendszerüzenetek.</p>
+
+      <a routerLink="/logs" class="nav-card">
+        <div class="card-icon">
+          <iconify-icon icon="tabler:terminal-2"></iconify-icon>
+        </div>
+        <div class="card-text">
+          <h3>Rendszer naplók</h3>
+          <p>API hívások, hibák és fontos rendszerüzenetek figyelése.</p>
+        </div>
       </a>
 
     </div>

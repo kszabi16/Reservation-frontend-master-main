@@ -13,7 +13,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
   imports: [CommonModule, ReactiveFormsModule,RouterModule],
   templateUrl: './login.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   form: FormGroup<{

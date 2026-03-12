@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterLink, RouterModule],
   templateUrl: './property-admin.component.html',
-  styleUrl:'../properties.css',
+  styleUrl:'./property-admin.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PropertyAdminComponent implements OnInit {

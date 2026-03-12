@@ -16,18 +16,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
-  selector: 'app-property-public-detail',
+  selector: 'property-detail',
   standalone: true,
   imports: [CommonModule, FormsModule,RouterLink], 
-  templateUrl: './property-public-detail.component.html',
+  templateUrl: './property-detail.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA], 
-  styleUrls: ['../properties.css'],
+  styleUrls: ['./property-detail.css'],
 })
 export class PropertyPublicDetailComponent implements OnInit {
   property: PropertyDto | null = null;
   loading = true;
   error = '';
-  //kommentek 
+
   comments: CommentDto[] = [];
   newCommentText: string = ''; 
   submittingComment = false;
@@ -36,13 +36,12 @@ export class PropertyPublicDetailComponent implements OnInit {
   stars: number[] = [1, 2, 3, 4, 5];
   isFavorite = false;
 
-  //foglalas
   startDate: string = '';
   endDate: string = '';
   bookingLoading = false;
   bookingSuccess = false;
   bookingError = '';
-  today: string = new Date().toISOString().split('T')[0]; // Mai dátum a naptár tiltásához (min)
+  today: string = new Date().toISOString().split('T')[0];
 
   currentImageIndex: number = 0;
 
@@ -191,13 +190,11 @@ export class PropertyPublicDetailComponent implements OnInit {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }
 
-  // Kiszámolja az árat a napok alapján
   get calculatedPrice(): number {
     if (!this.property) return 0;
     return this.totalDays * this.property.pricePerNight;
   }
 
-  // Foglalás elküldése
   bookProperty(): void {
     this.bookingError = '';
     this.bookingSuccess = false;
@@ -266,10 +263,19 @@ export class PropertyPublicDetailComponent implements OnInit {
     this.currentImageIndex = (this.currentImageIndex - 1 + this.property.imageUrls.length) % this.property.imageUrls.length;
   }
 
-  getActualImage(): string {
-    if (this.property?.imageUrls && this.property.imageUrls.length > 0) {
-      return this.property.imageUrls[this.currentImageIndex];
-    }
-    return this.property?.imageUrl || 'https://cdn.flyonui.com/fy-assets/components/card/image-9.png'; 
+getActualImage(): string {
+  const backendUrl = 'https://localhost:7102'; 
+
+  if (this.property?.imageUrls && this.property.imageUrls.length > 0) {
+    const imgPath = this.property.imageUrls[this.currentImageIndex];
+    return imgPath.startsWith('http') ? imgPath : backendUrl + imgPath;
   }
+  
+  if (this.property?.imageUrl) {
+    const imgPath = this.property.imageUrl;
+    return imgPath.startsWith('http') ? imgPath : backendUrl + imgPath;
+  }
+
+  return 'https://cdn.flyonui.com/fy-assets/components/card/image-9.png'; 
+}
 }
