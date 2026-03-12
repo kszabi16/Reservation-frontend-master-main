@@ -5,12 +5,14 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { LoginDto } from '../../../core/models/auth-dto'; 
 import { RouterModule } from '@angular/router';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule,RouterModule],
   templateUrl: './login.component.html',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {

@@ -18,12 +18,6 @@
           </a>
         </li>
         <li>
-          <a routerLink="/profile" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
-            <iconify-icon icon="tabler:user" width="22"></iconify-icon>
-            Profilom
-          </a>
-        </li>
-        <li>
           <a (click)="goToLogin()" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
             <iconify-icon icon="tabler:plus" width="22"></iconify-icon>
             Ingatlan feladása
@@ -161,14 +155,18 @@
             Profil
           </a>
         </li>
-        
         <li>
           <a routerLink="/favorites" routerLinkActive="bg-rose-50 text-rose-600 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-rose-50 hover:text-rose-600 transition-colors cursor-pointer">
             <iconify-icon icon="tabler:heart" width="22"></iconify-icon>
             Kedvencek
           </a>
         </li>
-
+        <li>
+          <a routerLink="/user-dashboard" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
+            <iconify-icon icon="tabler:building" width="22"></iconify-icon>
+            Ingatlanok
+          </a>
+        </li>
         <li>
           <a routerLink="/calendar" routerLinkActive="bg-indigo-50 text-indigo-700 font-semibold" class="flex items-center gap-3 w-full p-3 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors cursor-pointer">
             <iconify-icon icon="tabler:calendar" width="22"></iconify-icon>

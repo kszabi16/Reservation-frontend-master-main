@@ -68,6 +68,20 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  onAvatarSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.userService.uploadAvatar(file).subscribe({
+        next: (res) => {
+          if (this.user) {
+            this.user.avatarUrl = res.avatarUrl; 
+            alert('Profilkép sikeresen frissítve!');
+          }
+        },
+        error: (err) => console.error('Hiba a feltöltéskor:', err)
+      });
+    }
+  }
   
   showMessage(type: 'success' | 'error', text: string) {
     this.message = { type, text };

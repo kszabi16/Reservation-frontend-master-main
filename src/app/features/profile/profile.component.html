@@ -20,13 +20,26 @@
     <div class="profile-sidebar">
       <div class="card profile-card">
         <div class="profile-cover"></div>
-        
-        <div class="profile-avatar-wrapper">
-          <img [src]="user.avatarUrl || 'https://ui-avatars.com/api/?background=312e81&color=fff&name=' + user.username" 
-               alt="Profilkép" class="profile-avatar">
-          <button class="btn-upload" title="Kép módosítása (Hamarosan)">
-            <iconify-icon icon="tabler:camera"></iconify-icon>
-          </button>
+<div class="flex flex-col items-center mb-8 mt-4">
+          <div class="relative group cursor-pointer rounded-full">
+            
+            <div class="w-32 h-32 rounded-full border-4 border-indigo-100 shadow-xl overflow-hidden bg-indigo-50 flex items-center justify-center">
+              @if (user?.avatarUrl) {
+                <img [src]="'https://localhost:7102' + user.avatarUrl" class="w-full h-full object-cover">
+              } @else {
+                <span class="text-4xl font-black text-indigo-300">{{ (user?.username || 'U').charAt(0).toUpperCase() }}</span>
+              }
+            </div>
+
+            <label class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white text-xs font-bold uppercase tracking-wider rounded-full z-10">
+              <iconify-icon icon="tabler:camera" width="24" class="mb-1"></iconify-icon>
+              Módosít
+              <input type="file" (change)="onAvatarSelected($event)" class="hidden" accept="image/*">
+            </label>
+            
+          </div>
+          
+          <h2 class="mt-4 text-2xl font-bold text-gray-800">{{ user?.username }}</h2>
         </div>
 
         <div class="profile-info-center">
@@ -104,7 +117,6 @@
            </button>
         </div>
       </div>
-
     </div>
   </div>
 </div>

@@ -183,8 +183,12 @@
           <div class="border-b border-gray-100 pb-5 last:border-0 hover:bg-gray-50 p-4 rounded-lg transition-colors relative group">
             <div class="flex justify-between items-start mb-2">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-lg shadow-sm">
-                  {{ (c.userName || 'V').charAt(0).toUpperCase() }}
+               <div class="w-10 h-10 rounded-full overflow-hidden bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold shadow-sm">
+                  @if (c.userAvatarUrl) {
+                    <img [src]="'https://localhost:7102' + c.userAvatarUrl" class="w-full h-full object-cover">
+                  } @else {
+                    {{ (c.userName || 'V').charAt(0).toUpperCase() }}
+                  }
                 </div>
                 <div>
                   <span class="font-semibold text-gray-800">{{ c.userName || 'Vendég' }}</span>

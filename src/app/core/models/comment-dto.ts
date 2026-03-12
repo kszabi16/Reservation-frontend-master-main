@@ -7,6 +7,7 @@ export interface CommentDto {
   rating: number;
   createdAt: string;
   parentId?: number | null;
+  userAvatarUrl?:string
 }
 
 export interface CreateCommentDto {

@@ -12,7 +12,7 @@ import { LikeService } from '../../../core/services/like.service';
 import { LikeTargetType } from '../../../core/models/like-dto';
 import { BookingService } from '../../../core/services/booking.service';
 import { CreateBookingDto } from '../../../core/models/booking-dto';
-import { FavoriteService } from '../../../core/services/favorite.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -236,13 +236,19 @@ export class PropertyPublicDetailComponent implements OnInit {
         
         setTimeout(() => this.bookingSuccess = false, 5000);
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         console.error('Foglalási hiba:', err);
-        this.bookingError = 'Sikertelen foglalás. Lehet, hogy az időpont már foglalt, vagy szerverhiba történt.';
         this.bookingLoading = false;
+
+        if (err.error && typeof err.error === 'string') {
+          this.bookingError = err.error; 
+        } else if (err.error && err.error.message) {
+          this.bookingError = err.error.message; 
+        } else {
+          this.bookingError = 'Sikertelen foglalás. Váratlan hiba történt.';
+        }
       }
     });
-    
   }
   nextImage(event: Event): void {
     event.stopPropagation();

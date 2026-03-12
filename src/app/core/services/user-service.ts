@@ -41,6 +41,11 @@ getAllUsers(): Observable<UserDto[]> {
     return this.http.put(`${this.apiUrl}/${id}`, userData);
   }
   toggleTrustedHost(userId: number): Observable<any> {
-  return this.http.put(`${this.apiUrl}/${userId}/toggle-trusted`, {});
+    return this.http.put(`${this.apiUrl}/${userId}/toggle-trusted`, {});
+}
+  uploadAvatar(file: File): Observable<{avatarUrl: string}> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<{avatarUrl: string}>(`${this.apiUrl}/avatar`, formData);
 }
 }
