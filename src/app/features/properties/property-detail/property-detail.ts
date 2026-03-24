@@ -276,6 +276,6 @@ getActualImage(): string {
     return imgPath.startsWith('http') ? imgPath : backendUrl + imgPath;
   }
 
-  return 'https://cdn.flyonui.com/fy-assets/components/card/image-9.png'; 
+  return 'https://placehold.co/600x400/1e293b/cbd5e1?text=Nincs+k%C3%A9p'; 
 }
 }

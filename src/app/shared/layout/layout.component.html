@@ -1,10 +1,14 @@
-<div class="app-layout">
+<div class="app-layout" [class.sidebar-collapsed]="isSidebarCollapsed">
 
-  <aside class="sidebar">
+  @if (isMobileOpen) {
+    <div class="sidebar-overlay" (click)="closeMobileMenu()"></div>
+  }
 
+  <aside class="sidebar" [class.mobile-open]="isMobileOpen">
     <div class="sidebar-header">
       <span class="logo">
-        <iconify-icon icon="tabler:bed"></iconify-icon> Reservation
+        <iconify-icon icon="tabler:bed"></iconify-icon> 
+        <span class="nav-text">Reservation</span>
       </span>
     </div>
 
@@ -14,28 +18,28 @@
         @if (!isLoggedIn) {
           <li>
             <a routerLink="/public-dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
-              <iconify-icon icon="tabler:home"></iconify-icon> Kezdőlap
+              <iconify-icon icon="tabler:home"></iconify-icon> <span class="nav-text">Kezdőlap</span>
             </a>
           </li>
           <li>
             <a (click)="goToLogin()" class="nav-link">
-              <iconify-icon icon="tabler:plus"></iconify-icon> Ingatlan feladása
+              <iconify-icon icon="tabler:plus"></iconify-icon> <span class="nav-text">Ingatlan feladása</span>
             </a>
           </li>
           <li>
             <a routerLink="/calendar" routerLinkActive="active" class="nav-link">
-              <iconify-icon icon="tabler:calendar"></iconify-icon> Naptár
+              <iconify-icon icon="tabler:calendar"></iconify-icon> <span class="nav-text">Naptár</span>
             </a>
           </li>
           <li class="nav-divider"></li>
           <li>
             <a routerLink="/auth/login" routerLinkActive="active" class="nav-link login-link">
-              <iconify-icon icon="tabler:login"></iconify-icon> Bejelentkezés
+              <iconify-icon icon="tabler:login"></iconify-icon> <span class="nav-text">Bejelentkezés</span>
             </a>
           </li>
           <li>
             <a routerLink="/auth/register" routerLinkActive="active" class="nav-link register-link">
-              <iconify-icon icon="tabler:user-plus"></iconify-icon> Regisztráció
+              <iconify-icon icon="tabler:user-plus"></iconify-icon> <span class="nav-text">Regisztráció</span>
             </a>
           </li>
         }
@@ -43,32 +47,32 @@
         @if (hasRole('Guest')) {
           <li>
             <a routerLink="/user-dashboard" routerLinkActive="active" class="nav-link">
-              <iconify-icon icon="tabler:dashboard"></iconify-icon> Kezdőlap
+              <iconify-icon icon="tabler:dashboard"></iconify-icon> <span class="nav-text">Kezdőlap</span>
             </a>
           </li>
           <li>
             <a routerLink="/profile" routerLinkActive="active" class="nav-link">
-              <iconify-icon icon="tabler:user"></iconify-icon> Profilom
+              <iconify-icon icon="tabler:user"></iconify-icon> <span class="nav-text">Profilom</span>
             </a>
           </li>
           <li>
             <a routerLink="/property/create" routerLinkActive="active" class="nav-link">
-              <iconify-icon icon="tabler:plus"></iconify-icon> Ingatlan feladása
+              <iconify-icon icon="tabler:plus"></iconify-icon> <span class="nav-text">Ingatlan feladása</span>
             </a>
           </li>
           <li>
             <a routerLink="/favorites" routerLinkActive="active" class="nav-link fav-link">
-              <iconify-icon icon="tabler:heart"></iconify-icon> Kedvencek
+              <iconify-icon icon="tabler:heart"></iconify-icon> <span class="nav-text">Kedvencek</span>
             </a>
           </li>
           <li>
             <a routerLink="/my-bookings" routerLinkActive="active" class="nav-link">
-              <iconify-icon icon="tabler:bookmarks"></iconify-icon> Foglalásaim
+              <iconify-icon icon="tabler:bookmarks"></iconify-icon> <span class="nav-text">Foglalásaim</span>
             </a>
           </li>
           <li>
             <a routerLink="/calendar" routerLinkActive="active" class="nav-link">
-              <iconify-icon icon="tabler:calendar"></iconify-icon> Naptár
+              <iconify-icon icon="tabler:calendar"></iconify-icon> <span class="nav-text">Naptár</span>
             </a>
           </li>
         }
@@ -76,27 +80,37 @@
         @if (hasRole('Host')) {
           <li>
             <a routerLink="/host-dashboard" routerLinkActive="active" class="nav-link">
-              <iconify-icon icon="tabler:dashboard"></iconify-icon> Kezdőlap
+              <iconify-icon icon="tabler:dashboard"></iconify-icon> <span class="nav-text">Kezdőlap</span>
             </a>
           </li>
           <li>
             <a routerLink="/profile" routerLinkActive="active" class="nav-link">
-              <iconify-icon icon="tabler:user"></iconify-icon> Profilom
+              <iconify-icon icon="tabler:user"></iconify-icon> <span class="nav-text">Profilom</span>
             </a>
           </li>
           <li>
             <a routerLink="/property/create" routerLinkActive="active" class="nav-link">
-              <iconify-icon icon="tabler:plus"></iconify-icon> Új ingatlan
+              <iconify-icon icon="tabler:plus"></iconify-icon> <span class="nav-text">Új ingatlan</span>
             </a>
           </li>
           <li>
             <a routerLink="/user-dashboard" routerLinkActive="active" class="nav-link">
-              <iconify-icon icon="tabler:building"></iconify-icon> Ingatlanok
+              <iconify-icon icon="tabler:building"></iconify-icon> <span class="nav-text">Ingatlanok</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/favorites" routerLinkActive="active" class="nav-link fav-link">
+              <iconify-icon icon="tabler:heart"></iconify-icon> <span class="nav-text">Kedvencek</span>
             </a>
           </li>
           <li>
             <a routerLink="/my-bookings" routerLinkActive="active" class="nav-link">
-              <iconify-icon icon="tabler:bookmarks"></iconify-icon> Foglalásaim
+              <iconify-icon icon="tabler:bookmarks"></iconify-icon> <span class="nav-text">Foglalásaim</span>
+            </a>
+          </li>
+           <li>
+            <a routerLink="/calendar" routerLinkActive="active" class="nav-link">
+              <iconify-icon icon="tabler:calendar"></iconify-icon> <span class="nav-text">Naptár</span>
             </a>
           </li>
         }
@@ -104,12 +118,12 @@
         @if (hasRole('Admin')) {
           <li>
             <a routerLink="/admin-dashboard" routerLinkActive="active" class="nav-link">
-              <iconify-icon icon="tabler:settings"></iconify-icon> Kezdőlap
+              <iconify-icon icon="tabler:settings"></iconify-icon> <span class="nav-text">Kezdőlap</span>
             </a>
           </li>
           <li>
             <a routerLink="/user-dashboard" routerLinkActive="active" class="nav-link">
-              <iconify-icon icon="tabler:building"></iconify-icon> Ingatlanok
+              <iconify-icon icon="tabler:building"></iconify-icon> <span class="nav-text">Ingatlanok</span>
             </a>
           </li>
         }
@@ -118,7 +132,7 @@
           <li class="nav-divider"></li>
           <li>
             <a (click)="logout()" class="nav-link logout-link">
-              <iconify-icon icon="tabler:logout"></iconify-icon> Kijelentkezés
+              <iconify-icon icon="tabler:logout"></iconify-icon> <span class="nav-text">Kijelentkezés</span>
             </a>
           </li>
         }
@@ -128,7 +142,15 @@
   </aside>
 
   <main class="main-content">
-    <router-outlet></router-outlet>
+    <header class="top-header">
+      <button class="hamburger-btn" (click)="toggleSidebar()">
+        <iconify-icon icon="tabler:menu-2"></iconify-icon>
+      </button>
+    </header>
+
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
   </main>
 
 </div>

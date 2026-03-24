@@ -5,19 +5,23 @@
   background-color: var(--bg-color);
 }
 
-/* ===== SIDEBAR (Oldalsáv) ===== */
 .sidebar {
   width: 280px;
-  background-color: #0f172a; /* Még sötétebb kék a mélységhez */
+  background-color: #0f172a;
   border-right: 1px solid var(--surface-border);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
 }
 
 .sidebar-header {
   padding: 30px 24px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  height: 90px;
 }
 
 .logo {
@@ -28,22 +32,17 @@
   align-items: center;
   gap: 12px;
   letter-spacing: -1px;
+  white-space: nowrap;
 }
 
 .sidebar-nav {
   flex: 1;
   padding: 24px 16px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.nav-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-/* Navigációs linkek alapja */
+.nav-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
 .nav-link {
   display: flex;
   align-items: center;
@@ -56,73 +55,105 @@
   font-size: 0.95rem;
   cursor: pointer;
   transition: var(--transition);
+  white-space: nowrap;
+}
+.nav-link iconify-icon { font-size: 22px; flex-shrink: 0; }
+.nav-link:hover { background: rgba(255, 255, 255, 0.05); color: var(--text-main); }
+.nav-link.active { background: var(--primary-glow); color: var(--primary); font-weight: 600; }
+.register-link { background: var(--primary); color: white !important; margin-top: 8px; }
+.register-link:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.fav-link.active { background: rgba(244, 63, 94, 0.1); color: #f43f5e; }
+.logout-link { color: #ef4444; }
+.logout-link:hover { background: rgba(239, 68, 68, 0.1); }
+.nav-divider { height: 1px; background: rgba(255, 255, 255, 0.05); margin: 15px 0; }
+
+@media (min-width: 1025px) {
+  .app-layout.sidebar-collapsed .sidebar {
+    width: 80px; 
+  }
+  .app-layout.sidebar-collapsed .sidebar-header {
+    padding: 30px 0;
+    justify-content: center;
+  }
+  .app-layout.sidebar-collapsed .nav-text {
+    display: none;
+  }
+  .app-layout.sidebar-collapsed .nav-link {
+    justify-content: center;
+    padding: 12px 0;
+  }
 }
 
-.nav-link iconify-icon {
-  font-size: 22px;
-}
-
-/* Hover és Active állapotok */
-.nav-link:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-main);
-}
-
-.nav-link.active {
-  background: var(--primary-glow);
-  color: var(--primary);
-  font-weight: 600;
-}
-
-/* Specifikus linkek stílusa */
-.register-link {
-  background: var(--primary);
-  color: white !important;
-  margin-top: 8px;
-}
-
-.register-link:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
-}
-
-.fav-link.active {
-  background: rgba(244, 63, 94, 0.1);
-  color: #f43f5e;
-}
-
-.logout-link {
-  color: #ef4444;
-}
-
-.logout-link:hover {
-  background: rgba(239, 68, 68, 0.1);
-}
-
-/* Választóvonal */
-.nav-divider {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.05);
-  margin: 15px 0;
-}
-
-/* ===== MAIN CONTENT ===== */
 .main-content {
   flex: 1;
-  overflow-y: auto;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; 
   background-color: var(--bg-color);
 }
 
-/* Reszponzivitás: mobilon elrejtjük a sidebart (vagy hamburgermenü kellene) */
+.top-header {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  background-color: transparent;
+  flex-shrink: 0;
+}
+
+.hamburger-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--surface-border);
+  color: var(--text-main);
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hamburger-btn:hover {
+  background: var(--primary-glow);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 40px;
+}
+
 @media (max-width: 1024px) {
   .sidebar {
     position: fixed;
-    left: -280px; /* Elrejtve balra */
-    z-index: 1000;
-    height: 100%;
-    transition: left 0.3s ease;
+    top: 0;
+    bottom: 0;
+    left: -280px; 
+    box-shadow: 20px 0 50px rgba(0,0,0,0.5);
   }
   
-  /* Ide kellene egy osztály, ami kinyitja (pl .sidebar-open) */
+  .sidebar.mobile-open {
+    left: 0; 
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 999;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .top-header { padding: 0 20px; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

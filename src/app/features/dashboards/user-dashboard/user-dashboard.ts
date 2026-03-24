@@ -158,6 +158,6 @@ export class UserDashboardComponent implements OnInit {
       const index = this.currentImageIndices[property.id] || 0;
       return property.imageUrls[index];
     }
-    return property.imageUrl || 'https://as2.ftcdn.net/v2/jpg/00/89/55/15/1000_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg'; 
+    return property.imageUrl || 'https://placehold.co/600x400/1e293b/cbd5e1?text=Nincs+k%C3%A9p'; 
   }
 }

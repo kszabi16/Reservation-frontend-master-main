@@ -18,7 +18,8 @@ export class LayoutComponent implements OnInit {
   userRole: string | null = null;
   username: string | null = null;
 
-
+  isSidebarCollapsed = false;
+  isMobileOpen = false;
 
   constructor(
     private authService: AuthService,
@@ -28,7 +29,13 @@ export class LayoutComponent implements OnInit {
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe((event: any) => {
       });this.hasRole
-  }
+  
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => {
+        this.isMobileOpen = false; 
+      });  
+    }
 
   ngOnInit(): void {
     this.refreshUserState();
@@ -38,9 +45,6 @@ export class LayoutComponent implements OnInit {
     this.isLoggedIn = this.authService.isLoggedIn();
     this.userRole = this.authService.role;
     this.username = this.authService.getUsernameFromToken();
-    /*this.isLoggedIn = true;
-    this.userRole = 'Host'; 
-    this.username = 'Teszt Elek';*/
   }
 
   goToLogin(): void {
@@ -54,5 +58,16 @@ export class LayoutComponent implements OnInit {
 
   hasRole(...roles: string[]): boolean {
     return roles.includes(this.userRole ?? '');
+  }
+  toggleSidebar(): void {
+    if (window.innerWidth <= 1024) {
+      this.isMobileOpen = !this.isMobileOpen;
+    } else {
+      this.isSidebarCollapsed = !this.isSidebarCollapsed;
+    }
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileOpen = false;
   }
 }

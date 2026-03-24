@@ -4,7 +4,6 @@
   padding: 0 20px;
 }
 
-/* ===== FEJLÉC ===== */
 .page-header {
   display: flex;
   align-items: center;
@@ -35,7 +34,6 @@
   margin-top: 4px;
 }
 
-/* ===== ALERTEK (Inline) ===== */
 .alert-box {
   padding: 16px 20px;
   border-radius: 16px;
@@ -47,7 +45,6 @@
 .alert-box.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; }
 .alert-box iconify-icon { font-size: 24px; }
 
-/* ===== FORM KÁRTYA ===== */
 .form-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -79,7 +76,6 @@
   gap: 8px;
 }
 
-/* Inputok és Textarea */
 .form-input {
   width: 100%;
   padding: 14px 18px;
@@ -100,7 +96,6 @@
 
 .textarea { min-height: 120px; resize: none; line-height: 1.6; }
 
-/* Ikonos mezők */
 .input-with-icon { position: relative; width: 100%; }
 .inner-icon {
   position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
@@ -109,14 +104,12 @@
 .inner-icon.right { left: auto; right: 16px; }
 .form-input.with-icon { padding-left: 50px; }
 
-/* Ár utótag */
 .input-with-suffix { position: relative; width: 100%; }
 .suffix {
   position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
   color: var(--text-muted); font-weight: 600;
 }
 
-/* Fájlfeltöltő egyedi stílus */
 .file-upload-wrapper {
   background: rgba(255, 255, 255, 0.03);
   border: 2px dashed var(--surface-border);
@@ -132,7 +125,6 @@
 }
 .file-input-native::file-selector-button:hover { background: var(--primary); color: white; }
 
-/* Kiválasztott fájlok listája */
 .selected-files-container {
   margin-top: 15px; background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 15px;
 }
@@ -149,10 +141,8 @@
 }
 .btn-remove-file:hover { transform: scale(1.2); }
 
-/* Rács elrendezés */
 .form-grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 
-/* ===== GOMB ÉS LETILTOTT (DISABLED) ÁLLAPOT ===== */
 .form-actions {
   margin-top: 20px;
   padding-top: 30px;
@@ -185,10 +175,9 @@
   box-shadow: 0 10px 20px var(--primary-glow);
 }
 
-/* EZT AKARTAD: Vizuálisan inaktív gomb, amíg nincs minden kitöltve */
 .submit-btn:disabled {
-  background: #334155; /* Sötétszürke */
-  color: #94a3b8; /* Világosszürke szöveg */
+  background: #334155; 
+  color: #94a3b8;
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
@@ -230,7 +219,6 @@
 .toast-text h4 { margin: 0; color: #10b981; font-size: 0.95rem; }
 .toast-text p { margin: 4px 0 0; font-size: 0.8rem; color: var(--text-muted); }
 
-/* Reszponzivitás */
 @media (max-width: 700px) {
   .form-grid-row { grid-template-columns: 1fr; }
   .form-card { padding: 24px; }

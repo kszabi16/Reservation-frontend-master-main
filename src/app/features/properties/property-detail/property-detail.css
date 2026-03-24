@@ -55,6 +55,63 @@
 
 .property-description { padding: 0 30px 30px; line-height: 1.7; color: var(--text-muted); }
 
+/* ===== FELSZERELTSÉG (AMENITIES) ===== */
+.amenities-detail-section {
+  padding: 0 30px 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 10px;
+  padding-top: 25px;
+}
+
+.amenities-subtitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.amenities-subtitle iconify-icon {
+  color: var(--primary);
+  font-size: 22px;
+}
+
+.amenities-detail-grid {
+  display: flex;
+  flex-wrap: wrap; /* Több sorba tördeli, ha sok van */
+  gap: 12px;
+}
+
+.amenity-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--surface-border);
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: var(--transition);
+  cursor: default;
+}
+
+.amenity-detail-item iconify-icon {
+  color: var(--primary);
+  font-size: 18px;
+}
+
+/* Kiemelés, ha fölé viszik az egeret (hover) */
+.amenity-detail-item:hover {
+  background: rgba(14, 165, 233, 0.05); /* Halványkék háttér */
+  border-color: var(--primary-glow);
+  color: var(--text-main);
+  transform: translateY(-2px); /* Picit megemelkedik */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
 /* ===== FOGLALÁSI PANEL ÉS ŰRLAPOK ===== */
 .booking-card { padding: 30px; border-left: 4px solid var(--primary); }
 .section-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
