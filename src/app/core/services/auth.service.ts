@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable, tap } from 'rxjs';
-import { LoginDto } from '../models/auth-dto';
-import { RegisterDto } from '../models/auth-dto';
+import { LoginDto, RegisterDto } from '../models/auth-dto';
 import { AuthResponse } from '../models/auth-response';
 import { getRoleFromToken } from '../utils/jwt.util';
-
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -29,40 +27,76 @@ export class AuthService {
     );
   }
 
-  // TOKEN OLVASÁS
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
-  // ROLE lekérdezés – helyesen
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+
+    try {
+      // Biztonságos dekódolás (Base64Url -> Base64)
+      let base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4) { base64 += '='; }
+      
+      const payload = JSON.parse(atob(base64));
+      const exp = payload.exp * 1000;
+      return Date.now() < exp;
+    } catch {
+      return false;
+    }
+  }
+
+  // JAVÍTÁS: Ha lejárt a token, ne adjunk vissza Role-t!
   getRoleFromToken(): string | null {
-  const token = this.getToken();
-  if (!token) return null;
+    if (!this.isLoggedIn()) return null; // <--- Ez akadályozza meg a szellem-menüt!
+    
+    const token = this.getToken();
+    if (!token) return null;
 
-  return getRoleFromToken(token);
-}
+    return getRoleFromToken(token);
+  }
 
- get role(): string | null {
-  return this.getRoleFromToken();
-}
+  get role(): string | null {
+    return this.getRoleFromToken();
+  }
 
+  // JAVÍTÁS: Ha lejárt a token, ne adjunk vissza Neveket!
   getUsernameFromToken(): string | null {
+    if (!this.isLoggedIn()) return null; 
+
     const token = this.getToken();
     if (!token) return null;
 
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      let base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4) { base64 += '='; }
+
+      // UTF-8 dekódolás, hogy a magyar ékezetes nevek is jók legyenek
+      const decodedStr = decodeURIComponent(
+        window.atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join('')
+      );
+      
+      const payload = JSON.parse(decodedStr);
       return payload?.unique_name || payload?.username || null;
     } catch {
       return null;
     }
   }
 
+  // JAVÍTÁS: Csak bejelentkezve adjon ID-t
   getUserIdFromToken(): number | null {
+    if (!this.isLoggedIn()) return null; 
+
     const token = this.getToken();
     if (!token) return null;
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      let base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4) { base64 += '='; }
+      const payload = JSON.parse(atob(base64));
       return Number(
         payload.nameid ||
         payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']
@@ -75,21 +109,4 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.tokenKey);
   }
-
-  isLoggedIn(): boolean {
-    const token = this.getToken();
-    if (!token) return false;
-
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const exp = payload.exp * 1000;
-      return Date.now() < exp;
-    } catch {
-      return false;
-    }
-  }
 }
-
-
-
-

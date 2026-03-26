@@ -33,7 +33,8 @@ export class LayoutComponent implements OnInit {
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe(() => {
-        this.isMobileOpen = false; 
+        this.isMobileOpen = false;
+        this.refreshUserState();
       });  
     }
 

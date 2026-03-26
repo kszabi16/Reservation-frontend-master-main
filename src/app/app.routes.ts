@@ -4,7 +4,6 @@ import { RegisterComponent } from './features/auth/register/register.component';
 import { authGuard } from './core/guards/auth.guard';
 import { LayoutComponent } from './shared/layout/layout.component';
 import { MiniLayoutComponent } from './features/mini-sidebar/mini-sidebar';
-import { AdminPendingPropertiesComponent } from './features/dashboards/admin-dashboard/admin-pending-properties/admin-pending-properties';
 
 // Property modul komponensek
 
