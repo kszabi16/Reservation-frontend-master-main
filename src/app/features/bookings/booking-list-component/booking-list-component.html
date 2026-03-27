@@ -34,19 +34,15 @@
         <div class="card-header">
           <span class="booking-id">#{{ b.id }} számú foglalás</span>
           
-          <span class="status-badge" [ngClass]="{
-            'status-confirmed': b.status === BookingStatus.Confirmed,
-            'status-pending': b.status === BookingStatus.Pending,
-            'status-cancelled': b.status === BookingStatus.Cancelled
-          }">
-            {{ b.status }}
+         <span class="status-badge" [ngClass]="getStatusClass(b.status)">
+            {{ translateStatus(b.status) }}
           </span>
         </div>
 
         <div class="card-body">
-          <h3 class="property-id">
+          <h3 class="property-title">
             <iconify-icon icon="tabler:home"></iconify-icon>
-            Ingatlan ID: {{ b.propertyId }}
+            {{ b.propertyTitle }}
           </h3>
 
           <div class="date-info">

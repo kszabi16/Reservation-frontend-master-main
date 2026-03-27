@@ -5,215 +5,170 @@ import { authGuard } from './core/guards/auth.guard';
 import { LayoutComponent } from './shared/layout/layout.component';
 import { MiniLayoutComponent } from './features/mini-sidebar/mini-sidebar';
 
-// Property modul komponensek
-
-
 export const routes: Routes = [
   // Publikus oldalak
   { path: '', pathMatch: 'full', redirectTo: 'public-dashboard' },
 
-{
-  path: 'auth',
-  component: MiniLayoutComponent,
-  children: [
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
-  ]
-},
-
+  {
+    path: 'auth',
+    component: MiniLayoutComponent,
+    children: [
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
+    ]
+  },
 
   // Layout alatti oldalak
   {
     path: '',
     component: LayoutComponent,
     children: [
-
       
-      // PUBLIC + USER dashboard
+      // --- PUBLIKUS (Bárki láthatja) ---
       {
         path: 'public-dashboard',
         loadComponent: () =>
-          import('./features/dashboards/public-dashboard/public-dashboard').then(
-            (m) => m.PublicDashboardComponent
-          ),
-      },
-
-      {
-        path: 'bookings-create',
-        canActivate: [authGuard()],
-        loadComponent: () =>
-          import('./features/bookings/booking-create-component/booking-create-component').then(
-            (m) => m.BookingCreateComponent
-          ),
-       
-      },
-        {
-        path: 'bookings-list',
-        canActivate: [authGuard()],
-        loadComponent: () =>
-          import('./features/bookings/booking-list-component/booking-list-component').then(
-            (m) => m.BookingListComponent
-          ),
-       
-      },
-        {
-        path: 'bookings-admin',
-        //canActivate: [authGuard('Admin')],
-        loadComponent: () =>
-          import('./features/bookings/booking-admin-component/booking-admin-component').then(
-            (m) => m.BookingAdminComponent
-          ),
-       
-      },
-        {
-        path: 'bookings-host',
-        //canActivate: [authGuard()],
-        loadComponent: () =>
-          import('./features/bookings/booking-host-component/booking-host-component').then(
-            (m) => m.BookingHostComponent
-          ),
-       
-      },
-      
-      {
-        path: 'user-dashboard',
-        //canActivate: [authGuard("User,Host,Admin")],
-        loadComponent: () =>
-          import('./features/dashboards/user-dashboard/user-dashboard').then(
-            (m) => m.UserDashboardComponent
-          ),
-        
-      },{
-        path: 'profile',
-        loadComponent: () =>
-          import('./features/profile/profile.component').then((m) => m.ProfileComponent),
-        canActivate: [authGuard()],
-      },
-      {
-        path: 'favorites',
-        loadComponent: () =>
-          import('./features/favorites/user-favorites').then((m) => m.UserFavoritesComponent),
-        canActivate: [authGuard()],
-
-      },
-      {
-        path: 'my-bookings',
-        loadComponent: () =>
-          import('./features/bookings/booking-list-component/booking-list-component').then(
-            (m) => m.BookingListComponent
-          ),
-        canActivate: [authGuard()],
+          import('./features/dashboards/public-dashboard/public-dashboard').then((m) => m.PublicDashboardComponent),
       },
       {
         path: 'calendar',
         loadComponent: () =>
-          import('./features/calendar/calendar.component').then(
-            (m) => m.CalendarComponent
-          ),
-      },
-       {
-        path: 'property/create',
-          loadComponent: () => import('./features/properties/property-create/property-create.component').then(
-            (m) => m.PropertyCreateComponent
-          ),
-        canActivate: [authGuard()],
-      },
-      {
-        path: 'property/edit/:id',
-        loadComponent: () => import('./features/properties/property-edit/property-edit.component').then(
-          (m) => m.PropertyEditComponent
-        ),
-        //canActivate: [authGuard('Host')],
-      },
-      {
-        path: 'property/admin',
-        loadComponent: () => import('./features/properties/property-admin/property-admin.component').then(
-          (m) => m.PropertyAdminComponent
-        ),
-        //canActivate: [authGuard('Admin')],
+          import('./features/calendar/calendar.component').then((m) => m.CalendarComponent),
       },
       {
         path: 'property/:id',
         loadComponent: () =>
-          import('./features/properties/property-detail/property-detail').then(
-            (m) => m.PropertyPublicDetailComponent
-          ),
+          import('./features/properties/property-detail/property-detail').then((m) => m.PropertyPublicDetailComponent),
       },
 
-      // HOST dashboard
+      // --- KÖZÖS BEJELENTKEZETT (Guest, Host, Admin) ---
+      {
+        path: 'profile',
+        canActivate: [authGuard()],
+        loadComponent: () =>
+          import('./features/profile/profile.component').then((m) => m.ProfileComponent),
+      },
+      {
+        path: 'favorites',
+        canActivate: [authGuard()],
+        loadComponent: () =>
+          import('./features/favorites/user-favorites').then((m) => m.UserFavoritesComponent),
+      },
+      {
+        path: 'my-bookings',
+        canActivate: [authGuard()],
+        loadComponent: () =>
+          import('./features/bookings/booking-list-component/booking-list-component').then((m) => m.BookingListComponent),
+      },
+      {
+        path: 'bookings-create',
+        canActivate: [authGuard()],
+        loadComponent: () =>
+          import('./features/bookings/booking-create-component/booking-create-component').then((m) => m.BookingCreateComponent),
+      },
+      {
+        path: 'bookings-list',
+        canActivate: [authGuard()],
+        loadComponent: () =>
+          import('./features/bookings/booking-list-component/booking-list-component').then((m) => m.BookingListComponent),
+      },
+      {
+        path: 'property/create',
+        canActivate: [authGuard()],
+        loadComponent: () => 
+          import('./features/properties/property-create/property-create.component').then((m) => m.PropertyCreateComponent),
+      },
+
+      // --- GUEST (VENDÉG) SPECIFIKUS ---
+      {
+        path: 'user-dashboard',
+        canActivate: [authGuard('Guest')], // Csak vendégeknek!
+        loadComponent: () =>
+          import('./features/dashboards/user-dashboard/user-dashboard').then((m) => m.UserDashboardComponent),
+      },
+
+      // --- HOST (HÁZIGAZDA) SPECIFIKUS ---
       {
         path: 'host-dashboard',
-        //canActivate: [authGuard('Host')],
+        canActivate: [authGuard('Host')], // Csak hostoknak!
         loadComponent: () =>
-          import('./features/dashboards/host-dashboard/host-dashboard').then(
-            (m) => m.HostDashboardComponent
-          ),
+          import('./features/dashboards/host-dashboard/host-dashboard').then((m) => m.HostDashboardComponent),
       },
       {
         path: 'host-all-properties',
-        //canActivate: [authGuard('Host')],
+        canActivate: [authGuard('Host')],
         loadComponent: () =>
-          import('./features/dashboards/host-dashboard/host-all-properties/host-all-properties').then(
-            (m) => m.HostAllPropertiesComponent
-          ),
+          import('./features/dashboards/host-dashboard/host-all-properties/host-all-properties').then((m) => m.HostAllPropertiesComponent),
       },
       {
-      path: 'host-bookings',
-      //canActivate: [authGuard('Host')],
-      loadComponent: () =>
-        import('./features/bookings/booking-host-component/booking-host-component').then(
-          (m) => m.BookingHostComponent
-        ),
-      },
-      // Admin-only
-      {
-        path: 'host-requests',
-        //canActivate: [authGuard('Admin')],
+        path: 'host-bookings',
+        canActivate: [authGuard('Host')],
         loadComponent: () =>
-          import('./features/host-requests/host-request-admin.component').then(
-            (m) => m.HostRequestAdminComponent
-          ),
+          import('./features/bookings/booking-host-component/booking-host-component').then((m) => m.BookingHostComponent),
+      },
+      {
+        path: 'bookings-host',
+        canActivate: [authGuard('Host')],
+        loadComponent: () =>
+          import('./features/bookings/booking-host-component/booking-host-component').then((m) => m.BookingHostComponent),
+      },
+      {
+        path: 'property/edit/:id',
+        canActivate: [authGuard('Host')],
+        loadComponent: () => 
+          import('./features/properties/property-edit/property-edit.component').then((m) => m.PropertyEditComponent),
+      },
+
+      // --- ADMIN SPECIFIKUS ---
+      {
+        path: 'admin-dashboard',
+        canActivate: [authGuard('Admin')], // Csak adminoknak!
+        loadComponent: () =>
+          import('./features/dashboards/admin-dashboard/admin-dashboard').then((m) => m.AdminDashboardComponent),
       },
       {
         path: 'admin-user-create',
+        canActivate: [authGuard('Admin')],
         loadComponent: () => 
-          import('./features/dashboards/admin-dashboard/admin-user-create/admin-user-create')
-        .then(m => m.AdminUserCreateComponent)
+          import('./features/dashboards/admin-dashboard/admin-user-create/admin-user-create').then(m => m.AdminUserCreateComponent),
       },
-      {path: 'admin-users', 
+      {
+        path: 'admin-users', 
+        canActivate: [authGuard('Admin')],
         loadComponent: () => 
-          import('./features/dashboards/admin-dashboard/admin-users/admin-users')
-        .then(m => m.UserAdminComponent)},
+          import('./features/dashboards/admin-dashboard/admin-users/admin-users').then(m => m.UserAdminComponent),
+      },
       { 
         path: 'admin-stats',
-         loadComponent() {
-          return import('./features/dashboards/admin-dashboard/admin-stats/admin-stats')
-          .then(m => m.AdminStatsComponent);
-         }
-
+        canActivate: [authGuard('Admin')],
+        loadComponent: () => import('./features/dashboards/admin-dashboard/admin-stats/admin-stats').then(m => m.AdminStatsComponent),
       },
       {
         path:'admin/pending-properties',
-        loadComponent(){
-          return import('./features/dashboards/admin-dashboard/admin-pending-properties/admin-pending-properties')
-          .then(m=>m.AdminPendingPropertiesComponent);
-
-        }
-          
+        canActivate: [authGuard('Admin')],
+        loadComponent: () => import('./features/dashboards/admin-dashboard/admin-pending-properties/admin-pending-properties').then(m=>m.AdminPendingPropertiesComponent),
       },
       {
-        path: 'admin-dashboard',
-        //canActivate: [authGuard('Admin')],
+        path: 'bookings-admin',
+        canActivate: [authGuard('Admin')],
         loadComponent: () =>
-          import('./features/dashboards/admin-dashboard/admin-dashboard').then(
-            (m) => m.AdminDashboardComponent
-          ),
+          import('./features/bookings/booking-admin-component/booking-admin-component').then((m) => m.BookingAdminComponent),
       },
       {
-        path:"logs",
-        loadComponent() {
-          return import('./features/dashboards/admin-dashboard/admin-logs/admin-logs').then(m => m.AdminLogs)
-        }
+        path: 'host-requests',
+        canActivate: [authGuard('Admin')],
+        loadComponent: () =>
+          import('./features/host-requests/host-request-admin.component').then((m) => m.HostRequestAdminComponent),
+      },
+      {
+        path: 'property/admin',
+        canActivate: [authGuard('Admin')],
+        loadComponent: () => import('./features/properties/property-admin/property-admin.component').then((m) => m.PropertyAdminComponent),
+      },
+      {
+        path: "logs",
+        canActivate: [authGuard('Admin')],
+        loadComponent: () => import('./features/dashboards/admin-dashboard/admin-logs/admin-logs').then(m => m.AdminLogs),
       } 
     ],
   },
@@ -221,4 +176,3 @@ export const routes: Routes = [
   // 404 fallback
   { path: '**', redirectTo: 'public-dashboard' },
 ];
-

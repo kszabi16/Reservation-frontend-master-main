@@ -2,7 +2,8 @@ export interface BookingDto {
   id: number;
   propertyId: number;
   guestId: number;
-  startDate: string; // ISO string a backend miatt
+  propertyTitle?: string;
+  startDate: string; 
   endDate: string;
   status: BookingStatus;
 }
