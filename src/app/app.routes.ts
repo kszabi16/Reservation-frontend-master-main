@@ -35,11 +35,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/calendar/calendar.component').then((m) => m.CalendarComponent),
       },
-      {
-        path: 'property/:id',
-        loadComponent: () =>
-          import('./features/properties/property-detail/property-detail').then((m) => m.PropertyPublicDetailComponent),
-      },
 
       // --- KÖZÖS BEJELENTKEZETT (Guest, Host, Admin) ---
       {
@@ -169,7 +164,13 @@ export const routes: Routes = [
         path: "logs",
         canActivate: [authGuard('Admin')],
         loadComponent: () => import('./features/dashboards/admin-dashboard/admin-logs/admin-logs').then(m => m.AdminLogs),
-      } 
+      } ,
+      {
+        path: 'property/:id',
+        loadComponent: () =>
+          import('./features/properties/property-detail/property-detail').then((m) => m.PropertyPublicDetailComponent),
+      },
+      
     ],
   },
 
