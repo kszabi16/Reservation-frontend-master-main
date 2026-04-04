@@ -22,6 +22,7 @@ export class RegisterComponent {
 
   loading = false;
   error = '';
+  showPassword=false;
 
   constructor(
     private fb: FormBuilder,
@@ -35,9 +36,12 @@ export class RegisterComponent {
     });
   }
 
-  // 💡 ettől működik a sablonban a f.username, f.email stb.
   get f() {
     return this.form.controls;
+  }
+
+   togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
   onSubmit(): void {
@@ -45,6 +49,7 @@ export class RegisterComponent {
       this.error = 'Kérlek, töltsd ki helyesen az űrlapot.';
       return;
     }
+    
 
     this.loading = true;
     this.error = '';
@@ -66,13 +71,12 @@ export class RegisterComponent {
         if (err.status === 0) {
           this.error = 'Nem sikerült csatlakozni a szerverhez.';
         } else if (err.error?.message) {
-          // Magyarosítjuk az angol backend hibaüzeneteket
           if (err.error.message.includes('Email')) {
             this.error = 'Ez az e-mail cím már foglalt! Kérlek, jelentkezz be, vagy használj másikat.';
           } else if (err.error.message.includes('Username')) {
             this.error = 'Ez a felhasználónév már foglalt! Kérlek, válassz másikat.';
           } else {
-            this.error = err.error.message; // Bármilyen egyéb üzenet
+            this.error = err.error.message;
           }
         } else {
           this.error = 'A regisztráció nem sikerült. Ellenőrizd az adatokat.';

@@ -22,6 +22,7 @@ export class LoginComponent {
 
   loading = false;
   error = '';
+  showPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -36,6 +37,10 @@ export class LoginComponent {
 
   get f() {
     return this.form.controls;
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
   onSubmit(): void {
@@ -63,7 +68,7 @@ export class LoginComponent {
     } else if (role === 'Host') {
       this.router.navigate(['/host-dashboard']);
     } else {
-      this.router.navigate(['/user-dashboard']); // anonymous user is ide megy
+      this.router.navigate(['/user-dashboard']); 
     }
 
     this.loading = false;

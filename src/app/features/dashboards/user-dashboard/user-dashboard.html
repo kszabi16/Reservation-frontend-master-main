@@ -4,47 +4,118 @@
     <router-outlet></router-outlet>
 
     <section class="filter-section">
-      <div class="filter-grid">
+      
+      <div class="smart-search-section" style="margin-bottom: 0;">
+        <label class="smart-label"><iconify-icon icon="tabler:sparkles" class="text-amber-400"></iconify-icon> AI Okoskereső</label>
+        <div class="smart-input-wrapper">
+          <input 
+            type="text" 
+            placeholder="Írd le mire vágysz (pl. romantikus faház erdő szélén szaunával)" 
+            [(ngModel)]="smartSearchQuery" 
+            (keyup.enter)="applyFilters()"
+          />
+          <button (click)="applyFilters()" class="smart-btn">Keresés</button>
+        </div>
+      </div>
+
+      <div class="flex justify-center mt-4">
+        <button (click)="toggleFilters()" class="toggle-filters-btn">
+          <iconify-icon icon="tabler:adjustments-horizontal"></iconify-icon>
+          <span>{{ showFilters ? 'Kevesebb opció' : 'Részletes szűrők' }}</span>
+          <iconify-icon [icon]="showFilters ? 'tabler:chevron-up' : 'tabler:chevron-down'"></iconify-icon>
+        </button>
+      </div>
+
+      <div class="filters-dropdown" [class.open]="showFilters">
         
-        <div class="filter-group">
-          <label>Helyszín</label>
-          <div class="input-container">
-            <iconify-icon icon="tabler:map-pin" class="input-icon"></iconify-icon>
-            <input type="text" placeholder="Hová utaznál?" [(ngModel)]="searchLocation" />
-          </div>
-        </div>
+        <div class="search-divider"><span>VAGY HASZNÁLD A KÉZI SZŰRŐKET</span></div>
 
-        <div class="filter-group price-range">
-          <label>Árkeret (HUF)</label>
-          <div class="dual-input">
-            <div class="input-container">
-              <iconify-icon icon="tabler:currency-florin" class="input-icon small"></iconify-icon>
-              <input type="number" placeholder="Min" [(ngModel)]="minPrice" />
-            </div>
-            <div class="input-container">
-              <iconify-icon icon="tabler:currency-florin" class="input-icon small"></iconify-icon>
-              <input type="number" placeholder="Max" [(ngModel)]="maxPrice" />
-            </div>
-          </div>
-        </div>
-
-        <div class="filter-group guests">
-          <label>Vendégek</label>
-          <div class="input-container">
-            <iconify-icon icon="tabler:users" class="input-icon"></iconify-icon>
-            <input type="number" placeholder="Fő" [(ngModel)]="minCapacity" />
-          </div>
-        </div>
-
-        <div class="filter-actions">
-          <button (click)="applyFilters()" class="btn-primary">
-            <iconify-icon icon="tabler:search"></iconify-icon>
-            <span>Keresés</span>
-          </button>
+        <div class="filter-grid">
           
-          <button (click)="resetFilters()" title="Szűrők törlése" class="btn-reset">
-            <iconify-icon icon="tabler:refresh"></iconify-icon>
-          </button>
+          <div class="filter-group location">
+            <label>Helyszín</label>
+            <div class="input-container">
+              <iconify-icon icon="tabler:map-pin" class="input-icon"></iconify-icon>
+              <input type="text" placeholder="Hová utaznál?" [(ngModel)]="searchLocation" (keyup.enter)="applyFilters()" />
+            </div>
+          </div>
+
+          <div class="filter-group dates">
+            <label>Időszak</label>
+            <div class="date-inputs">
+              <div class="input-container">
+                <input type="date" [(ngModel)]="checkInDate" (change)="applyFilters()" class="date-input" title="Érkezés" />
+              </div>
+              <div class="input-container">
+                <input type="date" [(ngModel)]="checkOutDate" (change)="applyFilters()" class="date-input" title="Távozás" />
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-group price">
+            <label>Ár (HUF)</label>
+            <div class="dual-input">
+              <div class="input-container">
+                <input type="number" placeholder="Min" [(ngModel)]="minPrice" (keyup.enter)="applyFilters()" />
+              </div>
+              <div class="input-container">
+                <input type="number" placeholder="Max" [(ngModel)]="maxPrice" (keyup.enter)="applyFilters()" />
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-group guests">
+            <label>Vendégek</label>
+            <div class="custom-counter">
+              <button (click)="changeCapacity(-1)" class="counter-btn" [disabled]="!minCapacity || minCapacity <= 1">
+                <iconify-icon icon="tabler:minus"></iconify-icon>
+              </button>
+              <div class="counter-display">
+                <iconify-icon icon="tabler:users" class="text-blue-400"></iconify-icon>
+                <span>{{ minCapacity || 'Fő' }}</span>
+              </div>
+              <button (click)="changeCapacity(1)" class="counter-btn">
+                <iconify-icon icon="tabler:plus"></iconify-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="advanced-filters">
+            <div class="filter-group rating">
+              <label>Minimum Értékelés</label>
+              <div class="input-container">
+                <iconify-icon icon="tabler:star-filled" class="input-icon text-yellow-500"></iconify-icon>
+                <select [(ngModel)]="minRating" (change)="applyFilters()" class="custom-select">
+                  <option [ngValue]="0">Mindegy</option>
+                  <option [ngValue]="3">3+ Csillag</option>
+                  <option [ngValue]="4">4+ Csillag</option>
+                  <option [ngValue]="4.5">4.5+ Csillag</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="filter-group amenities">
+              <label>Kiemelt Felszereltség</label>
+              <div class="checkbox-container">
+                <label class="amenity-check"><input type="checkbox" [(ngModel)]="selectedAmenities['Wifi']" (change)="applyFilters()"> Wifi</label>
+                <label class="amenity-check"><input type="checkbox" [(ngModel)]="selectedAmenities['Medence']" (change)="applyFilters()"> Medence</label>
+                <label class="amenity-check"><input type="checkbox" [(ngModel)]="selectedAmenities['Klíma']" (change)="applyFilters()"> Klíma</label>
+                <label class="amenity-check"><input type="checkbox" [(ngModel)]="selectedAmenities['Szauna']" (change)="applyFilters()"> Szauna</label>
+                <label class="amenity-check"><input type="checkbox" [(ngModel)]="selectedAmenities['Kisállat bevihető']" (change)="applyFilters()"> Kutyabarát</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-actions">
+            <button (click)="applyFilters()" class="btn-primary">
+              <iconify-icon icon="tabler:search"></iconify-icon>
+              <span>Szűrés</span>
+            </button>
+            
+            <button (click)="resetFilters()" title="Szűrők törlése" class="btn-reset">
+              <iconify-icon icon="tabler:refresh"></iconify-icon>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -74,14 +145,14 @@
     @if (!loading && !error) {
       <div class="property-grid">
         @for (p of properties; track p.id) {
-          <div class="property-card">
+          <div class="property-card reveal-card" #propertyCard>
             
             <figure class="card-image-area">
               <img [src]="getActualImage(p)" alt="{{ p.title }}" class="main-img" />
               
               <div class="price-overlay">
-                <span class="amount">{{ p.pricePerNight | currency:'HUF':'symbol':'1.0-0' }}</span>
-                <span class="per-night">/ éj</span>
+                <span class="amount">{{ (getNights() > 0 ? getTotalPrice(p.pricePerNight) : p.pricePerNight) | currency:'HUF':'symbol':'1.0-0' }}</span>
+                <span class="per-night">{{ getNights() > 0 ? ' / ' + getNights() + ' éj' : ' / éj' }}</span>
               </div>
 
               <button (click)="toggleFavorite(p.id)" 
@@ -95,7 +166,6 @@
                   <button (click)="prevImage(p, $event)" class="nav-arrow prev">&#10094;</button>
                   <button (click)="nextImage(p, $event)" class="nav-arrow next">&#10095;</button>
                 </div>
-                
                 <div class="gallery-dots">
                   @for (img of p.imageUrls; track img; let i = $index) {
                     <div class="dot" [class.active]="(currentImageIndices[p.id] || 0) === i"></div>
@@ -106,7 +176,12 @@
 
             <div class="card-info">
               <div class="info-header">
-                <h5 class="title">{{ p.title }}</h5>
+                <div class="flex justify-between items-start">
+                  <h5 class="title">{{ p.title }}</h5>
+                  @if (p.relevancyScore) {
+                    <span class="ai-badge" title="Szemantikus egyezés: {{ p.relevancyScore.toFixed(2) }}">AI Match</span>
+                  }
+                </div>
                 <div class="location">
                   <iconify-icon icon="tabler:map-pin"></iconify-icon>
                   {{ p.location }}
@@ -132,7 +207,11 @@
                 </div>
               </div>
 
-              <p class="description">{{ p.description }}</p>
+              @if (p.amenitiesList) {
+                <p class="description"><span class="font-bold text-gray-300">Felszereltség:</span> {{ p.amenitiesList }}</p>
+              } @else {
+                <p class="description">{{ p.description }}</p>
+              }
 
               <button [routerLink]="['/property', p.id]" class="btn-details">
                 <span>Részletek megtekintése</span>

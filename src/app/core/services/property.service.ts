@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { PropertyDto } from '../models/property-dto';
 import { CreatePropertyDto } from '../models/property-dto';
 import { HttpParams } from '@angular/common/http';
+import { PropertySearchDto } from '../models/property-search-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -94,4 +95,8 @@ approveProperty(id: number): Observable<any> {
 getAllAmenities(): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/amenities`);
   }
+
+smartSearch(query: string): Observable<PropertySearchDto[]> {
+    return this.http.get<PropertySearchDto[]>(`${environment.apiUrl}/search?q=${encodeURIComponent(query)}`);
+}
 }
