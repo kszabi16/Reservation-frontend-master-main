@@ -73,14 +73,13 @@ export const routes: Routes = [
         loadComponent: () => 
           import('./features/properties/property-create/property-create.component').then((m) => m.PropertyCreateComponent),
       },
-
-      // --- GUEST (VENDÉG) SPECIFIKUS ---
       {
         path: 'user-dashboard',
-        canActivate: [authGuard('Guest')], // Csak vendégeknek!
+        canActivate: [authGuard()], 
         loadComponent: () =>
           import('./features/dashboards/user-dashboard/user-dashboard').then((m) => m.UserDashboardComponent),
       },
+
 
       // --- HOST (HÁZIGAZDA) SPECIFIKUS ---
       {

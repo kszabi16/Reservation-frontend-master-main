@@ -169,6 +169,56 @@ input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 .property-card:hover .gallery-nav { opacity: 1; }
 .nav-arrow { background: rgba(0,0,0,0.5); color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 14px; }
 
+/* A cím és a badge sora */
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+  min-height: 32px; /* Fix magasság, hogy ne ugráljon a tartalom */
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0; /* A title-row kezeli a margót */
+  line-height: 1.3;
+  flex: 1; /* Hogy a cím kitöltse a helyet a badge-ig */
+}
+
+/* Az új, lebegő AI Badge stílusa */
+.ai-badge-float {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #6366f1, #a855f7); /* Indigo-Lila gradiens */
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+  white-space: nowrap;
+  flex-shrink: 0; /* Ne hagyjuk, hogy összenyomódjon a hosszú cím miatt */
+}
+
+.ai-badge-float iconify-icon {
+  font-size: 14px;
+}
+
+/* Igazítsuk a helyszínt, hogy ne érjen hozzá semmihez */
+.location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
 @media (max-width: 1024px) {
   .filter-group.location, .filter-group.dates, .filter-group.price, .filter-group.guests { grid-column: span 12; }
   .advanced-filters { flex-direction: column; align-items: stretch; grid-column: span 12; }

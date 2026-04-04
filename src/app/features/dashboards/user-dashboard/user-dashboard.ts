@@ -21,11 +21,9 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
   error = '';
   Math = Math;
 
-  // Lenyíló menü és AI Okoskereső
   showFilters = false;
   smartSearchQuery = '';
 
-  // Hagyományos szűrők és Dátum
   searchLocation = '';
   checkInDate: string | null = null;
   checkOutDate: string | null = null;
@@ -33,7 +31,6 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
   maxPrice: number | null = null;
   minCapacity: number | null = null;
 
-  // Extra szűrők
   minRating: number = 0; 
   selectedAmenities: { [key: string]: boolean } = {
     'Wifi': false,
@@ -63,8 +60,8 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
   ) {}
 
   ngOnInit(): void {
+    // 1. Csak a szűrőbeállításokat töltjük vissza, az adatokat NEM!
     const savedState = sessionStorage.getItem('user_dashboard_search_state');
-    
     if (savedState) {
       const state = JSON.parse(savedState);
       this.smartSearchQuery = state.smartSearchQuery || '';
@@ -76,13 +73,10 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
       this.minCapacity = state.minCapacity;
       this.minRating = state.minRating || 0;
       this.selectedAmenities = state.selectedAmenities || this.selectedAmenities;
-      
-      this.allProperties = state.allProperties || [];
-      this.properties = state.properties || [];
-      this.loading = false;
-    } else {
-      this.loadAll();
     }
+    
+    // 2. Mindig frissen töltünk be mindent a szerverről
+    this.loadAll();
     this.loadUserFavorites();
   }
 
@@ -114,7 +108,8 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
     if (this.observer) this.observer.disconnect();
   }
 
-  saveSearchState(currentProperties: any[]): void {
+  saveSearchState(): void {
+    // Csak a szűrők paramétereit mentjük el, az ingatlanlistát nem!
     const state = {
       smartSearchQuery: this.smartSearchQuery,
       searchLocation: this.searchLocation,
@@ -124,14 +119,11 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
       maxPrice: this.maxPrice,
       minCapacity: this.minCapacity,
       minRating: this.minRating,
-      selectedAmenities: this.selectedAmenities,
-      allProperties: this.allProperties,
-      properties: currentProperties
+      selectedAmenities: this.selectedAmenities
     };
     sessionStorage.setItem('user_dashboard_search_state', JSON.stringify(state));
   }
 
-  // --- Dátum kalkuláció ---
   getNights(): number {
     if (!this.checkInDate || !this.checkOutDate) return 0;
     const start = new Date(this.checkInDate);
@@ -146,7 +138,6 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
     return nights > 0 ? nights * pricePerNight : pricePerNight;
   }
 
-  // --- Vendég számláló ---
   changeCapacity(step: number): void {
     const current = this.minCapacity || 1;
     const nextValue = current + step;
@@ -161,9 +152,9 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
     this.propertyService.getAllProperties().subscribe({
       next: (data) => {
         this.allProperties = data;
-        this.properties = [...this.allProperties];
+        // Miután megjöttek a friss adatok, lefuttatjuk rajtuk a visszaállított szűrőket
+        this.applyFilters(false); 
         this.loading = false;
-        this.saveSearchState(this.properties);
       },
       error: (err) => {
         this.error = 'Nem sikerült betölteni az ingatlanokat.';
@@ -209,14 +200,15 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
     });
   }
 
-  applyFilters(): void {
+  // A default true azt jelenti, hogy mentse az állapotot, ha csak belső hívás, akkor false
+  applyFilters(shouldSave: boolean = true): void {
     if (this.smartSearchQuery.trim()) {
       this.loading = true;
       this.propertyService.smartSearch(this.smartSearchQuery.trim()).subscribe({
         next: (data) => {
           this.properties = data;
           this.loading = false;
-          this.saveSearchState(data);
+          if (shouldSave) this.saveSearchState();
         },
         error: (err) => {
           console.error('Hiba az okoskeresés során:', err);
@@ -241,13 +233,20 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
     const activeAmenities = Object.keys(this.selectedAmenities).filter(k => this.selectedAmenities[k]);
     if (activeAmenities.length > 0) {
       filtered = filtered.filter(p => {
-        const pAmenities = (p.amenitiesList || '').toLowerCase();
-        return activeAmenities.every(a => pAmenities.includes(a.toLowerCase()));
+        let amenitiesText = '';
+        if (Array.isArray(p.amenities)) {
+          amenitiesText = p.amenities.join(' ').toLowerCase();
+        } else if (typeof p.amenities === 'string') {
+          amenitiesText = (p.amenities as string).toLowerCase();
+        } else if (p['amenitiesList']) {
+          amenitiesText = (p['amenitiesList'] as string).toLowerCase();
+        }
+        return activeAmenities.every(a => amenitiesText.includes(a.toLowerCase()));
       });
     }
 
     this.properties = filtered;
-    this.saveSearchState(this.properties);
+    if (shouldSave) this.saveSearchState();
   }
 
   resetFilters(): void {
@@ -263,7 +262,6 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
     
     sessionStorage.removeItem('user_dashboard_search_state');
     this.properties = [...this.allProperties];
-    this.saveSearchState(this.properties);
   }
 
   nextImage(property: any, event: Event) {
