@@ -36,7 +36,6 @@ export class AuthService {
     if (!token) return false;
 
     try {
-      // Biztonságos dekódolás (Base64Url -> Base64)
       let base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
       while (base64.length % 4) { base64 += '='; }
       
@@ -48,9 +47,8 @@ export class AuthService {
     }
   }
 
-  // JAVÍTÁS: Ha lejárt a token, ne adjunk vissza Role-t!
   getRoleFromToken(): string | null {
-    if (!this.isLoggedIn()) return null; // <--- Ez akadályozza meg a szellem-menüt!
+    if (!this.isLoggedIn()) return null;
     
     const token = this.getToken();
     if (!token) return null;
@@ -62,7 +60,6 @@ export class AuthService {
     return this.getRoleFromToken();
   }
 
-  // JAVÍTÁS: Ha lejárt a token, ne adjunk vissza Neveket!
   getUsernameFromToken(): string | null {
     if (!this.isLoggedIn()) return null; 
 
@@ -73,7 +70,6 @@ export class AuthService {
       let base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
       while (base64.length % 4) { base64 += '='; }
 
-      // UTF-8 dekódolás, hogy a magyar ékezetes nevek is jók legyenek
       const decodedStr = decodeURIComponent(
         window.atob(base64).split('').map(function(c) {
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
@@ -87,7 +83,6 @@ export class AuthService {
     }
   }
 
-  // JAVÍTÁS: Csak bejelentkezve adjon ID-t
   getUserIdFromToken(): number | null {
     if (!this.isLoggedIn()) return null; 
 

@@ -14,7 +14,7 @@ import { BookingService } from '../../../core/services/booking.service';
 })
 export class BookingHostComponent implements OnInit {
   bookings: BookingDto[] = [];
-  BookingStatus = BookingStatus; // Hogy a HTML-ben tudjuk használni az Enumot
+  BookingStatus = BookingStatus; 
 
   constructor(private bookingService: BookingService) {}
 
@@ -23,7 +23,6 @@ export class BookingHostComponent implements OnInit {
   }
 
   loadBookings(): void {
-    // Lekéri a Host összes foglalását
     this.bookingService.getHostBookings().subscribe({
       next: (res) => this.bookings = res,
       error: (err) => console.error('Hiba a foglalások betöltésekor:', err)
@@ -32,7 +31,7 @@ export class BookingHostComponent implements OnInit {
 
   confirm(id: number): void {
     this.bookingService.confirmBooking(id).subscribe({
-      next: () => this.loadBookings(), // Sikeres jóváhagyás után újratöltjük a listát
+      next: () => this.loadBookings(),
       error: (err) => console.error('Hiba az elfogadáskor:', err)
     });
   }
@@ -40,7 +39,7 @@ export class BookingHostComponent implements OnInit {
   cancel(id: number): void {
     if(confirm('Biztosan elutasítod / lemondod ezt a foglalást?')) {
       this.bookingService.cancelBooking(id).subscribe({
-        next: () => this.loadBookings(), // Sikeres lemondás után újratöltjük
+        next: () => this.loadBookings(), 
         error: (err) => console.error('Hiba a lemondáskor:', err)
       });
     }

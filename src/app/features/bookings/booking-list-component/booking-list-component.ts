@@ -55,7 +55,6 @@ export class BookingListComponent implements OnInit {
     return String(status);
   }
 
-  // Ugyanez a logika a színezéshez
   getStatusClass(status: any): string {
     const s = String(status).toLowerCase();
     if (s === 'pending' || s === '0') return 'status-pending';

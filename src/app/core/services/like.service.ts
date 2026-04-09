@@ -12,7 +12,6 @@ export class LikeService {
 
   constructor(private http: HttpClient) {}
 
-  /** Váltás: Lájk hozzáadása vagy elvétele */
   toggleLike(userId: number, targetType: LikeTargetType, propertyId?: number, commentId?: number): Observable<ToggleLikeResponse> {
     let params = new HttpParams()
       .set('userId', userId)
@@ -24,7 +23,6 @@ export class LikeService {
     return this.http.post<ToggleLikeResponse>(`${this.apiUrl}/toggle`, {}, { params });
   }
 
-  /** Egy bejelentkezett felhasználó összes lájkjának lekérése */
   getLikesByUser(userId: number): Observable<LikeDto[]> {
     return this.http.get<LikeDto[]>(`${this.apiUrl}/user/${userId}`);
   }

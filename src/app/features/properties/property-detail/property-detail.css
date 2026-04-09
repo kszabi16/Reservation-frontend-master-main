@@ -104,15 +104,14 @@
   font-size: 18px;
 }
 
-/* Kiemelés, ha fölé viszik az egeret (hover) */
 .amenity-detail-item:hover {
-  background: rgba(14, 165, 233, 0.05); /* Halványkék háttér */
+  background: rgba(14, 165, 233, 0.05); 
   border-color: var(--primary-glow);
   color: var(--text-main);
-  transform: translateY(-2px); /* Picit megemelkedik */
+  transform: translateY(-2px); 
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
-/* ===== FOGLALÁSI PANEL ÉS ŰRLAPOK ===== */
+
 .booking-card { padding: 30px; border-left: 4px solid var(--primary); }
 .section-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
 .section-title iconify-icon { color: var(--primary); }
@@ -129,7 +128,6 @@
   margin-left: 4px;
 }
 
-/* KÖZÖS INPUT ÉS TEXTAREA STÍLUS (Dátum, Szöveg) */
 .form-input {
   width: 100%;
   padding: 14px 16px;
@@ -141,7 +139,7 @@
   font-family: inherit;
   outline: none;
   transition: var(--transition);
-  color-scheme: dark; /* EZ A VARÁZSLAT A SÖTÉT NAPTÁRHOZ! */
+  color-scheme: dark; 
 }
 
 .form-input:focus {
@@ -161,7 +159,6 @@
 .auth-warning { text-align: right; font-size: 0.8rem; color: #ef4444; margin-bottom: 10px; }
 .book-btn { width: 100%; justify-content: center; padding: 16px !important; font-size: 1.1rem !important; }
 
-/* ===== ÉRTÉKELÉSEK ===== */
 .reviews-card { padding: 30px; }
 .leave-review-box { background: rgba(255, 255, 255, 0.02); padding: 25px; border-radius: 20px; margin-bottom: 40px; }
 .rating-picker { display: flex; align-items: center; gap: 15px; margin: 15px 0; }
@@ -171,13 +168,12 @@
 .star-btn iconify-icon.active { color: #fbbf24; }
 .star-btn:hover { transform: scale(1.2); }
 
-/* Komment Író Doboz (Textarea) */
 .textarea-wrapper { position: relative; margin-top: 15px; }
 
 .textarea-wrapper .form-input {
   min-height: 120px;
-  resize: vertical; /* Csak lefelé lehessen húzni */
-  padding-bottom: 60px; /* Csinálunk helyet a gombnak, hogy ne lógjon rá a szövegre */
+  resize: vertical; 
+  padding-bottom: 60px; 
   line-height: 1.6;
 }
 
@@ -195,7 +191,6 @@
   color: var(--primary); border-radius: 10px; text-decoration: none; font-weight: 600; 
 }
 
-/* Komment lista */
 .comment-item { padding: 20px 0; border-bottom: 1px solid var(--surface-border); }
 .comment-item:last-child { border: none; }
 .comment-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
@@ -218,7 +213,6 @@
 
 .comment-text { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
 
-/* ===== FOOTER ===== */
 .page-footer-nav { text-align: center; margin-top: 20px; }
 .btn-ghost { background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; margin: 0 auto; transition: var(--transition); }
 .btn-ghost:hover { color: var(--text-main); }

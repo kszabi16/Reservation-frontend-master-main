@@ -9,20 +9,17 @@ export class UserService {
   private apiUrl = `${environment.apiUrl}/user`;
 
   constructor(private http: HttpClient) {}
-getAllUsers(): Observable<UserDto[]> {
+  getAllUsers(): Observable<UserDto[]> {
     return this.http.get<UserDto[]>(`${this.apiUrl}/get-all`);
   }
 
   createUser(userData: any): Observable<any> {
-    // A C# backend-en ehhez kell majd egy [HttpPost("create")] végpont!
     return this.http.post(`${this.apiUrl}/create`, userData);
   }
   
   deleteUser(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/delete/${id}`);
   }
-
-  
 
   updateUserRole(id: number, newRole: string): Observable<any> {
     
@@ -33,7 +30,6 @@ getAllUsers(): Observable<UserDto[]> {
     return this.http.get<UserDto>(`${this.apiUrl}/profile`);
   }
 
- 
   updateProfile(data: UpdateUserProfileDto): Observable<UserDto> {
     return this.http.put<UserDto>(`${this.apiUrl}/update-profile`, data);
   }

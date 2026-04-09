@@ -60,7 +60,6 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
   ) {}
 
   ngOnInit(): void {
-    // 1. Csak a szűrőbeállításokat töltjük vissza, az adatokat NEM!
     const savedState = sessionStorage.getItem('user_dashboard_search_state');
     if (savedState) {
       const state = JSON.parse(savedState);
@@ -75,7 +74,6 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
       this.selectedAmenities = state.selectedAmenities || this.selectedAmenities;
     }
     
-    // 2. Mindig frissen töltünk be mindent a szerverről
     this.loadAll();
     this.loadUserFavorites();
   }
@@ -109,7 +107,6 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   saveSearchState(): void {
-    // Csak a szűrők paramétereit mentjük el, az ingatlanlistát nem!
     const state = {
       smartSearchQuery: this.smartSearchQuery,
       searchLocation: this.searchLocation,
@@ -152,7 +149,6 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
     this.propertyService.getAllProperties().subscribe({
       next: (data) => {
         this.allProperties = data;
-        // Miután megjöttek a friss adatok, lefuttatjuk rajtuk a visszaállított szűrőket
         this.applyFilters(false); 
         this.loading = false;
       },
@@ -200,7 +196,6 @@ export class UserDashboardComponent implements OnInit, AfterViewInit, OnDestroy 
     });
   }
 
-  // A default true azt jelenti, hogy mentse az állapotot, ha csak belső hívás, akkor false
   applyFilters(shouldSave: boolean = true): void {
     if (this.smartSearchQuery.trim()) {
       this.loading = true;

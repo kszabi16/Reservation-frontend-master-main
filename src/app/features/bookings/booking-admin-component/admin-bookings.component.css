@@ -111,7 +111,6 @@ select.form-input:focus {
   color: var(--primary);
 }
 
-/* Lemondás gomb - Sötét vörös */
 .btn-danger {
   color: #fca5a5 !important;
   border-color: rgba(239, 68, 68, 0.3) !important;

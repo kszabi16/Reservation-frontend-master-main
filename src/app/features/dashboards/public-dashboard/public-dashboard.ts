@@ -19,18 +19,14 @@ export class PublicDashboardComponent implements OnInit, AfterViewInit,OnDestroy
   loading = true;
   error = '';
   Math = Math;
-
   showFilters = false;
-  // AI Okoskereső
   smartSearchQuery = '';
-
-  // Hagyományos szűrők
   searchLocation = '';
   minPrice: number | null = null;
   maxPrice: number | null = null;
   minCapacity: number | null = null;
 
-  minRating: number = 0; // 0 = mindegy
+  minRating: number = 0; 
   selectedAmenities: { [key: string]: boolean } = {
     'Wifi': false,
     'Medence': false,
@@ -129,7 +125,7 @@ export class PublicDashboardComponent implements OnInit, AfterViewInit,OnDestroy
     };
     sessionStorage.setItem('dashboard_search_state', JSON.stringify(state));
   }
-  // ------------------------------------
+
 
   toggleFavorite(): void {
     this.displayAuthWarning();
@@ -147,7 +143,7 @@ export class PublicDashboardComponent implements OnInit, AfterViewInit,OnDestroy
     this.propertyService.getAllProperties().subscribe({
       next: (data) => {
         this.allProperties = data; 
-        this.properties = [...this.allProperties]; // Alapból mindent mutatunk
+        this.properties = [...this.allProperties];
         this.loading = false;
         this.saveSearchState(this.properties);
       },
@@ -159,7 +155,6 @@ export class PublicDashboardComponent implements OnInit, AfterViewInit,OnDestroy
     });
   }
   applyFilters(): void {
-    // 1. AI Okoskereső (Ha van szöveg, a backendhez fordulunk)
     if (this.smartSearchQuery.trim()) {
       this.loading = true;
       this.propertyService.smartSearch(this.smartSearchQuery.trim()).subscribe({
@@ -177,7 +172,6 @@ export class PublicDashboardComponent implements OnInit, AfterViewInit,OnDestroy
       return;
     }
 
-    // 2. Kliens oldali KOMBINÁLT hagyományos szűrés (Minden feltételt egyszerre vizsgál)
     let filtered = [...this.allProperties];
 
     if (this.searchLocation.trim()) {
@@ -200,8 +194,6 @@ export class PublicDashboardComponent implements OnInit, AfterViewInit,OnDestroy
     if (this.minRating > 0) {
       filtered = filtered.filter(p => (p.averageRating || 0) >= this.minRating);
     }
-
-    // Felszereltségek vizsgálata (Az összes bepipáltnak szerepelnie kell)
     const activeAmenities = Object.keys(this.selectedAmenities).filter(k => this.selectedAmenities[k]);
     if (activeAmenities.length > 0) {
       filtered = filtered.filter(p => {
@@ -221,13 +213,12 @@ export class PublicDashboardComponent implements OnInit, AfterViewInit,OnDestroy
     this.maxPrice = null;
     this.minCapacity = null;
     this.minRating = 0;
-    
-    // Checkboxok alaphelyzetbe állítása
+   
     Object.keys(this.selectedAmenities).forEach(k => this.selectedAmenities[k] = false);
     
     sessionStorage.removeItem('dashboard_search_state');
     
-    this.properties = [...this.allProperties]; // Azonnal visszaáll az eredetire
+    this.properties = [...this.allProperties];
     this.saveSearchState(this.properties);
   }
 

@@ -5,7 +5,6 @@ import { environment } from '../../../environments/environment';
 import { PropertyDto } from '../models/property-dto';
 import { CreatePropertyDto } from '../models/property-dto';
 import { HttpParams } from '@angular/common/http';
-import { PropertySearchDto } from '../models/property-search-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -45,34 +44,6 @@ export class PropertyService {
     return this.http.get<PropertyDto[]>(`${this.apiUrl}/host/${hostId}`);
   }
 
-
-  getPropertiesByLocation(location: string): Observable<PropertyDto[]> {
-    return this.http.get<PropertyDto[]>(`${this.apiUrl}/location/${location}`);
-  }
-
- 
-  getPropertiesByPriceRange(minPrice: number, maxPrice: number): Observable<PropertyDto[]> {
-    return this.http.get<PropertyDto[]>(`${this.apiUrl}/price-range?minPrice=${minPrice}&maxPrice=${maxPrice}`);
-  }
-
-  
-  getPropertiesByCapacity(minCapacity: number): Observable<PropertyDto[]> {
-    return this.http.get<PropertyDto[]>(`${this.apiUrl}/capacity/${minCapacity}`);
-  }
-
-  searchProperties(term?: string, minPrice?: number, maxPrice?: number, capacity?: number): Observable<PropertyDto[]> {
-  
-  
-  let params = new HttpParams();
-  if (term) params = params.set('searchTerm', term);
-  if (minPrice) params = params.set('minPrice', minPrice);
-  if (maxPrice) params = params.set('maxPrice', maxPrice);
-  if (capacity) params = params.set('capacity', capacity);
-
-  return this.http.get<PropertyDto[]>(`${this.apiUrl}/search`, { params });
-}
-
- 
   getAllPropertiesForAdmin(): Observable<PropertyDto[]> {
     return this.http.get<PropertyDto[]>(`${this.apiUrl}/all`);
   }
@@ -96,7 +67,7 @@ getAllAmenities(): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/amenities`);
   }
 
-smartSearch(query: string): Observable<PropertySearchDto[]> {
-    return this.http.get<PropertySearchDto[]>(`${environment.apiUrl}/search?q=${encodeURIComponent(query)}`);
+smartSearch(query: string): Observable<PropertyDto[]> {
+    return this.http.get<PropertyDto[]>(`${environment.apiUrl}/search?q=${encodeURIComponent(query)}`);
 }
 }

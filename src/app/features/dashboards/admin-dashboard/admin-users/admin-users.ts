@@ -1,5 +1,5 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../../core/services/user-service';
@@ -8,7 +8,7 @@ import { UserDto } from '../../../../core/models/user-dto'
 @Component({
   selector: 'app-user-admin',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DatePipe],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './admin-users.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   styleUrl:'./admin-users.css'
@@ -180,7 +180,7 @@ export class UserAdminComponent implements OnInit {
   toggleTrusted(user: any) {
   this.userService.toggleTrustedHost(user.id).subscribe({
     next: () => {
-      user.isTrustedHost = !user.isTrustedHost; // Felület frissítése
+      user.isTrustedHost = !user.isTrustedHost;
       alert(`${user.username} státusza sikeresen módosítva!`);
     },
     error: (err) => console.error(err)

@@ -16,14 +16,10 @@ export class HostRequestAdminComponent implements OnInit {
   requests: HostRequestDto[] = [];
   loading = true;
   error = '';
-
-  // Modal és folyamat változók
   selectedRequest: HostRequestDto | null = null;
   showApproveModal = false;
   showRejectModal = false;
   isProcessing = false;
-
-  // Toast értesítés
   showSuccessToast = false;
   toastMessage = '';
 
@@ -49,7 +45,6 @@ export class HostRequestAdminComponent implements OnInit {
     });
   }
 
-  // --- JÓVÁHAGYÁS ---
   openApproveModal(request: HostRequestDto): void {
     this.selectedRequest = request;
     this.showApproveModal = true;
@@ -73,7 +68,6 @@ export class HostRequestAdminComponent implements OnInit {
     });
   }
 
-  // --- ELUTASÍTÁS ---
   openRejectModal(request: HostRequestDto): void {
     this.selectedRequest = request;
     this.showRejectModal = true;
@@ -97,7 +91,6 @@ export class HostRequestAdminComponent implements OnInit {
     });
   }
 
-  // --- SEGÉDMETÓDUSOK ---
   closeModals(): void {
     this.showApproveModal = false;
     this.showRejectModal = false;

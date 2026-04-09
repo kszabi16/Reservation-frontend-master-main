@@ -5,10 +5,9 @@
   background-color: var(--bg-color);
 }
 
-/* ===== SIDEBAR ===== */
 .sidebar {
   width: 260px;
-  background-color: #0f172a; /* Egy árnyalattal sötétebb kék, mint a háttér */
+  background-color: #0f172a;
   border-right: 1px solid var(--surface-border);
   display: flex;
   flex-direction: column;
@@ -64,14 +63,12 @@
   color: var(--text-main);
 }
 
-/* Aktív menüpont */
 .nav-link.active {
   background: var(--primary-glow);
   color: var(--primary);
   font-weight: 600;
 }
 
-/* Speciális gombok */
 .nav-spacer {
   margin-top: 20px;
 }
@@ -91,7 +88,6 @@
   transform: translateY(-1px);
 }
 
-/* ===== TARTALOM TERÜLET ===== */
 .content-area {
   flex: 1;
   overflow-y: auto;

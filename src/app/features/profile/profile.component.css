@@ -41,7 +41,6 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* ===== OLDALSÁV ÉS AVATAR ===== */
 .user-summary-card {
   padding-bottom: 30px;
 }
@@ -190,7 +189,6 @@
   color: var(--text-muted);
 }
 
-/* ===== SZERKESZTÉS FORM ===== */
 .settings-card {
   padding: 30px;
 }

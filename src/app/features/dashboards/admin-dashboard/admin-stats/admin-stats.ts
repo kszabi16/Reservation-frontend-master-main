@@ -41,9 +41,7 @@ export class AdminStatsComponent implements OnInit {
 
   loadAllData(): void {
     this.loading = true;
-    
-    // A catchError(of([])) garantálja, hogy ha valamelyik szerver hívás elszáll,
-    // akkor is továbbmegy a kód, csak egy üres tömböt ad vissza arra az adatra.
+   
     forkJoin({
       users: this.userService.getAllUsers().pipe(
         catchError(err => { console.error('Hiba a usereknél:', err); return of([]); })
@@ -70,20 +68,13 @@ export class AdminStatsComponent implements OnInit {
   }
 
   private calculateStats(users: any[], properties: any[], pendingProperties: any[], bookings: any[]): void {
-    // 1. Felhasználók
     this.stats.totalUsers = users.length;
     this.stats.totalHosts = users.filter(u => u.role === 'Host').length;
-
-    // 2. Ingatlanok (Elfogadott + Függő egyben a teljes számhoz)
     this.stats.totalProperties = properties.length + pendingProperties.length;
     this.stats.pendingProperties = pendingProperties.length;
-    
-    // 3. Foglalások
     this.stats.totalBookings = bookings.length;
-    // (A backendtől függően a státusz lehet string vagy szám, ezért többféleképpen is lekezeljük)
     this.stats.confirmedBookings = bookings.filter(b => b.status === BookingStatus.Confirmed || b.status === 1 || b.status === 'Confirmed').length;
 
-    // 4. Bevétel számítás (Csak a visszaigazolt foglalásokból)
     this.stats.totalRevenue = bookings
       .filter(b => b.status === BookingStatus.Confirmed || b.status === 1 || b.status === 'Confirmed')
       .reduce((sum, b) => {
@@ -92,7 +83,6 @@ export class AdminStatsComponent implements OnInit {
           const start = new Date(b.startDate);
           const end = new Date(b.endDate);
           const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-          // Ha valamiért ugyanaz a nap, minimum 1 éjszakát számolunk
           const validDays = days > 0 ? days : 1; 
           return sum + (validDays * prop.pricePerNight);
         }

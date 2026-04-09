@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { PropertyService } from '../../../core/services/property.service';
 import { CreatePropertyDto } from '../../../core/models/property-dto';
-import { PropertyDto } from '../../../core/models/property-dto';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -48,7 +47,6 @@ export class PropertyEditComponent implements OnInit {
     this.loading = true;
     this.propertyService.getPropertyById(this.propertyId).subscribe({
       next: (data: any) => {
-        // Itt manuálisan összekötjük a nagybetűs űrlapot a kisbetűs JSON adatokkal!
         this.form.patchValue({
           Title: data.title || data.Title, 
           Description: data.description || data.Description,
@@ -74,7 +72,6 @@ export class PropertyEditComponent implements OnInit {
 
     this.propertyService.updateProperty(this.propertyId, dto).subscribe({
       next: () => {
-        // IDE ÍRTUK BE AZ ÚJ IRÁNYT:
         this.router.navigate(['/property/admin']);
       },
       error: () => {

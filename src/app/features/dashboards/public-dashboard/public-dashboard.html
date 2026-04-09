@@ -146,12 +146,16 @@
 
             <div class="card-content">
               <div class="card-info">
-                <div class="flex justify-between items-start">
+                <div class="title-row">
                   <h5 class="property-title">{{ p.title }}</h5>
+                  
                   @if (p.relevancyScore) {
-                    <span class="ai-badge" title="Szemantikus egyezés: {{ p.relevancyScore.toFixed(2) }}">AI Match</span>
+                    <span class="ai-badge-float" title="Szemantikus egyezés: {{ p.relevancyScore.toFixed(2) }}">
+                      <iconify-icon icon="tabler:sparkles"></iconify-icon> AI Match
+                    </span>
                   }
                 </div>
+                
                 <div class="location-info">
                   <iconify-icon icon="tabler:map-pin"></iconify-icon>
                   {{ p.location }}

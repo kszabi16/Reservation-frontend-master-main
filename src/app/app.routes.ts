@@ -18,13 +18,12 @@ export const routes: Routes = [
     ]
   },
 
-  // Layout alatti oldalak
   {
     path: '',
     component: LayoutComponent,
     children: [
       
-      // --- PUBLIKUS (Bárki láthatja) ---
+      // PUBLIKUS
       {
         path: 'public-dashboard',
         loadComponent: () =>
@@ -36,7 +35,7 @@ export const routes: Routes = [
           import('./features/calendar/calendar.component').then((m) => m.CalendarComponent),
       },
 
-      // --- KÖZÖS BEJELENTKEZETT (Guest, Host, Admin) ---
+      //KÖZÖS BEJELENTKEZETT
       {
         path: 'profile',
         canActivate: [authGuard()],
@@ -81,10 +80,10 @@ export const routes: Routes = [
       },
 
 
-      // --- HOST (HÁZIGAZDA) SPECIFIKUS ---
+      //HOST (HÁZIGAZDA) SPECIFIKUS 
       {
         path: 'host-dashboard',
-        canActivate: [authGuard('Host')], // Csak hostoknak!
+        canActivate: [authGuard('Host')],
         loadComponent: () =>
           import('./features/dashboards/host-dashboard/host-dashboard').then((m) => m.HostDashboardComponent),
       },
@@ -113,10 +112,10 @@ export const routes: Routes = [
           import('./features/properties/property-edit/property-edit.component').then((m) => m.PropertyEditComponent),
       },
 
-      // --- ADMIN SPECIFIKUS ---
+      // ADMIN 
       {
         path: 'admin-dashboard',
-        canActivate: [authGuard('Admin')], // Csak adminoknak!
+        canActivate: [authGuard('Admin')], 
         loadComponent: () =>
           import('./features/dashboards/admin-dashboard/admin-dashboard').then((m) => m.AdminDashboardComponent),
       },

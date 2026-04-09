@@ -64,7 +64,6 @@ export class PropertyCreateComponent implements OnInit {
   isAmenitySelected(amenity: string): boolean {
     return this.property.amenities?.includes(amenity) || false;
   }
-  // ----------------------------------------
 
   onFileSelected(event: any) {
     if (event.target.files && event.target.files.length > 0) {
